@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -40,7 +40,7 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): JSX.Element {
+function Section({ children, title }: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -50,7 +50,8 @@ function Section({children, title}: SectionProps): JSX.Element {
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -59,7 +60,8 @@ function Section({children, title}: SectionProps): JSX.Element {
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
@@ -70,7 +72,7 @@ export const HelloWorld = () => {
   const size = 256;
   const r = size * 0.33;
   return (
-    <Canvas style={{flex: 1}}>
+    <Canvas style={{ flex: 1 }}>
       {/* <Group blendMode="multiply">
         <Circle cx={r} cy={r} r={r} color="cyan" />
         <Circle cx={size - r} cy={r} r={r} color="magenta" />
@@ -128,7 +130,8 @@ function App(): JSX.Element {
           position: 'absolute',
           top: 50,
           zIndex: 100,
-        }}>
+        }}
+      >
         <HelloWorld />
       </View>
       {/* <ScrollView
@@ -138,7 +141,8 @@ function App(): JSX.Element {
       <View
         style={{
           backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        }}>
+        }}
+      >
         <Section title="Step One">
           Edit <Text style={styles.highlight}>App.tsx</Text> to change this
           screen and then come back to see your edits.
@@ -154,7 +158,7 @@ function App(): JSX.Element {
         </Section>
         <LearnMoreLinks />
       </View>
-      <View style={{flex: 1, backgroundColor: 'red'}}>
+      <View style={{ flex: 1, backgroundColor: 'red' }}>
         <Text>test</Text>
       </View>
       {/* </ScrollView> */}
