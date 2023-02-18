@@ -1,26 +1,13 @@
-import {
-  FlashList,
-  ListRenderItem,
-  ListRenderItemInfo,
-} from '@shopify/flash-list';
+import { Box, Text } from '@shared/ui/primitives';
+import { FlashList, ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useCallback } from 'react';
-import {
-  Dimensions,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Dimensions, StyleSheet, useColorScheme, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import tinycolor from 'tinycolor2';
-import { normalize } from './shared/utils';
+import { normalize } from '@shared/utils';
 
 const dimensions = Dimensions.get('screen');
 
@@ -68,25 +55,25 @@ function App(): JSX.Element {
 
   const renderItem = useCallback(({ item }: ListRenderItemInfo<NFT>) => {
     return (
-      <View
+      <Box
+        width={dimensions.width}
+        height={dimensions.height - 80}
         style={{
-          width: dimensions.width,
-          height: dimensions.height - 80,
+          paddingTop: insets.top,
           backgroundColor: tinycolor(item.bgColor)
             .darken(30)
             .desaturate(30)
             .toHexString(),
-          padding: 12,
-          paddingTop: insets.top,
         }}
+        padding={3}
       >
-        <View
+        <Box
+          flex={1}
+          borderRadius={20}
+          padding={5}
+          overflow="hidden"
           style={{
-            flex: 1,
             backgroundColor: item.bgColor,
-            borderRadius: 20,
-            padding: 20,
-            overflow: 'hidden',
           }}
         >
           <FastImage
@@ -97,25 +84,17 @@ function App(): JSX.Element {
             }}
           />
           <LinearGradient
-            colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0)']}
+            colors={['rgba(0,0,0,0.35)', 'rgba(0,0,0,0)']}
             style={{
               top: 0,
               bottom: 0,
               left: 0,
               right: 0,
-              // width: '100%',
-              // height: '100%',
               position: 'absolute',
             }}
           />
-          <View style={{ position: 'absolute', top: 20, left: 20 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 8,
-              }}
-            >
+          <Box position="absolute" top={20} left={20}>
+            <Box marginBottom={2} flexDirection="row" alignItems="center">
               <FastImage
                 style={{
                   width: 32,
@@ -125,30 +104,25 @@ function App(): JSX.Element {
                 }}
                 source={{ uri: item.avatarUrl }}
               />
-              <Text style={{ color: 'white', fontSize: normalize(12) }}>
-                {item.username}
-              </Text>
-            </View>
-            <View style={{ flexDirection: 'row', gap: 4, marginBottom: 8 }}>
+              <Text fontSize={normalize(12)}>{item.username}</Text>
+            </Box>
+            <Box flexDirection="row" gap={1} marginBottom={2}>
               {item.hints.map((hint) => (
-                <Text
-                  style={{
-                    color: 'white',
-                    borderWidth: 1,
-                    borderRadius: 14,
-                    borderColor: 'white',
-                    paddingHorizontal: 8,
-                    paddingVertical: 4,
-                  }}
+                <Box
+                  borderWidth={1}
+                  borderRadius={14}
+                  borderColor="primaryText"
+                  paddingHorizontal={2}
+                  paddingVertical={1}
                 >
-                  {hint}
-                </Text>
+                  <Text>{hint}</Text>
+                </Box>
               ))}
-            </View>
-            <Text style={{ color: 'white', fontSize: 24 }}>{item.title}</Text>
-          </View>
-        </View>
-      </View>
+            </Box>
+            <Text fontSize={normalize(24)}>{item.title}</Text>
+          </Box>
+        </Box>
+      </Box>
     );
   }, []);
 
@@ -168,7 +142,7 @@ function App(): JSX.Element {
           bounces={false}
         />
       </View>
-      <View style={{ height: 80, backgroundColor: 'black' }} />
+      <Box style={{ height: 80, backgroundColor: 'black' }} />
     </View>
   );
 }
