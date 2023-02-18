@@ -5,9 +5,10 @@
  * @format
  */
 
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import {
+  Button,
   Dimensions,
   SafeAreaView,
   ScrollView,
@@ -33,8 +34,19 @@ import {
   Drawing,
   Fill,
   Group,
+  mix,
+  Rect,
   Skia,
+  useSharedValueEffect,
+  useSpring,
+  useTouchHandler,
+  useValue,
 } from '@shopify/react-native-skia';
+import {
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -67,6 +79,24 @@ function Section({ children, title }: SectionProps): JSX.Element {
     </View>
   );
 }
+
+const MyComponent = () => {
+  const cx = useValue(100);
+  const cy = useValue(100);
+ 
+  const touchHandler = useTouchHandler({
+    onActive: ({ x, y }) => {
+      cx.current = x;
+      cy.current = y;
+    },
+  });
+ 
+  return (
+    <Canvas style={{ flex: 1 }} onTouch={touchHandler}>
+      <Circle cx={cx} cy={cy} r={10} color="red" />
+    </Canvas>
+  );
+};
 
 export const HelloWorld = () => {
   const size = 256;
@@ -110,29 +140,10 @@ function App(): JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac
-        enim id augue laoreet gravida. Aliquam pellentesque interdum cursus.
-        Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam eu
-        sapien et elit ultricies imperdiet vitae tincidunt nibh. Nam vestibulum
-        pellentesque augue, vel rutrum justo fermentum sit amet. Phasellus
-        dictum at quam et venenatis. Integer congue arcu nec velit laoreet
-        vulputate. Curabitur a suscipit est. Suspendisse potenti. Quisque eget
-        libero id ex ultrices varius eget quis diam. Nulla faucibus diam sed dui
-        rutrum iaculis. Nam dictum augue lobortis sapien tincidunt gravida.
-        Quisque luctus vestibulum risus, et varius leo finibus in. Phasellus
-        vitae nisi lectus.
-      </Text>
       <View
-        style={{
-          width: dimensions.width,
-          height: dimensions.height,
-          position: 'absolute',
-          top: 50,
-          zIndex: 100,
-        }}
+        style={{ width: dimensions.width, height: dimensions.height - 100 }}
       >
-        <HelloWorld />
+        <MyComponent />
       </View>
       {/* <ScrollView
         contentInsetAdjustmentBehavior="automatic"
