@@ -17,6 +17,8 @@ const colors = {
 const theme = createTheme({
   colors: {
     primaryText: colors.white,
+
+    black: colors.black,
   },
   spacing: {
     [-4]: normalize(-16),
