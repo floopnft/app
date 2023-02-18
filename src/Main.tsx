@@ -2,6 +2,7 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 import App from './App';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +13,9 @@ const styles = StyleSheet.create({
 const Main = () => {
   return (
     <GestureHandlerRootView style={styles.container}>
-      <App />
+      <SafeAreaProvider>
+        <App />
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 };
