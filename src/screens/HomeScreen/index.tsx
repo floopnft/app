@@ -1,4 +1,6 @@
+import Card from '@features/feed/ui/Card';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { HSLColor, hslFromArray } from '@shared/ui/color-utils';
 import { Box, Text } from '@shared/ui/primitives';
 import { normalize } from '@shared/utils';
 import {
@@ -20,8 +22,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const dimensions = Dimensions.get('window');
 
-type HSLColor = [number, number, number];
-
 interface NFT {
   title: string;
   avatarUrl: string;
@@ -29,10 +29,6 @@ interface NFT {
   imgUrl: string;
   hints: string[];
   bgColor: HSLColor;
-}
-
-function hslFromArray([h, s, l]: HSLColor): string {
-  return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
 const DATA: NFT[] = [
@@ -77,7 +73,7 @@ const HomeScreen = () => {
   const cardOffset =
     Platform.select({
       ios: normalize(16),
-      android: StatusBar.currentHeight,
+      android: StatusBar.currentHeight! + normalize(64),
     }) || 0;
 
   const renderItem = useCallback(
@@ -90,15 +86,7 @@ const HomeScreen = () => {
           }}
           padding={3}
         >
-          <Box
-            flex={1}
-            borderRadius={20}
-            padding={5}
-            overflow="hidden"
-            style={{
-              backgroundColor: hslFromArray(item.bgColor),
-            }}
-          >
+          <Card bgColor={hslFromArray(item.bgColor)}>
             <FastImage
               resizeMode="contain"
               style={{ flex: 1 }}
@@ -145,7 +133,7 @@ const HomeScreen = () => {
               </Box>
               <Text fontSize={normalize(24)}>{item.title}</Text>
             </Box>
-          </Box>
+          </Card>
         </Box>
       );
     },
@@ -191,7 +179,7 @@ const HomeScreen = () => {
       const idx = Math.floor(ev.contentOffset.y / fullscreenCardHeight);
       bgColorFromTo.value = [
         items[idx - 1]?.bgColor || 'transparent',
-        items[idx].bgColor,
+        items[idx]?.bgColor || 'transparent',
         items[idx + 1]?.bgColor || 'transparent',
       ];
       progress.value = ev.contentOffset.y / fullscreenCardHeight - idx;
