@@ -1,23 +1,38 @@
-import { AnimatedBox } from '@shared/ui/primitives';
+import Image, { AnimatedBox, Box } from '@shared/ui/primitives';
+import { sharedStyles } from '@shared/ui/styles';
 import React from 'react';
+import LinearGradient from 'react-native-linear-gradient';
 import {
+  SensorConfig,
   SensorType,
   useAnimatedSensor,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import CardInfo, { CardInfoProps } from './CardInfo';
 
-interface CardProps extends React.PropsWithChildren<{}> {
+interface CardProps {
+  imgUrl: string;
   bgColor: string;
 }
 
-const animatedSensorConfig = { adjustToInterfaceOrientation: true };
+const animatedSensorConfig: SensorConfig = {
+  interval: 'auto',
+  adjustToInterfaceOrientation: true,
+} as SensorConfig;
 
-const Card: React.FC<CardProps> = ({ bgColor, children }) => {
+const linearGradientColors = ['rgba(0,0,0,0.35)', 'rgba(0,0,0,0)'];
+
+const Card: React.FC<CardProps & CardInfoProps> = ({
+  imgUrl,
+  bgColor,
+  ...props
+}) => {
   const animatedSensor = useAnimatedSensor(
     SensorType.ROTATION,
     animatedSensorConfig
   );
+
   const style = useAnimatedStyle(() => {
     const pitch = animatedSensor.sensor.value.pitch;
     const roll = animatedSensor.sensor.value.roll;
@@ -42,7 +57,20 @@ const Card: React.FC<CardProps> = ({ bgColor, children }) => {
         style,
       ]}
     >
-      {children}
+      <Image
+        resizeMode="contain"
+        style={sharedStyles.container}
+        source={{
+          uri: imgUrl,
+        }}
+      />
+      <LinearGradient
+        colors={linearGradientColors}
+        style={sharedStyles.absolute}
+      />
+      <Box position="absolute" top={20} left={20}>
+        <CardInfo {...props} />
+      </Box>
     </AnimatedBox>
   );
 };
