@@ -1,4 +1,4 @@
-import Card from '@features/feed/ui/Card';
+import Card from '@entities/feed/ui/Card';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   HSLColor,
