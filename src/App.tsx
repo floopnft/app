@@ -3,13 +3,21 @@ import HomeScreen from '@screens/HomeScreen';
 import HomeIcon from '@shared/ui/icons/HomeIcon';
 import PlusCircleIcon from '@shared/ui/icons/PlusCircleIcon';
 import UserIcon from '@shared/ui/icons/UserIcon';
-import { Box } from '@shared/ui/primitives';
 import React from 'react';
-import { useColorScheme } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
+import { Camera, useCameraDevices } from 'react-native-vision-camera';
 
 const Tab = createBottomTabNavigator();
 
-const EmptyScreen = () => <Box />;
+const EmptyScreen = () => {
+  const devices = useCameraDevices('wide-angle-camera');
+  const device = devices.back;
+
+  if (device == null) return null;
+  return (
+    <Camera style={StyleSheet.absoluteFill} device={device} isActive={true} />
+  );
+};
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
