@@ -1,5 +1,7 @@
+import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
 import Image, { AnimatedBox, Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
+import { normalize } from '@shared/utils';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -9,7 +11,7 @@ import {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import CardInfo, { CardInfoProps } from './CardInfo';
+import CardInfo, { CardInfoProps } from '../../../entities/feed/ui/CardInfo';
 
 interface CardProps {
   imgUrl: string;

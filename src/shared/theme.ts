@@ -10,8 +10,8 @@ const colors = {
   greenPrimary: '#0ECD9D',
   greenDark: '#0A906E',
 
-  black: '#0B0B0B',
-  white: '#F0F2F3',
+  black: '#000',
+  white: '#FFF',
 };
 
 const theme = createTheme({
@@ -19,6 +19,9 @@ const theme = createTheme({
     primaryText: colors.white,
 
     black: colors.black,
+    white: colors.white,
+
+    debug: '#ff00ff'
   },
   spacing: {
     [-4]: normalize(-16),

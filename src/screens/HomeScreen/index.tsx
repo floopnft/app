@@ -1,4 +1,4 @@
-import Card from '@entities/feed/ui/Card';
+import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   HSLColor,
@@ -13,6 +13,7 @@ import {
   FlashListProps,
   ListRenderItemInfo,
 } from '@shopify/flash-list';
+import Card from '@src/widgets/feed/ui/Card';
 import React, { useCallback, useState } from 'react';
 import { Dimensions, Platform, StatusBar } from 'react-native';
 import Animated, {
@@ -159,6 +160,13 @@ const HomeScreen = () => {
           onEndReachedThreshold={1}
           onEndReached={() => setItems([...items, ...DATA])}
         />
+        <Box
+          position="absolute"
+          bottom={tabBarHeight + normalize(20)}
+          right={normalize(20)}
+        >
+          <ReactionToolbox />
+        </Box>
       </Animated.View>
     </>
   );

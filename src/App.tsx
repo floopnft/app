@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '@screens/HomeScreen';
+import ProfileScreen from '@screens/ProfileScreen';
 import HomeIcon from '@shared/ui/icons/HomeIcon';
 import PlusCircleIcon from '@shared/ui/icons/PlusCircleIcon';
 import UserIcon from '@shared/ui/icons/UserIcon';
@@ -50,7 +51,7 @@ function App(): JSX.Element {
       />
       <Tab.Screen
         name="Profile"
-        component={EmptyScreen}
+        component={ProfileScreen}
         options={{ tabBarIcon: UserIcon }}
       />
     </Tab.Navigator>
