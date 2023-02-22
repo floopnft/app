@@ -1,7 +1,6 @@
-import { normalize } from '@shared/utils';
+import Lottie from 'lottie-react-native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Lottie from 'lottie-react-native';
 
 export enum ReactionType {
   HOT = 'hot',
@@ -39,9 +38,7 @@ const Reaction: React.FC<ReactionProps> = ({ type, debug }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: normalize(24),
-    height: normalize(24),
-    backgroundColor: '#ff00ff',
+    flex: 1,
   },
 });
 

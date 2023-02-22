@@ -1,11 +1,12 @@
 import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
+import ReactionsFeed from '@features/reactions/ui/ReactionsFeed';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   HSLColor,
   hslFromArray,
   reduceLightning,
 } from '@shared/ui/color-utils';
-import { Box } from '@shared/ui/primitives';
+import { AnimatedBox, Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { normalize } from '@shared/utils';
 import {
@@ -18,6 +19,7 @@ import React, { useCallback, useState } from 'react';
 import { Dimensions, Platform, StatusBar } from 'react-native';
 import Animated, {
   interpolateColor,
+  Layout,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -167,6 +169,14 @@ const HomeScreen = () => {
         >
           <ReactionToolbox />
         </Box>
+        <AnimatedBox
+          position="absolute"
+          bottom={tabBarHeight + normalize(20) + normalize(40)}
+          right={normalize(25)}
+          layout={Layout}
+        >
+          <ReactionsFeed />
+        </AnimatedBox>
       </Animated.View>
     </>
   );

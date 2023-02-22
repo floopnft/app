@@ -13,6 +13,10 @@ module.exports = {
           '@shared': './src/shared',
           '@processes': './src/processes',
           '@src': './src',
+          // rn
+          crypto: 'react-native-quick-crypto',
+          stream: 'stream-browserify',
+          buffer: '@craftzdog/react-native-buffer',
         },
       },
     ],

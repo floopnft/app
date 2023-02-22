@@ -1,11 +1,33 @@
+import { addReaction } from '@features/reactions/model';
 import PlusIcon from '@shared/ui/icons/PlusIcon';
 import { Box } from '@shared/ui/primitives';
 import { normalize } from '@shared/utils';
 import React from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Reaction, { ReactionType } from './Reaction';
+import {
+  Gesture,
+  GestureDetector,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
+// import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import ReactionAnimation, { ReactionType } from './Reaction';
 
 // const targetWidth = 32 * 4 + 32;
+
+const Reaction = ({ type }: { type: ReactionType }) => {
+  const gesture = Gesture.Tap().onStart((ev) => {
+    runOnJS(addReaction)({ type, press: { x: ev.absoluteX, y: ev.absoluteY } });
+  });
+
+  return (
+    <GestureDetector gesture={gesture}>
+      <Box width={normalize(24)} height={normalize(24)}>
+        <ReactionAnimation type={type} />
+      </Box>
+      {/* <Box width={24} height={24} backgroundColor="debug" /> */}
+    </GestureDetector>
+  );
+};
 
 const ReactionToolbox = () => {
   const [isOpen, setIsOpen] = React.useState(false);
