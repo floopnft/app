@@ -8,7 +8,7 @@ import {
 } from '@shared/ui/color-utils';
 import { AnimatedBox, Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { normalize } from '@shared/utils';
+import { normalize, scale, verticalScale } from '@shared/utils';
 import {
   FlashList,
   FlashListProps,
@@ -16,7 +16,7 @@ import {
 } from '@shopify/flash-list';
 import Card from '@src/widgets/feed/ui/Card';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, Platform, StatusBar } from 'react-native';
+import { Dimensions, Platform, StatusBar, View } from 'react-native';
 import Animated, {
   interpolateColor,
   Layout,
@@ -26,7 +26,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const dimensions = Dimensions.get('window');
+const dimensions = Dimensions.get('screen');
 
 interface NFT {
   title: string;
@@ -66,11 +66,7 @@ const DATA: NFT[] = [
   },
 ];
 
-const cardOffset =
-  Platform.select({
-    ios: normalize(16),
-    android: StatusBar.currentHeight! + normalize(64),
-  }) || 0;
+const listElementHeight = dimensions.height;
 
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<NFT>>(FlashList);
@@ -82,8 +78,6 @@ const HomeScreen = () => {
 
   const [items, setItems] = useState(DATA);
 
-  const listElementHeight = dimensions.height - tabBarHeight;
-
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<NFT>) => {
       return (
@@ -91,7 +85,8 @@ const HomeScreen = () => {
           height={listElementHeight}
           padding={3}
           style={{
-            paddingTop: insets.top + cardOffset,
+            paddingTop: insets.top,
+            paddingBottom: tabBarHeight + verticalScale(12),
           }}
         >
           <Card
@@ -105,7 +100,7 @@ const HomeScreen = () => {
         </Box>
       );
     },
-    [insets.top, listElementHeight]
+    [insets, tabBarHeight]
   );
 
   const bgColorFromTo = useSharedValue([
@@ -158,21 +153,21 @@ const HomeScreen = () => {
           bounces={false}
           decelerationRate="fast"
           snapToAlignment="start"
-          snapToInterval={dimensions.height - tabBarHeight}
+          snapToInterval={listElementHeight}
           onEndReachedThreshold={1}
           onEndReached={() => setItems([...items, ...DATA])}
         />
-        <Box
-          position="absolute"
-          bottom={tabBarHeight + normalize(20)}
-          right={normalize(20)}
-        >
-          <ReactionToolbox />
-        </Box>
         <AnimatedBox
           position="absolute"
-          bottom={tabBarHeight + normalize(20) + normalize(40)}
-          right={normalize(25)}
+          bottom={tabBarHeight + verticalScale(18)}
+          right={scale(18)}
+        >
+          <ReactionToolbox />
+        </AnimatedBox>
+        <AnimatedBox
+          position="absolute"
+          bottom={tabBarHeight + scale(60)}
+          right={scale(20)}
           layout={Layout}
         >
           <ReactionsFeed />
