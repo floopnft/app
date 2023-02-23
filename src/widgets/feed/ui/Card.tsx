@@ -11,6 +11,7 @@ import {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import { StyleSheet } from 'react-native';
 import CardInfo, { CardInfoProps } from '../../../entities/feed/ui/CardInfo';
 
 interface CardProps {
@@ -68,7 +69,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
       />
       <LinearGradient
         colors={linearGradientColors}
-        style={sharedStyles.absolute}
+        style={StyleSheet.absoluteFill}
       />
       <Box position="absolute" top={20} left={20}>
         <CardInfo {...props} />
