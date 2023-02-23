@@ -79,27 +79,25 @@ const HomeScreen = () => {
   const [items, setItems] = useState(DATA);
 
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<NFT>) => {
-      return (
-        <Box
-          height={listElementHeight}
-          padding={3}
-          style={{
-            paddingTop: insets.top,
-            paddingBottom: tabBarHeight + verticalScale(12),
-          }}
-        >
-          <Card
-            imgUrl={item.imgUrl}
-            bgColor={hslFromArray(item.bgColor)}
-            avatarUrl={item.avatarUrl}
-            hints={item.hints}
-            title={item.title}
-            username={item.username}
-          />
-        </Box>
-      );
-    },
+    ({ item }: ListRenderItemInfo<NFT>) => (
+      <Box
+        height={listElementHeight}
+        padding={3}
+        style={{
+          paddingTop: insets.top,
+          paddingBottom: tabBarHeight + verticalScale(12),
+        }}
+      >
+        <Card
+          imgUrl={item.imgUrl}
+          bgColor={hslFromArray(item.bgColor)}
+          avatarUrl={item.avatarUrl}
+          hints={item.hints}
+          title={item.title}
+          username={item.username}
+        />
+      </Box>
+    ),
     [insets, tabBarHeight]
   );
 

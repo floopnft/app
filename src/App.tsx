@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateScreen from '@screens/CreateScreen';
 import HomeScreen from '@screens/HomeScreen';
 import ProfileScreen from '@screens/ProfileScreen';
@@ -8,7 +7,6 @@ import PlusCircleIcon from '@shared/ui/icons/PlusCircleIcon';
 import UserIcon from '@shared/ui/icons/UserIcon';
 import React from 'react';
 
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function App(): JSX.Element {

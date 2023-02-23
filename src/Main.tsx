@@ -4,7 +4,10 @@ import { ThemeProvider } from '@shopify/restyle';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from 'react-native-safe-area-context';
 import App from './App';
 
 const styles = StyleSheet.create({
@@ -16,7 +19,7 @@ const styles = StyleSheet.create({
 const Main = () => {
   return (
     <GestureHandlerRootView style={styles.container}>
-      <SafeAreaProvider>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <NavigationContainer>
           <ThemeProvider theme={theme}>
             <App />
