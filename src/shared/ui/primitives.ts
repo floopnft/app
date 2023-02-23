@@ -6,10 +6,6 @@ import { Theme } from '../theme';
 export const Box = createBox<Theme>();
 export const Text = createText<Theme>();
 
-const Image = createBox<Theme, FastImageProps & { children?: React.ReactNode }>(
-  FastImage
-);
-
-export default Image;
+export const Image = createBox<Theme, FastImageProps>(FastImage);
 
 export const AnimatedBox = Animated.createAnimatedComponent(Box);

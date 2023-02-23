@@ -20,8 +20,9 @@ const theme = createTheme({
 
     black: colors.black,
     white: colors.white,
+    darkGray: '#333',
 
-    debug: '#ff00ff'
+    debug: '#ff00ff',
   },
   spacing: {
     [-4]: normalize(-16),

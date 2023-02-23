@@ -1,5 +1,5 @@
 import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
-import Image, { AnimatedBox, Box } from '@shared/ui/primitives';
+import { AnimatedBox, Box, Image } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { normalize } from '@shared/utils';
 import React from 'react';

@@ -4,11 +4,14 @@ export const sharedStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  absolute: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+  containerBlackBg: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  blackBg: {
+    backgroundColor: 'black',
+  },
+  whiteBg: {
+    backgroundColor: 'white',
   },
 });

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@craftzdog/react-native-buffer": "^6.0.5",
+    "@gorhom/bottom-sheet": "^4.4.5",
     "@legendapp/state": "^0.23.4",
     "@react-navigation/bottom-tabs": "^6.5.5",
     "@react-navigation/native": "^6.1.4",
@@ -25,6 +26,7 @@
     "react-native": "0.71.3",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.9.0",
+    "react-native-image-picker": "^5.1.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-quick-base64": "^2.0.5",
     "react-native-quick-crypto": "https://github.com/zhelezkov/react-native-quick-crypto.git",

@@ -1,4 +1,4 @@
-import Image, { Box, Text } from '@shared/ui/primitives';
+import { Box, Text, Image } from '@shared/ui/primitives';
 import { normalize } from '@shared/utils';
 import React from 'react';
 

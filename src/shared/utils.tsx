@@ -1,9 +1,11 @@
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('window');
 
-// based on iphone 5s's scale
-const scale = SCREEN_WIDTH / 320;
+const guidelineBaseWidth = 320;
+const guidelineBaseHeight = 568;
+
+const scaleFactor = width / guidelineBaseWidth;
 
 const MIN_DP_IN_REAL_PIX = 1 / PixelRatio.get();
 
@@ -11,7 +13,7 @@ const ANDROID_STRANGE_SMALLER_COEF = 2;
 
 // Source: https://stackoverflow.com/questions/33628677/react-native-responsive-font-size
 export function normalize(desiredDp: number): number {
-  const targetDp = desiredDp * scale;
+  const targetDp = desiredDp * scaleFactor;
   const scaledDp = PixelRatio.roundToNearestPixel(targetDp);
   if (desiredDp > 0 && scaledDp === 0) {
     return MIN_DP_IN_REAL_PIX;
@@ -26,3 +28,15 @@ export function normalize(desiredDp: number): number {
   }
   return scaledDp;
 }
+
+const [shortDimension, longDimension] =
+  width < height ? [width, height] : [height, width];
+
+export const scale = (size: number) =>
+  (shortDimension / guidelineBaseWidth) * size;
+export const verticalScale = (size: number) =>
+  (longDimension / guidelineBaseHeight) * size;
+export const moderateScale = (size: number, factor = 0.5) =>
+  size + (scale(size) - size) * factor;
+export const moderateVerticalScale = (size: number, factor = 0.5) =>
+  size + (verticalScale(size) - size) * factor;

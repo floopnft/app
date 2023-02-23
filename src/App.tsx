@@ -1,28 +1,17 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CreateScreen from '@screens/CreateScreen';
 import HomeScreen from '@screens/HomeScreen';
 import ProfileScreen from '@screens/ProfileScreen';
 import HomeIcon from '@shared/ui/icons/HomeIcon';
 import PlusCircleIcon from '@shared/ui/icons/PlusCircleIcon';
 import UserIcon from '@shared/ui/icons/UserIcon';
 import React from 'react';
-import { StyleSheet, useColorScheme } from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const EmptyScreen = () => {
-  const devices = useCameraDevices('wide-angle-camera');
-  const device = devices.back;
-
-  if (device == null) return null;
-  return (
-    <Camera style={StyleSheet.absoluteFill} device={device} isActive={true} />
-  );
-};
-
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -46,8 +35,11 @@ function App(): JSX.Element {
       />
       <Tab.Screen
         name="Create"
-        component={EmptyScreen}
-        options={{ tabBarIcon: PlusCircleIcon }}
+        component={CreateScreen}
+        options={{
+          tabBarIcon: PlusCircleIcon,
+          tabBarStyle: { display: 'none' },
+        }}
       />
       <Tab.Screen
         name="Profile"
