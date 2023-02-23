@@ -8,7 +8,7 @@ import {
 } from '@shared/ui/color-utils';
 import { AnimatedBox, Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { normalize, scale, verticalScale } from '@shared/utils';
+import { scale, verticalScale } from '@shared/utils';
 import {
   FlashList,
   FlashListProps,
@@ -16,7 +16,7 @@ import {
 } from '@shopify/flash-list';
 import Card from '@src/widgets/feed/ui/Card';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, Platform, StatusBar, View } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import Animated, {
   interpolateColor,
   Layout,
@@ -155,22 +155,22 @@ const HomeScreen = () => {
           onEndReachedThreshold={1}
           onEndReached={() => setItems([...items, ...DATA])}
         />
-        <AnimatedBox
-          position="absolute"
-          bottom={tabBarHeight + verticalScale(18)}
-          right={scale(18)}
-        >
-          <ReactionToolbox />
-        </AnimatedBox>
-        <AnimatedBox
-          position="absolute"
-          bottom={tabBarHeight + scale(60)}
-          right={scale(20)}
-          layout={Layout}
-        >
-          <ReactionsFeed />
-        </AnimatedBox>
       </Animated.View>
+      <Box
+        position="absolute"
+        bottom={tabBarHeight + verticalScale(18)}
+        right={scale(18)}
+      >
+        <ReactionToolbox />
+      </Box>
+      <AnimatedBox
+        position="absolute"
+        bottom={tabBarHeight + scale(60)}
+        right={scale(20)}
+        layout={Layout}
+      >
+        <ReactionsFeed />
+      </AnimatedBox>
     </>
   );
 };

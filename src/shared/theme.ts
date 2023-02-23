@@ -23,6 +23,8 @@ const theme = createTheme({
     darkGray: '#333',
 
     debug: '#ff00ff',
+    debug1: '#ff0000',
+    debug2: '#00ff00',
   },
   spacing: {
     [-4]: normalize(-16),

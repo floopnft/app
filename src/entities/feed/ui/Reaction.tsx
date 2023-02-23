@@ -1,6 +1,11 @@
 import Lottie from 'lottie-react-native';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import Animated, {
+  useAnimatedProps,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 
 export enum ReactionType {
   HOT = 'hot',
@@ -18,28 +23,28 @@ const ReactionFiles = {
 
 interface ReactionProps {
   type: ReactionType;
-  debug?: boolean;
 }
 
-const Reaction: React.FC<ReactionProps> = ({ type, debug }) => {
+const AnimatedLottie = Animated.createAnimatedComponent(Lottie);
+
+const Reaction: React.FC<ReactionProps> = ({ type }) => {
+  const progress = useSharedValue(0);
+
+  const animatedProps = useAnimatedProps(() => {
+    return {
+      progress: progress.value,
+    };
+  });
+  useEffect(() => {
+    progress.value = withRepeat(withTiming(1, { duration: 3600 }), -1);
+  }, [progress]);
+
   return (
-    <View style={styles.container}>
-      {!debug && (
-        <Lottie
-          // ref={animationRef}
-          autoPlay
-          loop
-          source={ReactionFiles[type]}
-        />
-      )}
-    </View>
+    <AnimatedLottie
+      animatedProps={animatedProps}
+      source={ReactionFiles[type]}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default Reaction;
