@@ -1,5 +1,5 @@
-import { Box, Text, Image } from '@shared/ui/primitives';
-import { normalize } from '@shared/utils';
+import { Box, Image, Text } from '@shared/ui/primitives';
+import { scale } from '@shared/utils';
 import React from 'react';
 
 export interface CardInfoProps {
@@ -17,15 +17,15 @@ const CardInfo: React.FC<CardInfoProps> = ({
 }) => {
   return (
     <>
-      <Box marginBottom={2} flexDirection="row" alignItems="center">
+      <Box marginBottom={4} flexDirection="row" alignItems="center">
         <Image
-          width={32}
-          height={32}
+          width={scale(32)}
+          height={scale(32)}
           borderRadius={100}
           marginRight={4}
           source={{ uri: avatarUrl }}
         />
-        <Text fontSize={normalize(12)}>{username}</Text>
+        <Text fontSize={scale(12)}>{username}</Text>
       </Box>
       <Box flexDirection="row" gap={1} marginBottom={2}>
         {hints.map((hint, index) => (
@@ -41,7 +41,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
           </Box>
         ))}
       </Box>
-      <Text fontSize={normalize(24)}>{title}</Text>
+      <Text fontSize={scale(24)}>{title}</Text>
     </>
   );
 };
