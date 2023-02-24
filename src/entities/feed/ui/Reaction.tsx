@@ -1,12 +1,6 @@
 import Lottie from 'lottie-react-native';
 import React from 'react';
-import Animated, {
-  Easing,
-  makeMutable,
-  useAnimatedProps,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
+import { Animated, Easing } from 'react-native';
 
 export enum ReactionType {
   HOT = 'hot',
@@ -26,32 +20,25 @@ interface ReactionProps {
   type: ReactionType;
 }
 
-const AnimatedLottie = Animated.createAnimatedComponent(Lottie);
+const globalProgress = new Animated.Value(0, { useNativeDriver: true });
 
-const globalProgress = makeMutable(0);
-
-globalProgress.value = withRepeat(
-  withTiming(1, { duration: 3600, easing: Easing.linear }),
-  -1,
-  false
-);
+Animated.loop(
+  Animated.timing(globalProgress, {
+    toValue: 1,
+    duration: 3600,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  }),
+  {
+    iterations: -1,
+  }
+).start();
 
 const Reaction: React.FC<ReactionProps> = ({ type }) => {
-  // const progress = useSharedValue(0);
-  
-  // TODO: prob this could be optimized as well?
-  const animatedProps = useAnimatedProps(() => {
-    return {
-      progress: globalProgress.value,
-    };
-  });
-  // useEffect(() => {
-  //   progress.value = withRepeat(withTiming(1, { duration: 3600 }), -1);
-  // }, [progress]);
-
   return (
-    <AnimatedLottie
-      animatedProps={animatedProps}
+    <Lottie
+      progress={globalProgress}
+      // animatedProps={animatedProps}
       source={ReactionFiles[type]}
     />
   );
