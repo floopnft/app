@@ -1,5 +1,5 @@
 {
   "name": "floop",
   "displayName": "floop",
-  "environment": "local-development"
+  "environment": "development"
 }
