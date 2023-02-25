@@ -1,6 +1,8 @@
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('screen');
+
+export { width as SCREEN_WIDTH, height as SCREEN_HEIGHT };
 
 const guidelineBaseWidth = 320;
 const guidelineBaseHeight = 568;
