@@ -6,7 +6,7 @@ import {
   hslFromArray,
   reduceLightning,
 } from '@shared/ui/color-utils';
-import { AnimatedBox, Box } from '@shared/ui/primitives';
+import { Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { scale, SCREEN_HEIGHT, verticalScale } from '@shared/utils';
 import {
@@ -36,30 +36,59 @@ interface NFT {
 
 const DATA: NFT[] = [
   {
+    avatarUrl:
+      'https://img-cdn.magiceden.dev/rs:fill:400:400:0:0/plain/https://bafkreiatsxp4ygj4muopasqisvjpvuhuvdk734zldbhvkx74hfnhik6mja.ipfs.nftstorage.link',
+    username: 'Transdimensional Fox Federation',
+    title: 'Fox #3614',
+    imgUrl: 'https://famousfoxes.com/tff/3614.png',
+    hints: ['collection', 'PFPs'],
+    bgColor: [265, 88, 74],
+  },
+  {
     avatarUrl: 'https://i.imgur.com/bMH6qNc.png',
-    username: 'solana_monkey_business',
-    title: 'Solana Monkey Business',
+    username: 'Solana Monkey Business',
+    title: 'SMB #4705',
     imgUrl: 'https://cdn.solanamonkey.business/gen2/4705.png',
-    hints: ['collection', '#4705'],
+    hints: ['collection', 'PFPs'],
     bgColor: [345, 77, 77],
   },
   {
     avatarUrl:
       'https://bafkreidc5co72clgqor54gpugde6tr4otrubjfqanj4vx4ivjwxnhqgaai.ipfs.nftstorage.link',
     username: 'y00ts',
-    title: 'y00t',
+    title: 'y00t #4035',
     imgUrl: 'https://metadata.y00ts.com/y/4035.png',
-    hints: ['collection', '#4035'],
+    hints: ['collection', 'PFPs'],
     bgColor: [44, 50, 90],
   },
   {
     avatarUrl:
       'https://bafkreicndlrqersl63a7fpk6zzw73lsklj5bwsidk74n4solbcyz2g3viq.ipfs.nftstorage.link/',
     username: 'DeGods',
-    title: 'DeGods',
+    title: 'DeGod #3324',
     imgUrl: 'https://metadata.degods.com/g/3324-dead.png',
-    hints: ['collection', '#3324'],
+    hints: ['collection', 'PFPs'],
     bgColor: [280, 30, 96],
+  },
+  {
+    avatarUrl:
+      'https://img-cdn.magiceden.dev/rs:fill:400:400:0:0/plain/https://bafkreidgfsdjx4nt4vctch73hcchb3pkiwic2onfw5yr4756adchogk5de.ipfs.nftstorage.link/',
+    username: 'Okay Bears',
+    title: 'Okay Bear #8020',
+    imgUrl:
+      'https://bafybeibyysgzsc6xbitkclvm3laxw6ns34heyqcynqaxnag7fbiftjxleq.ipfs.nftstorage.link/8019.png',
+    hints: ['collection', 'PFPs'],
+    bgColor: [155, 57, 72],
+  },
+  {
+    avatarUrl:
+      'https://bafkreicndlrqersl63a7fpk6zzw73lsklj5bwsidk74n4solbcyz2g3viq.ipfs.nftstorage.link/',
+    username: 'JellyRascals',
+    title: 'Jelly Rascals #255',
+    imgUrl:
+      'https://arweave.net/WiaUHRDCnbVOus_HdsbBnyNTwAPf6Xua1EFOFrwXzzI?ext=png',
+    hints: ['collection', 'PFPs'],
+    bgColor: [201, 100, 79],
   },
 ];
 
