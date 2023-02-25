@@ -36,15 +36,6 @@ interface NFT {
 
 const DATA: NFT[] = [
   {
-    avatarUrl:
-      'https://img-cdn.magiceden.dev/rs:fill:400:400:0:0/plain/https://bafkreiatsxp4ygj4muopasqisvjpvuhuvdk734zldbhvkx74hfnhik6mja.ipfs.nftstorage.link',
-    username: 'Transdimensional Fox Federation',
-    title: 'Fox #3614',
-    imgUrl: 'https://famousfoxes.com/tff/3614.png',
-    hints: ['collection', 'PFPs'],
-    bgColor: [265, 88, 74],
-  },
-  {
     avatarUrl: 'https://i.imgur.com/bMH6qNc.png',
     username: 'Solana Monkey Business',
     title: 'SMB #4705',
@@ -89,6 +80,45 @@ const DATA: NFT[] = [
       'https://arweave.net/WiaUHRDCnbVOus_HdsbBnyNTwAPf6Xua1EFOFrwXzzI?ext=png',
     hints: ['collection', 'PFPs'],
     bgColor: [201, 100, 79],
+  },
+  {
+    avatarUrl:
+      'https://img-cdn.magiceden.dev/rs:fill:400:400:0:0/plain/https://creator-hub-prod.s3.us-east-2.amazonaws.com/cats_on_crack_pfp_1644850873089.png',
+    username: 'CETS ON CRECK',
+    title: 'Cet #21',
+    imgUrl:
+      'https://arweave.net/RbSeYkbGQ3LdPDs6Ij_YzWowppjQhGqy2FcnQHBnBH0?ext=png',
+    hints: ['collection', 'PFPs'],
+    bgColor: [166, 82, 50],
+  },
+  {
+    avatarUrl:
+      'https://img-cdn.magiceden.dev/rs:fill:400:400:0:0/plain/https://bafkreihwrpyr52wax3i5drzi5pg4v2wrgylpwi54im7qb7nzz7tpdsmmzm.ipfs.nftstorage.link/',
+    username: 'LILY',
+    title: 'LILY #9164',
+    imgUrl:
+      'https://bafybeickfm4lwzlark6sudll6dbs6ktwl2qbrjrcitl5f6ok6ldcsaqa4e.ipfs.nftstorage.link/8177.png?ext=png',
+    hints: ['collection', 'PFPs'],
+    bgColor: [41, 100, 78],
+  },
+  {
+    avatarUrl:
+      'https://img-cdn.magiceden.dev/rs:fill:400:400:0:0/plain/https://creator-hub-prod.s3.us-east-2.amazonaws.com/duelbots_pfp_1671410776687.png',
+    username: 'DUELBOTS',
+    title: 'DUELBOTS #1769',
+    imgUrl:
+      'https://arweave.net/uynkiG5MJ6wOe_8GmEnRBAPi6lkCnKNwM9Sd04Yx6xI?ext=png',
+    hints: ['collection', 'PFPs'],
+    bgColor: [62, 54, 49],
+  },
+  {
+    avatarUrl:
+      'https://img-cdn.magiceden.dev/rs:fill:400:400:0:0/plain/https://bafkreiatsxp4ygj4muopasqisvjpvuhuvdk734zldbhvkx74hfnhik6mja.ipfs.nftstorage.link',
+    username: 'Transdimensional Fox Federation',
+    title: 'Fox #3614',
+    imgUrl: 'https://famousfoxes.com/tff/3614.png',
+    hints: ['collection', 'PFPs'],
+    bgColor: [265, 88, 74],
   },
 ];
 
