@@ -1,0 +1,7 @@
+{
+  "baseUrl": "https://6hwb77j9m9.execute-api.us-east-1.amazonaws.com/prd",
+  "wallet": {
+    "type": "seed-generated",
+    "seed": "flooper"
+  }
+}
