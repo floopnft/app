@@ -1,5 +1,6 @@
+import { Box } from '@shared/ui/primitives';
 import Lottie from 'lottie-react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Animated, Easing } from 'react-native';
 
 export enum ReactionType {
@@ -35,13 +36,7 @@ Animated.loop(
 ).start();
 
 const Reaction: React.FC<ReactionProps> = ({ type }) => {
-  return (
-    <Lottie
-      progress={globalProgress}
-      // animatedProps={animatedProps}
-      source={ReactionFiles[type]}
-    />
-  );
+  return <Lottie progress={globalProgress} source={ReactionFiles[type]} />;
 };
 
 export default Reaction;

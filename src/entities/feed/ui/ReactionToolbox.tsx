@@ -2,7 +2,7 @@ import { addReaction } from '@features/reactions/model';
 import PlusIcon from '@shared/ui/icons/PlusIcon';
 import { AnimatedBox, Box } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
-import { normalize, scale } from '@shared/utils';
+import { scale } from '@shared/utils';
 import React from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {

@@ -8,7 +8,7 @@ import {
 } from '@shared/ui/color-utils';
 import { AnimatedBox, Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { scale, verticalScale } from '@shared/utils';
+import { scale, SCREEN_HEIGHT, verticalScale } from '@shared/utils';
 import {
   FlashList,
   FlashListProps,
@@ -16,17 +16,14 @@ import {
 } from '@shopify/flash-list';
 import Card from '@src/widgets/feed/ui/Card';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import Animated, {
   interpolateColor,
-  Layout,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-const dimensions = Dimensions.get('screen');
 
 interface NFT {
   title: string;
@@ -66,7 +63,7 @@ const DATA: NFT[] = [
   },
 ];
 
-const listElementHeight = dimensions.height;
+const listElementHeight = SCREEN_HEIGHT;
 
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<NFT>>(FlashList);
@@ -163,14 +160,14 @@ const HomeScreen = () => {
       >
         <ReactionToolbox />
       </Box>
-      <AnimatedBox
+      <Box
+        pointerEvents="none"
         position="absolute"
         bottom={tabBarHeight + scale(60)}
         right={scale(20)}
-        layout={Layout}
       >
         <ReactionsFeed />
-      </AnimatedBox>
+      </Box>
     </>
   );
 };
