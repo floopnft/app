@@ -20,6 +20,7 @@
     "@shopify/flash-list": "^1.4.1",
     "@shopify/react-native-skia": "0.1.174",
     "@shopify/restyle": "^2.4.0",
+    "@solana/web3.js": "^1.73.3",
     "lottie-react-native": "^5.1.5",
     "nanoid": "^4.0.1",
     "react": "18.2.0",
@@ -56,6 +57,7 @@
     "metro-react-native-babel-preset": "^0.75.1",
     "prettier": "^2.8.4",
     "react-test-renderer": "18.2.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
   "jest": {
