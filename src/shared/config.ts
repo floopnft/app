@@ -1,6 +1,7 @@
-import { environment } from '../../app.json';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
+const environment = Constants.expoConfig?.extra?.environment ?? 'production';
 type WalletConfig = SeedGeneratedWalletConfig;
 
 interface SeedGeneratedWalletConfig {

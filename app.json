@@ -1,5 +1,50 @@
 {
-  "name": "floop",
-  "displayName": "floop",
-  "environment": "development"
+  "expo": {
+    "name": "Floop",
+    "slug": "floop",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "art.floop"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "art.floop"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "258900e1-f63d-43d0-846c-86cf05375d56"
+      },
+      "environment": "production"
+    },
+    "owner": "zhelezkov",
+    "plugins": [
+      [
+        "react-native-vision-camera",
+        {
+          "disableFrameProcessors": true
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.7.21"
+          }
+        }
+      ]
+    ]
+  }
 }

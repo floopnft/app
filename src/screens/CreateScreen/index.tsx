@@ -35,9 +35,8 @@ const CameraWidget: React.FC<CameraWidgetProps> = ({
         ref={cameraRef}
         style={StyleSheet.absoluteFill}
         device={device}
-        isActive={true}
-        // preset="medium"
-        photo={true}
+        isActive
+        photo
       />
       <TouchableOpacity onPress={onClose} p={4} flexDirection="row">
         <XIcon color="white" />
@@ -83,7 +82,7 @@ const CreateScreen = () => {
       <Box flex={1} backgroundColor="black">
         <Box flex={1} borderRadius={16} overflow="hidden">
           {editImageUri ? (
-            <Image source={{ uri: editImageUri }} flex={1} />
+            <Image source={editImageUri} flex={1} />
           ) : (
             <CameraWidget
               activeCamera={activeCamera}

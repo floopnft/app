@@ -10,7 +10,7 @@ import {
   useValue,
 } from '@shopify/react-native-skia';
 import React, { useCallback } from 'react';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 
 interface CaptureBottomBarWidgetProps {
   onPhotoTake: () => void;
@@ -35,12 +35,15 @@ const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
     },
   });
 
-  const onPhotoSelectPress = useCallback(() => {
-    launchImageLibrary({ mediaType: 'photo' }, ({ assets = [] }) => {
-      const asset = assets[0];
-      if (!asset || !asset.uri) return;
-      onPhotoSelect(asset.uri);
+  const onPhotoSelectPress = useCallback(async () => {
+    const res = await launchImageLibraryAsync({
+      mediaTypes: MediaTypeOptions.Images,
     });
+    if (res.canceled) return;
+    const asset = res.assets[0];
+    if (!asset || !asset.uri) return;
+
+    onPhotoSelect(asset.uri);
   }, [onPhotoSelect]);
 
   return (

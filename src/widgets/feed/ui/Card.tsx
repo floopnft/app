@@ -1,9 +1,8 @@
-import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
 import { AnimatedBox, Box, Image } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { normalize } from '@shared/utils';
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet } from 'react-native';
 import {
   SensorConfig,
   SensorType,
@@ -11,7 +10,6 @@ import {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { StyleSheet } from 'react-native';
 import CardInfo, { CardInfoProps } from '../../../entities/feed/ui/CardInfo';
 
 interface CardProps {
@@ -61,11 +59,9 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
       ]}
     >
       <Image
-        resizeMode="contain"
+        contentFit="contain"
         style={sharedStyles.container}
-        source={{
-          uri: imgUrl,
-        }}
+        source={imgUrl}
       />
       <LinearGradient
         colors={linearGradientColors}

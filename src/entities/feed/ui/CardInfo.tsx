@@ -23,7 +23,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
           height={scale(32)}
           borderRadius={100}
           marginRight={4}
-          source={{ uri: avatarUrl }}
+          source={avatarUrl}
         />
         <Text fontSize={scale(12)}>{username}</Text>
       </Box>

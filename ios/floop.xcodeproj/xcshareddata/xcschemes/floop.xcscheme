@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1210"
+   LastUpgradeVersion = "1130"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "floop.app"
-               BlueprintName = "floop"
-               ReferencedContainer = "container:floop.xcodeproj">
+               BuildableName = "Floop.app"
+               BlueprintName = "Floop"
+               ReferencedContainer = "container:Floop.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "floopTests.xctest"
-               BlueprintName = "floopTests"
-               ReferencedContainer = "container:floop.xcodeproj">
+               BuildableName = "FloopTests.xctest"
+               BlueprintName = "FloopTests"
+               ReferencedContainer = "container:Floop.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "floop.app"
-            BlueprintName = "floop"
-            ReferencedContainer = "container:floop.xcodeproj">
+            BuildableName = "Floop.app"
+            BlueprintName = "Floop"
+            ReferencedContainer = "container:Floop.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "floop.app"
-            BlueprintName = "floop"
-            ReferencedContainer = "container:floop.xcodeproj">
+            BuildableName = "Floop.app"
+            BlueprintName = "Floop"
+            ReferencedContainer = "container:Floop.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,31 +1,24 @@
+// eslint-disable-next-line import/no-duplicates
+import 'react-native-gesture-handler';
+
 import { NavigationContainer } from '@react-navigation/native';
 import theme from '@shared/theme';
+import { sharedStyles } from '@shared/ui/styles';
 import { ThemeProvider } from '@shopify/restyle';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+// eslint-disable-next-line import/no-duplicates
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import {
-  SafeAreaProvider,
-  initialWindowMetrics,
-} from 'react-native-safe-area-context';
-import App from './App';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+import App from './App';
 
 const Main = () => {
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <NavigationContainer>
-          <ThemeProvider theme={theme}>
-            <App />
-          </ThemeProvider>
-        </NavigationContainer>
-      </SafeAreaProvider>
+    <GestureHandlerRootView style={sharedStyles.container}>
+      <NavigationContainer>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </NavigationContainer>
     </GestureHandlerRootView>
   );
 };
