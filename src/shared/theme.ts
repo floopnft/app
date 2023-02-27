@@ -20,7 +20,7 @@ const theme = createTheme({
 
     black: colors.black,
     white: colors.white,
-    darkGray: '#333',
+    darkGray: '#1E1E1E',
 
     debug: '#ff00ff',
     debug1: '#ff0000',
@@ -53,10 +53,6 @@ const theme = createTheme({
     28: normalize(108),
     30: normalize(112),
     32: normalize(120),
-  },
-  breakpoints: {
-    phone: 0,
-    tablet: 768,
   },
   textVariants: {
     defaults: {
