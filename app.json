@@ -40,6 +40,9 @@
       [
         "expo-build-properties",
         {
+          "ios": {
+            "flipper": true
+          },
           "android": {
             "kotlinVersion": "1.7.21"
           }
