@@ -1,7 +1,12 @@
-import { httpObservableFetch } from '@shared/fetcher';
+import { httpFetch, httpObservableFetch } from '@shared/fetcher';
+import { User } from '@entities/user/model';
 
-export function loginUser() {
-  return httpObservableFetch('login', {
-    method: 'POST',
-  });
+export async function loginUser() {
+  try {
+    return await httpFetch<User>('login', {
+      method: 'POST',
+    });
+  } catch (e) {
+    return null;
+  }
 }

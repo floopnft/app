@@ -1,12 +1,12 @@
-import { httpObservableFetch } from '@shared/fetcher';
-import { Nft } from '@entities/nft/model';
+import { httpFetch, httpObservableFetch } from '@shared/fetcher';
+import { NftDto } from '@entities/nft/model';
 
 export interface GetNftsQuery {
   ids: string[];
 }
 
 export function getNfts(query: GetNftsQuery) {
-  return httpObservableFetch<Nft[]>('nfts', {
+  return httpObservableFetch<NftDto[]>('nfts', {
     query,
   });
 }
@@ -16,8 +16,12 @@ export interface GetRecommendedNftsQuery {
   count?: number;
 }
 
-export function getRecommendedNfts(query: GetRecommendedNftsQuery) {
-  return httpObservableFetch(`nfts/recommended`, {
-    query,
-  });
+export async function getRecommendedNfts(query: GetRecommendedNftsQuery) {
+  try {
+    return await httpFetch<NftDto[]>(`nfts/recommended`, {
+      query,
+    });
+  } catch (e) {
+    return [];
+  }
 }

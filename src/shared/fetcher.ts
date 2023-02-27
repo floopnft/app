@@ -1,6 +1,6 @@
 import { config } from './config';
 import { wallet } from '@shared/wallet';
-import { observableFetch } from '@legendapp/state/helpers/fetch';
+import { observable } from '@legendapp/state';
 
 const baseUrl = config.baseUrl;
 
@@ -9,7 +9,18 @@ export function httpObservableFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
   params?: RequestInit & { query?: QUERY_PARAMS }
 ) {
   const url = getUrl(path, params);
-  return observableFetch<RESPONSE_DATA>(url, {
+  const obs = observable<{
+    data?: RESPONSE_DATA;
+    error?: any;
+    errorStr?: string;
+    loading: boolean;
+  }>({
+    data: undefined,
+    error: undefined,
+    errorStr: undefined,
+    loading: true,
+  });
+  fetch(url, {
     ...params,
     headers: {
       ...{
@@ -20,13 +31,24 @@ export function httpObservableFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
       },
       Authorization: `Bearer ${wallet.publicKey.toBase58()}`,
     },
-  });
+  })
+    .then(async (response) => {
+      const responseData = await response['json']();
+      if (!response.ok) {
+        throw JSON.stringify(responseData);
+      }
+      obs.set({ data: responseData, loading: false });
+    })
+    .catch((error) =>
+      obs.set({ loading: false, error, errorStr: error?.toString?.() })
+    );
+  return obs;
 }
 
-export async function httpFetch<QUERY_PARAMS extends object, R extends any>(
+export async function httpFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
   path: string,
   params?: RequestInit & { query?: QUERY_PARAMS }
-): Promise<R> {
+): Promise<RESPONSE_DATA> {
   const url = getUrl(path, params);
   const res = await fetch(url, {
     ...params,
@@ -38,7 +60,7 @@ export async function httpFetch<QUERY_PARAMS extends object, R extends any>(
 
   const data = await res.json();
   if (res.ok) {
-    return data as R;
+    return data as RESPONSE_DATA;
   }
   console.error(`[httpFetch] ${url} ${JSON.stringify(data)}`);
   throw data;

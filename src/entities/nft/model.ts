@@ -1,16 +1,28 @@
-export interface Nft {
+import { HSLColor } from '@shared/ui/color-utils';
+
+export interface NftDto {
   id: string;
   collectionName: string;
   collectionAvatarUrl: string;
   title: string;
   imgUrl: string;
-  bgColor: number[];
+  bgColor: [number, number, number];
   hints: string[];
   createdByUserId: string | null;
   showDuringOnboarding: boolean;
   createdAt: Date;
   updatedAt: Date;
   nftCategoryId: string;
+}
+
+export interface NFT {
+  id: string;
+  collectionName: string;
+  collectionAvatarUrl: string;
+  title: string;
+  imgUrl: string;
+  bgColor: HSLColor;
+  hints: string[];
 }
 
 export interface NftViewsByUser {
