@@ -29,7 +29,6 @@ function App(): JSX.Element | null {
   // }, [isDataLoaded]);
 
   if (!isDataLoaded) {
-    console.log('SYJA2');
     return null;
   }
 

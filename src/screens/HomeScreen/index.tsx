@@ -24,8 +24,9 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NFT, NftFeed } from '@entities/feed/model';
+import { NftFeed } from '@entities/feed/model';
 import { observer } from '@legendapp/state/react';
+import { NFT } from '@entities/nft/model';
 
 const listElementHeight = SCREEN_HEIGHT;
 
