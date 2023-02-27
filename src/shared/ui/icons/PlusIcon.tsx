@@ -1,4 +1,4 @@
-import { normalize, scale } from '@shared/utils';
+import { scale } from '@shared/utils';
 import * as React from 'react';
 import Svg, { Path, SvgProps } from 'react-native-svg';
 
