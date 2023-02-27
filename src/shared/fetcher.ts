@@ -1,13 +1,21 @@
-import { config } from './config';
+import { Observable, observable } from '@legendapp/state';
 import { wallet } from '@shared/wallet';
-import { observable } from '@legendapp/state';
+import { useMemo } from 'react';
+import { config } from './config';
 
 const baseUrl = config.baseUrl;
 
-export function httpObservableFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
-  path: string,
-  params?: RequestInit & { query?: QUERY_PARAMS }
-) {
+export function useFetch<TData = any, TParams = any>(
+  fetcher: (args?: TParams) => Observable<TData>,
+  params?: TParams
+): Observable<TData> {
+  return useMemo(() => fetcher(params), [fetcher, params]);
+}
+
+export function httpObservableFetch<
+  RESPONSE_DATA = unknown,
+  QUERY_PARAMS = unknown
+>(path: string, params?: RequestInit & { query?: QUERY_PARAMS }) {
   const url = getUrl(path, params);
   const obs = observable<{
     data?: RESPONSE_DATA;
@@ -45,7 +53,10 @@ export function httpObservableFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
   return obs;
 }
 
-export async function httpFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
+export async function httpFetch<
+  RESPONSE_DATA = unknown,
+  QUERY_PARAMS = unknown
+>(
   path: string,
   params?: RequestInit & { query?: QUERY_PARAMS }
 ): Promise<RESPONSE_DATA> {
@@ -66,7 +77,7 @@ export async function httpFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
   throw data;
 }
 
-function getUrl<QUERY_PARAMS extends any>(
+function getUrl<QUERY_PARAMS extends object>(
   path: string,
   params?: RequestInit & { query?: QUERY_PARAMS }
 ) {

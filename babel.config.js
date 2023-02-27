@@ -22,6 +22,7 @@ module.exports = function (api) {
           },
         },
       ],
+      '@legendapp/state/babel',
       'react-native-reanimated/plugin',
     ],
   };
