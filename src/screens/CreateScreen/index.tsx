@@ -5,6 +5,7 @@ import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { verticalScale } from '@shared/utils';
+import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -79,6 +80,7 @@ const CreateScreen = () => {
 
   return (
     <SafeAreaView style={sharedStyles.containerBlackBg}>
+      <StatusBar style="light" />
       <Box flex={1} backgroundColor="black">
         <Box flex={1} borderRadius={16} overflow="hidden">
           {editImageUri ? (
