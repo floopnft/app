@@ -1,4 +1,4 @@
-import { httpObservableFetch } from '@shared/fetcher';
+import { httpFetch } from '@shared/fetcher';
 import { NftViewsByUser } from '@entities/nft/model';
 
 export interface SaveNftViewCommand {
@@ -7,15 +7,23 @@ export interface SaveNftViewCommand {
   viewFinishedAt: Date;
 }
 
-export function saveNftView(command: SaveNftViewCommand) {
-  return httpObservableFetch<NftViewsByUser>('nft-views', {
-    method: 'POST',
-    body: JSON.stringify(command),
-  });
+export async function saveNftView(command: SaveNftViewCommand) {
+  try {
+    await httpFetch<NftViewsByUser>('nft-views', {
+      method: 'POST',
+      body: JSON.stringify(command),
+    });
+  } catch (e) {
+    return;
+  }
 }
 
-export function clearNftViews() {
-  return httpObservableFetch('nft-views/clear', {
-    method: 'POST',
-  });
+export async function clearNftViews() {
+  try {
+    return await httpFetch('nft-views/clear', {
+      method: 'POST',
+    });
+  } catch (e) {
+    return;
+  }
 }
