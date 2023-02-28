@@ -24,9 +24,10 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NftFeed } from '@entities/feed/model';
+import { $UnwatchedNftFeedItems, $NftFeed } from '@entities/feed/model';
 import { observer } from '@legendapp/state/react';
 import { NFT } from '@entities/nft/model';
+import { getRecommendedNfts } from '@entities/nft/api/nft-api';
 
 const listElementHeight = SCREEN_HEIGHT;
 
@@ -38,7 +39,8 @@ const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
-  const items = NftFeed.get();
+  const nftFeedItems = $NftFeed.get();
+  const unwatchedNftFeedItems = $UnwatchedNftFeedItems.get();
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<NFT>) => (
@@ -65,8 +67,8 @@ const HomeScreen = () => {
 
   const bgColorFromTo = useSharedValue([
     'transparent',
-    items[0].bgColor,
-    items[1].bgColor,
+    nftFeedItems[0].bgColor,
+    nftFeedItems[1].bgColor,
   ] as ('transparent' | HSLColor)[]);
 
   const progress = useSharedValue(0);
@@ -89,12 +91,26 @@ const HomeScreen = () => {
   const scrollHandler = useAnimatedScrollHandler((ev) => {
     const idx = Math.floor(ev.contentOffset.y / listElementHeight);
     bgColorFromTo.value = [
-      items[idx - 1]?.bgColor || 'transparent',
-      items[idx]?.bgColor || 'transparent',
-      items[idx + 1]?.bgColor || 'transparent',
+      nftFeedItems[idx - 1]?.bgColor || 'transparent',
+      nftFeedItems[idx]?.bgColor || 'transparent',
+      nftFeedItems[idx + 1]?.bgColor || 'transparent',
     ];
     progress.value = ev.contentOffset.y / listElementHeight - idx;
   });
+
+  const loadNextRecommendedNfts = async () => {
+    const nextRecommended = await getRecommendedNfts({
+      count: 3,
+      excludeIds: Object.keys(unwatchedNftFeedItems),
+    });
+    $NftFeed.set((prev) => {
+      return [...prev, ...nextRecommended];
+    });
+    $UnwatchedNftFeedItems.set((prev) => ({
+      ...prev,
+      ...Object.fromEntries(nextRecommended.map((nft) => [nft.id, nft])),
+    }));
+  };
 
   return (
     <>
@@ -106,7 +122,7 @@ const HomeScreen = () => {
       <Animated.View style={[sharedStyles.container, animatedStyle]}>
         <AnimatedFlashList
           onScroll={scrollHandler}
-          data={items}
+          data={nftFeedItems}
           renderItem={renderItem}
           estimatedItemSize={listElementHeight}
           showsVerticalScrollIndicator={false}
@@ -114,8 +130,8 @@ const HomeScreen = () => {
           decelerationRate="fast"
           snapToAlignment="start"
           snapToInterval={listElementHeight}
-          onEndReachedThreshold={1}
-          // onEndReached={() => setItems([...items, ...DATA])}
+          onEndReachedThreshold={2}
+          onEndReached={() => loadNextRecommendedNfts()}
         />
       </Animated.View>
       <Box
