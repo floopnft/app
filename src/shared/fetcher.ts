@@ -20,18 +20,7 @@ export function httpObservableFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
     errorStr: undefined,
     loading: true,
   });
-  fetch(url, {
-    ...params,
-    headers: {
-      ...{
-        ...(params?.method !== 'GET' && {
-          'Content-Type': 'application/json',
-        }),
-        ...params?.headers,
-      },
-      Authorization: `Bearer ${wallet.publicKey.toBase58()}`,
-    },
-  })
+  httpFetch(url, params)
     .then(async (response) => {
       const responseData = await response['json']();
       if (!response.ok) {
@@ -54,6 +43,9 @@ export async function httpFetch<RESPONSE_DATA = any, QUERY_PARAMS = any>(
     ...params,
     headers: {
       ...params?.headers,
+      ...(params?.method !== 'GET' && {
+        'Content-Type': 'application/json',
+      }),
       Authorization: `Bearer ${wallet.publicKey.toBase58()}`,
     },
   });
