@@ -24,7 +24,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { $NftFeed, $UnwatchedNftFeedItems } from '@entities/feed/model';
+import { $nftFeed, $unviewedNftFeedItems } from '@entities/feed/model';
 import { observer } from '@legendapp/state/react';
 import { NFT } from '@entities/nft/model';
 import { getRecommendedNfts } from '@entities/nft/api/nft-api';
@@ -51,8 +51,8 @@ const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
-  const nftFeedItems = $NftFeed.get();
-  const unwatchedNftFeedItems = $UnwatchedNftFeedItems.get();
+  const nftFeedItems = $nftFeed.get();
+  const unwatchedNftFeedItems = $unviewedNftFeedItems.get();
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<NFT>) => (
@@ -116,7 +116,7 @@ const HomeScreen = () => {
       viewFinishedAt: itemViewingState.current.viewStartedAt,
     });
     await clearNftViews(); // Comment this line to hide viewed nfts from feed
-    $UnwatchedNftFeedItems.set((prev) => {
+    $unviewedNftFeedItems.set((prev) => {
       const { [viewedItemId]: _, ...rest } = prev;
       return rest;
     });
@@ -141,10 +141,10 @@ const HomeScreen = () => {
       count: 3,
       excludeIds: Object.keys(unwatchedNftFeedItems),
     });
-    $NftFeed.set((prev) => {
+    $nftFeed.set((prev) => {
       return [...prev, ...nextRecommended];
     });
-    $UnwatchedNftFeedItems.set((prev) => ({
+    $unviewedNftFeedItems.set((prev) => ({
       ...prev,
       ...Object.fromEntries(nextRecommended.map((nft) => [nft.id, nft])),
     }));

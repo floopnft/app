@@ -101,5 +101,5 @@ import { NFT } from '@entities/nft/model';
 //   },
 // ];
 
-export const $UnwatchedNftFeedItems = observable<Record<string, NFT>>({});
-export const $NftFeed = observable<NFT[]>([]);
+export const $unviewedNftFeedItems = observable<Record<string, NFT>>({});
+export const $nftFeed = observable<NFT[]>([]);
