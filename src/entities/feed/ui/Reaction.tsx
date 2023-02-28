@@ -1,7 +1,5 @@
-import { Box } from '@shared/ui/primitives';
 import Lottie from 'lottie-react-native';
-import React, { useEffect } from 'react';
-import { Animated, Easing } from 'react-native';
+import React from 'react';
 
 export enum ReactionType {
   HOT = 'hot',
@@ -21,22 +19,8 @@ interface ReactionProps {
   type: ReactionType;
 }
 
-const globalProgress = new Animated.Value(0, { useNativeDriver: true });
-
-Animated.loop(
-  Animated.timing(globalProgress, {
-    toValue: 1,
-    duration: 3600,
-    easing: Easing.linear,
-    useNativeDriver: true,
-  }),
-  {
-    iterations: -1,
-  }
-).start();
-
 const Reaction: React.FC<ReactionProps> = ({ type }) => {
-  return <Lottie progress={globalProgress} source={ReactionFiles[type]} />;
+  return <Lottie autoPlay source={ReactionFiles[type]} />;
 };
 
 export default Reaction;

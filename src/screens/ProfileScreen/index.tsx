@@ -1,11 +1,14 @@
-import { useComputed } from '@legendapp/state/react';
+import { observer, Show } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { getUserProfile } from '@screens/ProfileScreen/api';
+import { fetchUserProfile } from '@screens/ProfileScreen/api';
+import { useFetch } from '@shared/fetcher';
 import HeartOutlineIcon from '@shared/ui/icons/HeartOutlineIcon';
 import ViewGridOutlineIcon from '@shared/ui/icons/ViewGridOutlineIcon';
 import { Box, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { scale } from '@shared/utils';
+import { shortenWalletAddress } from '@shared/wallet';
+import { FlashList } from '@shopify/flash-list';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { View } from 'react-native';
@@ -15,10 +18,32 @@ import {
   SceneMap,
   SceneRendererProps,
   TabBar,
-  TabView,
+  TabView
 } from 'react-native-tab-view';
 
-const Created = () => <View style={{ flex: 1, backgroundColor: '#ff4081' }} />;
+const Created = () => {
+  return (
+    <FlashList
+      contentContainerStyle={{ padding: scale(16) }}
+      ItemSeparatorComponent={() => <Box height={scale(8)} />}
+      data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+      numColumns={3}
+      estimatedItemSize={scale(152)}
+      renderItem={(data) => {
+        return (
+          <Box
+            backgroundColor="darkGray"
+            width={scale(88)}
+            height={scale(152)}
+            borderRadius={12}
+          >
+            {/* <Text>{data.item}</Text> */}
+          </Box>
+        );
+      }}
+    />
+  );
+};
 
 const Liked = () => <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
 
@@ -61,17 +86,14 @@ const renderTabBar = (
 const ProfileScreen = () => {
   const bottomTabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
-  // based on https://legendapp.com/open-source/state/react-examples/#list-of-messages
-  const { data: userProfile, loading, error } = getUserProfile();
-  const userName = useComputed(() => userProfile?.get()?.name);
-  const likedNfts = useComputed(() => userProfile?.get()?.likedNfts ?? []);
+  const { data: userProfile } = useFetch(fetchUserProfile);
 
   const [index, setIndex] = React.useState(0);
 
   return (
     <View style={[sharedStyles.containerBlackBg, { paddingTop: insets.top }]}>
       <StatusBar style="light" />
-      <Box alignItems="center" justifyContent="center" mb={8}>
+      <Box alignItems="center" justifyContent="center" mb={4}>
         <Box
           width={scale(120)}
           aspectRatio={1}
@@ -79,7 +101,14 @@ const ProfileScreen = () => {
           borderRadius={100}
           mb={5}
         />
-        <Text fontSize={scale(20)}>wallet public key</Text>
+        <Show
+          if={userProfile}
+          else={<Text fontSize={scale(20)}>loading...</Text>}
+        >
+          <Text fontSize={scale(20)}>
+            {shortenWalletAddress(userProfile.walletAddress.get())}
+          </Text>
+        </Show>
       </Box>
       <TabView
         renderTabBar={renderTabBar}
@@ -88,18 +117,8 @@ const ProfileScreen = () => {
         renderScene={renderScene}
         onIndexChange={setIndex}
       />
-      {/* <Show if={userName} else={<Text color="black">Loading...</Text>}>
-        <Box>
-          <Text color="black">{userName}</Text>
-          <Box>
-            <For each={likedNfts}>
-              {(nft) => <Text color="black">{nft.title}</Text>}
-            </For>
-          </Box>
-        </Box>
-      </Show> */}
     </View>
   );
 };
 
-export default ProfileScreen;
+export default observer(ProfileScreen);

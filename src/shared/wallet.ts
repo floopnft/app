@@ -9,3 +9,7 @@ function keypairFromSeed(seed: string) {
   const expandedSeed = Uint8Array.from(Buffer.from(`${seed.padEnd(32, '0')}`));
   return Keypair.fromSeed(expandedSeed.slice(0, 32));
 }
+
+export function shortenWalletAddress(address: string) {
+  return `${address.slice(0, 4)}...${address.slice(-4)}`;
+}
