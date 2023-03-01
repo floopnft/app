@@ -29,11 +29,7 @@ export function httpObservableFetch<
   });
   httpFetch(path, params)
     .then(async (response) => {
-      const responseData = await response['json']();
-      if (!response.ok) {
-        throw JSON.stringify(responseData);
-      }
-      obs.set({ data: responseData, loading: false });
+      obs.set({ data: response as RESPONSE_DATA, loading: false });
     })
     .catch((error) =>
       obs.set({ loading: false, error, errorStr: error?.toString?.() })
