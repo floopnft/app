@@ -39,6 +39,22 @@ const viewabilityConfig: ViewabilityConfig = {
   itemVisiblePercentThreshold: 80,
 };
 
+const CardTrackingVisibility = observer(({ nft }: { nft: NFT }) => {
+  const isVisible = $currentVisibleCard.get()?.id === nft.id;
+  // console.log('isVisible', isVisible, nft.title);
+
+  return (
+    <Card
+      imgUrl={nft.imgUrl}
+      bgColor={hslFromArray(nft.bgColor)}
+      avatarUrl={nft.collectionAvatarUrl}
+      hints={nft.hints}
+      title={nft.title}
+      username={nft.collectionName}
+    />
+  );
+});
+
 const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
@@ -46,7 +62,7 @@ const HomeScreen = () => {
   const nftFeedItems = $nftFeed.get();
 
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<NFT>) => (
+    ({ item, index }: ListRenderItemInfo<NFT>) => (
       <Box
         height={listElementHeight}
         padding={3}
@@ -55,14 +71,7 @@ const HomeScreen = () => {
           paddingBottom: tabBarHeight + verticalScale(12),
         }}
       >
-        <Card
-          imgUrl={item.imgUrl}
-          bgColor={hslFromArray(item.bgColor)}
-          avatarUrl={item.collectionAvatarUrl}
-          hints={item.hints}
-          title={item.title}
-          username={item.collectionName}
-        />
+        <CardTrackingVisibility nft={item} />
       </Box>
     ),
     [insets, tabBarHeight]

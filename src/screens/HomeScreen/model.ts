@@ -22,11 +22,11 @@ observe<VisibleCard>((ev) => {
 
   // if previous card - track
   if (ev.previous) {
-    console.log('trackNftView', {
-      nftId: ev.previous.id,
-      d: card.ts - ev.previous.ts,
-      idx: ev.previous.index,
-    });
+    // console.log('trackNftView', {
+    //   nftId: ev.previous.id,
+    //   d: card.ts - ev.previous.ts,
+    //   idx: ev.previous.index,
+    // });
 
     saveNftView({
       nftId: ev.previous.id,
