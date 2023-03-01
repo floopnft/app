@@ -43,7 +43,7 @@ observe<VisibleCard>((ev) => {
     return card;
   }
 
-  const excluded = feed.slice(card.index).map((it) => it.id);
+  const excluded = feed.slice(card.index - 1).map((it) => it.id);
 
   getRecommendedNfts({
     count: 3,
