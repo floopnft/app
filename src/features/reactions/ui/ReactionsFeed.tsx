@@ -39,7 +39,7 @@ const FlyingReaction = ({ id, type }: any) => {
       500,
       withTiming(
         FLY_OUT_Y,
-        { duration: 2000, easing: Easing.linear },
+        { duration: 1000, easing: Easing.sin },
         (finished) => {
           if (finished) {
             runOnJS(removeReaction)(id);
@@ -62,7 +62,7 @@ const FlyingReaction = ({ id, type }: any) => {
       bottom={0}
       style={style}
     >
-      <Text color="black" fontWeight="500">
+      <Text color="black" fontWeight="500" marginRight={1}>
         solana
       </Text>
       <Box width={scale(16)} height={scale(16)}>

@@ -192,15 +192,15 @@ const HomeScreen = () => {
       </Animated.View>
       <Box
         position="absolute"
-        bottom={tabBarHeight + verticalScale(18)}
-        right={scale(18)}
+        bottom={tabBarHeight + verticalScale(24)}
+        right={scale(24)}
       >
         <ReactionToolbox />
       </Box>
       <Box
         pointerEvents="none"
         position="absolute"
-        bottom={tabBarHeight + scale(60)}
+        bottom={tabBarHeight + scale(72)}
         right={scale(20)}
       >
         <ReactionsFeed />
