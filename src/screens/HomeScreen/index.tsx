@@ -1,5 +1,8 @@
+import { $nftFeed } from '@entities/feed/model';
 import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
+import { NFT } from '@entities/nft/model';
 import ReactionsFeed from '@features/reactions/ui/ReactionsFeed';
+import { observer } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   HSLColor,
@@ -14,9 +17,10 @@ import {
   FlashListProps,
   ListRenderItemInfo,
 } from '@shopify/flash-list';
+import ViewToken from '@shopify/flash-list/dist/viewability/ViewToken';
 import Card from '@src/widgets/feed/ui/Card';
-import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import React, { useCallback } from 'react';
+import { ViewabilityConfig } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedScrollHandler,
@@ -24,39 +28,41 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { $nftFeed, $unviewedNftFeedItems } from '@entities/feed/model';
-import { observer } from '@legendapp/state/react';
-import { NFT } from '@entities/nft/model';
-import { getRecommendedNfts } from '@entities/nft/api/nft-api';
-import { clearNftViews, saveNftView } from '@entities/nft/api/nft-views-api';
-import ViewToken from '@shopify/flash-list/dist/viewability/ViewToken';
-import { $currentVisibleCard } from '@screens/HomeScreen/model';
+import { $currentVisibleCard } from './model';
 
 const listElementHeight = SCREEN_HEIGHT;
 
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<NFT>>(FlashList);
 
-interface ItemViewState {
-  id: string;
-  viewStartedAt: Date;
-}
+const viewabilityConfig: ViewabilityConfig = {
+  itemVisiblePercentThreshold: 80,
+};
 
-interface ItemsViewingState {
-  current: ItemViewState;
-  prevItem?: ItemViewState;
-}
+const CardTrackingVisibility = observer(({ nft }: { nft: NFT }) => {
+  const isVisible = $currentVisibleCard.get()?.id === nft.id;
+  // console.log('isVisible', isVisible, nft.title);
+
+  return (
+    <Card
+      imgUrl={nft.imgUrl}
+      bgColor={hslFromArray(nft.bgColor)}
+      avatarUrl={nft.collectionAvatarUrl}
+      hints={nft.hints}
+      title={nft.title}
+      username={nft.collectionName}
+    />
+  );
+});
 
 const HomeScreen = () => {
-  const statusBarRef = React.useRef<StatusBar>(null);
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
   const nftFeedItems = $nftFeed.get();
-  const unwatchedNftFeedItems = $unviewedNftFeedItems.get();
 
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<NFT>) => (
+    ({ item, index }: ListRenderItemInfo<NFT>) => (
       <Box
         height={listElementHeight}
         padding={3}
@@ -65,14 +71,7 @@ const HomeScreen = () => {
           paddingBottom: tabBarHeight + verticalScale(12),
         }}
       >
-        <Card
-          imgUrl={item.imgUrl}
-          bgColor={hslFromArray(item.bgColor)}
-          avatarUrl={item.collectionAvatarUrl}
-          hints={item.hints}
-          title={item.title}
-          username={item.collectionName}
-        />
+        <CardTrackingVisibility nft={item} />
       </Box>
     ),
     [insets, tabBarHeight]
@@ -84,8 +83,6 @@ const HomeScreen = () => {
     nftFeedItems[1].bgColor,
   ] as ('transparent' | HSLColor)[]);
 
-  const [itemViewingState, setItemViewingState] =
-    useState<ItemsViewingState | null>(null);
   const progress = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(
@@ -103,30 +100,6 @@ const HomeScreen = () => {
     [bgColorFromTo]
   );
 
-  const markAsViewed = async () => {
-    if (!itemViewingState) {
-      return;
-    }
-    if (!itemViewingState.prevItem) {
-      return;
-    }
-    const viewedItemId = itemViewingState.prevItem.id;
-    await saveNftView({
-      nftId: viewedItemId,
-      viewStartedAt: itemViewingState.prevItem.viewStartedAt,
-      viewFinishedAt: itemViewingState.current.viewStartedAt,
-    });
-    await clearNftViews(); // Comment this line to hide viewed nfts from feed
-    $unviewedNftFeedItems.set((prev) => {
-      const { [viewedItemId]: _, ...rest } = prev;
-      return rest;
-    });
-  };
-
-  useEffect(() => {
-    void markAsViewed();
-  }, [itemViewingState]);
-
   const scrollHandler = useAnimatedScrollHandler((ev) => {
     const idx = Math.floor(ev.contentOffset.y / listElementHeight);
     bgColorFromTo.value = [
@@ -137,54 +110,27 @@ const HomeScreen = () => {
     progress.value = ev.contentOffset.y / listElementHeight - idx;
   });
 
-  const loadNextRecommendedNfts = async () => {
-    const nextRecommended = await getRecommendedNfts({
-      count: 3,
-      excludeIds: Object.keys(unwatchedNftFeedItems),
-    });
-    $nftFeed.set((prev) => {
-      return [...prev, ...nextRecommended];
-    });
-    $unviewedNftFeedItems.set((prev) => ({
-      ...prev,
-      ...Object.fromEntries(nextRecommended.map((nft) => [nft.id, nft])),
-    }));
-  };
-
   const onViewableItemsChanged: (info: {
     viewableItems: ViewToken[];
+    changed: ViewToken[];
   }) => void = ({ viewableItems }) => {
-    if (viewableItems.length !== 1) {
-      return;
+    // new card is visible
+    if (viewableItems.length === 1) {
+      $currentVisibleCard.set({
+        id: viewableItems[0].item.id,
+        index: viewableItems[0].index,
+        ts: viewableItems[0].timestamp,
+      });
     }
-    const viewableItem = viewableItems[0];
-    const nft = viewableItem.item as NFT;
-    $currentVisibleCard.set({
-      id: nft.id,
-      index: viewableItem.index,
-      ts: viewableItem.timestamp,
-    });
-    setItemViewingState((prev) => {
-      return {
-        current: {
-          id: nft.id,
-          viewStartedAt: new Date(),
-        },
-        ...(prev && { prevItem: prev.current }),
-      };
-    });
   };
+
   return (
     <>
-      <StatusBar
-        ref={statusBarRef}
-        backgroundColor="transparent"
-        translucent={true}
-      />
       <Animated.View style={[sharedStyles.container, animatedStyle]}>
         <AnimatedFlashList
           onScroll={scrollHandler}
           onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
           data={nftFeedItems}
           renderItem={renderItem}
           estimatedItemSize={listElementHeight}
@@ -193,8 +139,8 @@ const HomeScreen = () => {
           decelerationRate="fast"
           snapToAlignment="start"
           snapToInterval={listElementHeight}
-          onEndReachedThreshold={2}
-          onEndReached={loadNextRecommendedNfts}
+          // onEndReachedThreshold={2}
+          // onEndReached={loadNextRecommendedNfts}
         />
       </Animated.View>
       <Box

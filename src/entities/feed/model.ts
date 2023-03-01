@@ -1,5 +1,5 @@
-import { observable } from '@legendapp/state';
 import { NFT } from '@entities/nft/model';
+import { observable } from '@legendapp/state';
 
 // export const DATA: NFT[] = [
 //   {
@@ -101,5 +101,4 @@ import { NFT } from '@entities/nft/model';
 //   },
 // ];
 
-export const $unviewedNftFeedItems = observable<Record<string, NFT>>({});
 export const $nftFeed = observable<NFT[]>([]);
