@@ -3,6 +3,8 @@ import { observable } from '@legendapp/state';
 import { nanoid } from 'nanoid';
 import { upsertNftReaction } from '@entities/nft/api/nft-reactions-api';
 import { $currentVisibleCard } from '@screens/HomeScreen/model';
+import { fetchUserProfile } from '@screens/ProfileScreen/api';
+import { updateNftStores } from '@screens/ProfileScreen/model';
 
 interface UserNftReaction {
   id: string;
@@ -11,21 +13,22 @@ interface UserNftReaction {
   press: { x: number; y: number };
 }
 
+export interface NftReaction {
+  nftId: string;
+  reactionId: string;
+}
+
 export const $reactions = observable<UserNftReaction[]>([]);
-export const $selectedReaction = observable<string | null>(null);
+export const $lastNftReaction = observable<NftReaction | null>(null);
 
-$selectedReaction.onChange((reaction) => {
-  const card = $currentVisibleCard.get();
-  if (!card) {
-    return;
-  }
+$lastNftReaction.onChange(async (reaction) => {
   const command = {
-    nftId: card.id,
-    reactionId: reaction,
+    nftId: reaction.nftId,
+    reactionId: reaction.reactionId,
   };
-  console.log(command);
-
-  upsertNftReaction(command);
+  await upsertNftReaction(command);
+  const { data: profile } = fetchUserProfile();
+  profile.onChange(updateNftStores);
 });
 
 export function addReaction(
@@ -38,5 +41,12 @@ export function addReaction(
     ...setReactionCommand,
   };
   $reactions.push(reaction);
-  $selectedReaction.set(reaction.reactionId);
+  const card = $currentVisibleCard.get();
+  if (!card) {
+    return;
+  }
+  $lastNftReaction.set({
+    nftId: card.id,
+    reactionId: reactionId,
+  });
 }

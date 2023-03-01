@@ -1,6 +1,5 @@
 import { observer, Show } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { fetchUserProfile } from '@screens/ProfileScreen/api';
 import HeartOutlineIcon from '@shared/ui/icons/HeartOutlineIcon';
 import ViewGridOutlineIcon from '@shared/ui/icons/ViewGridOutlineIcon';
 import { Box, Image, Text } from '@shared/ui/primitives';
@@ -20,15 +19,14 @@ import {
   TabView,
 } from 'react-native-tab-view';
 import { hslFromArray } from '@shared/ui/color-utils';
+import { $likedNfts, $userProfile } from '@screens/ProfileScreen/model';
 
-const { data: userProfile } = fetchUserProfile();
-
-const Created = observer(() => {
+const Liked = observer(() => {
   return (
     <FlashList
       contentContainerStyle={{ padding: scale(16) }}
       ItemSeparatorComponent={() => <Box height={scale(8)} />}
-      data={userProfile?.likedNfts.get()}
+      data={$likedNfts.get()}
       numColumns={3}
       estimatedItemSize={scale(152)}
       renderItem={({ item }) => {
@@ -55,7 +53,7 @@ const Created = observer(() => {
   );
 });
 
-const Liked = () => <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
+const Created = () => <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
 
 const routes = [
   { key: 'created', title: 'Created' },
@@ -89,8 +87,8 @@ const renderTabBar = (
 );
 
 const renderScene = SceneMap({
+  liked: Liked,
   created: Created,
-  liked: Created,
 });
 
 const ProfileScreen = () => {
@@ -110,22 +108,22 @@ const ProfileScreen = () => {
           borderRadius={100}
           mb={5}
         >
-          {userProfile?.avatarUrl.get() && (
+          {$userProfile?.avatarUrl.get() && (
             <Image
               borderRadius={100}
               contentFit="contain"
               style={sharedStyles.container}
-              source={userProfile?.avatarUrl.get()}
+              source={$userProfile?.avatarUrl.get()}
             />
           )}
         </Box>
         <Show
-          if={userProfile}
+          if={$userProfile}
           else={<Text fontSize={scale(20)}>loading...</Text>}
         >
           <Text fontSize={scale(20)}>
-            {userProfile?.name.get() ??
-              shortenWalletAddress(userProfile?.walletAddress.get())}
+            {$userProfile?.name.get() ??
+              shortenWalletAddress($userProfile?.walletAddress.get())}
           </Text>
         </Show>
       </Box>
