@@ -48,7 +48,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
   return (
     <AnimatedBox
       flex={1}
-      borderRadius={20}
+      borderRadius={24}
       padding={5}
       overflow="hidden"
       style={[
