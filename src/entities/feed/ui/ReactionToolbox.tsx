@@ -15,7 +15,7 @@ import {
 } from 'react-native-reanimated';
 import ReactionAnimation, { ReactionType } from './Reaction';
 
-const targetWidth = scale(24 * 4 + 24);
+const targetWidth = scale(24 * 4 + 28);
 
 const Reaction = ({ type }: { type: ReactionType }) => {
   const gesture = Gesture.Tap().onStart((ev) => {
@@ -24,7 +24,7 @@ const Reaction = ({ type }: { type: ReactionType }) => {
 
   return (
     <GestureDetector gesture={gesture}>
-      <Box width={scale(24)} height={scale(24)}>
+      <Box width={scale(20)} height={scale(20)}>
         <ReactionAnimation type={type} />
       </Box>
     </GestureDetector>
@@ -49,8 +49,9 @@ const ReactionToolbox = () => {
     <Box
       flexDirection="row"
       backgroundColor="white"
+      alignItems="center"
       borderRadius={100}
-      padding={1}
+      padding={2}
     >
       <AnimatedBox
         flexDirection="row"
@@ -62,7 +63,7 @@ const ReactionToolbox = () => {
           <AnimatedBox
             flexDirection="row"
             alignItems="center"
-            gap={2}
+            gap={3}
             entering={BounceIn.delay(150)}
             exiting={BounceOut.duration(150)}
           >
@@ -77,7 +78,7 @@ const ReactionToolbox = () => {
           setIsOpen((prev) => !prev);
         }}
       >
-        <PlusIcon width={scale(24)} height={scale(24)} color="black" />
+        <PlusIcon width={scale(20)} height={scale(20)} color="black" />
       </TouchableOpacity>
     </Box>
   );
