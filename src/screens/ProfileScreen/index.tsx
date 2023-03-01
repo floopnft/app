@@ -4,7 +4,7 @@ import { fetchUserProfile } from '@screens/ProfileScreen/api';
 import { useFetch } from '@shared/fetcher';
 import HeartOutlineIcon from '@shared/ui/icons/HeartOutlineIcon';
 import ViewGridOutlineIcon from '@shared/ui/icons/ViewGridOutlineIcon';
-import { Box, Text } from '@shared/ui/primitives';
+import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { scale } from '@shared/utils';
 import { shortenWalletAddress } from '@shared/wallet';
@@ -18,7 +18,7 @@ import {
   SceneMap,
   SceneRendererProps,
   TabBar,
-  TabView
+  TabView,
 } from 'react-native-tab-view';
 
 const Created = () => {
@@ -37,7 +37,7 @@ const Created = () => {
             height={scale(152)}
             borderRadius={12}
           >
-            {/* <Text>{data.item}</Text> */}
+            <Text>{data.item}</Text>
           </Box>
         );
       }}
@@ -100,13 +100,23 @@ const ProfileScreen = () => {
           backgroundColor="darkGray"
           borderRadius={100}
           mb={5}
-        />
+        >
+          {userProfile?.avatarUrl.get() && (
+            <Image
+              borderRadius={100}
+              contentFit="contain"
+              style={sharedStyles.container}
+              source={userProfile?.avatarUrl.get()}
+            />
+          )}
+        </Box>
         <Show
           if={userProfile}
           else={<Text fontSize={scale(20)}>loading...</Text>}
         >
           <Text fontSize={scale(20)}>
-            {shortenWalletAddress(userProfile.walletAddress.get())}
+            {userProfile.name.get() ??
+              shortenWalletAddress(userProfile.walletAddress.get())}
           </Text>
         </Show>
       </Box>
