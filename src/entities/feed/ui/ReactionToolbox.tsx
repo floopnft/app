@@ -49,20 +49,13 @@ const ReactionToolbox = () => {
     <Box
       flexDirection="row"
       backgroundColor="white"
-      alignItems="center"
       borderRadius={100}
       padding={2}
     >
-      <AnimatedBox
-        flexDirection="row"
-        alignItems="center"
-        gap={2}
-        style={style}
-      >
+      <AnimatedBox flexDirection="row" gap={2} style={style}>
         {isOpen && (
           <AnimatedBox
             flexDirection="row"
-            alignItems="center"
             gap={3}
             entering={BounceIn.delay(150)}
             exiting={BounceOut.duration(150)}
