@@ -1,4 +1,4 @@
-import { httpObservableFetch } from '@shared/fetcher';
+import { httpFetch } from '@shared/fetcher';
 import { NftReactionsByUser } from '@entities/nft/model';
 
 export interface UpsertNftReactionCommand {
@@ -6,9 +6,13 @@ export interface UpsertNftReactionCommand {
   reactionId: string;
 }
 
-export function upsertNftReaction(command: UpsertNftReactionCommand) {
-  return httpObservableFetch<NftReactionsByUser>('nft-reactions', {
-    method: 'POST',
-    body: JSON.stringify(command),
-  });
+export async function upsertNftReaction(command: UpsertNftReactionCommand) {
+  try {
+    await httpFetch<NftReactionsByUser>('nft-reactions', {
+      method: 'POST',
+      body: JSON.stringify(command),
+    });
+  } catch (e) {
+    return null;
+  }
 }

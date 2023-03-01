@@ -17,15 +17,17 @@ const CardInfo: React.FC<CardInfoProps> = ({
 }) => {
   return (
     <>
-      <Box marginBottom={4} flexDirection="row" alignItems="center">
+      <Box marginBottom={6} flexDirection="row" alignItems="center">
         <Image
           width={scale(32)}
           height={scale(32)}
           borderRadius={100}
-          marginRight={4}
+          marginRight={1}
           source={avatarUrl}
         />
-        <Text fontSize={scale(12)}>{username}</Text>
+        <Text fontSize={scale(12)} fontWeight="500">
+          {username}
+        </Text>
       </Box>
       <Box flexDirection="row" gap={1} marginBottom={2}>
         {hints.map((hint, index) => (
@@ -41,7 +43,9 @@ const CardInfo: React.FC<CardInfoProps> = ({
           </Box>
         ))}
       </Box>
-      <Text fontSize={scale(24)}>{title}</Text>
+      <Text fontSize={scale(24)} fontWeight="500">
+        {title}
+      </Text>
     </>
   );
 };

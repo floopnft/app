@@ -6,7 +6,7 @@ const SvgComponent = (props: SvgProps) => (
   <Svg
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
+    strokeWidth={scale(1.7)}
     stroke="currentColor"
     width={scale(24)}
     height={scale(24)}

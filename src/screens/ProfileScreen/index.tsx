@@ -1,10 +1,9 @@
 import { observer, Show } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { fetchUserProfile } from '@screens/ProfileScreen/api';
-import { useFetch } from '@shared/fetcher';
 import HeartOutlineIcon from '@shared/ui/icons/HeartOutlineIcon';
 import ViewGridOutlineIcon from '@shared/ui/icons/ViewGridOutlineIcon';
-import { Box, Text } from '@shared/ui/primitives';
+import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { scale } from '@shared/utils';
 import { shortenWalletAddress } from '@shared/wallet';
@@ -18,32 +17,43 @@ import {
   SceneMap,
   SceneRendererProps,
   TabBar,
-  TabView
+  TabView,
 } from 'react-native-tab-view';
+import { hslFromArray } from '@shared/ui/color-utils';
 
-const Created = () => {
+const { data: userProfile } = fetchUserProfile();
+
+const Created = observer(() => {
   return (
     <FlashList
       contentContainerStyle={{ padding: scale(16) }}
       ItemSeparatorComponent={() => <Box height={scale(8)} />}
-      data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+      data={userProfile?.likedNfts.get()}
       numColumns={3}
       estimatedItemSize={scale(152)}
-      renderItem={(data) => {
+      renderItem={({ item }) => {
         return (
           <Box
-            backgroundColor="darkGray"
+            style={[
+              {
+                backgroundColor: hslFromArray(item.bgColor),
+              },
+            ]}
             width={scale(88)}
             height={scale(152)}
             borderRadius={12}
           >
-            {/* <Text>{data.item}</Text> */}
+            <Image
+              contentFit="contain"
+              style={sharedStyles.container}
+              source={item.imgUrl}
+            />
           </Box>
         );
       }}
     />
   );
-};
+});
 
 const Liked = () => <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
 
@@ -51,11 +61,6 @@ const routes = [
   { key: 'created', title: 'Created' },
   { key: 'liked', title: 'Liked' },
 ];
-
-const renderScene = SceneMap({
-  created: Created,
-  liked: Liked,
-});
 
 const renderTabBar = (
   props: SceneRendererProps & {
@@ -83,10 +88,14 @@ const renderTabBar = (
   />
 );
 
+const renderScene = SceneMap({
+  created: Created,
+  liked: Created,
+});
+
 const ProfileScreen = () => {
   const bottomTabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
-  const { data: userProfile } = useFetch(fetchUserProfile);
 
   const [index, setIndex] = React.useState(0);
 
@@ -100,13 +109,23 @@ const ProfileScreen = () => {
           backgroundColor="darkGray"
           borderRadius={100}
           mb={5}
-        />
+        >
+          {userProfile?.avatarUrl.get() && (
+            <Image
+              borderRadius={100}
+              contentFit="contain"
+              style={sharedStyles.container}
+              source={userProfile?.avatarUrl.get()}
+            />
+          )}
+        </Box>
         <Show
           if={userProfile}
           else={<Text fontSize={scale(20)}>loading...</Text>}
         >
           <Text fontSize={scale(20)}>
-            {shortenWalletAddress(userProfile.walletAddress.get())}
+            {userProfile?.name.get() ??
+              shortenWalletAddress(userProfile?.walletAddress.get())}
           </Text>
         </Show>
       </Box>

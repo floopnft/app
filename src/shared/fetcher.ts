@@ -16,7 +16,6 @@ export function httpObservableFetch<
   RESPONSE_DATA = unknown,
   QUERY_PARAMS = unknown
 >(path: string, params?: RequestInit & { query?: QUERY_PARAMS }) {
-  const url = getUrl(path, params);
   const obs = observable<{
     data?: RESPONSE_DATA;
     error?: any;
@@ -28,13 +27,9 @@ export function httpObservableFetch<
     errorStr: undefined,
     loading: true,
   });
-  httpFetch(url, params)
+  httpFetch(path, params)
     .then(async (response) => {
-      const responseData = await response['json']();
-      if (!response.ok) {
-        throw JSON.stringify(responseData);
-      }
-      obs.set({ data: responseData, loading: false });
+      obs.set({ data: response as RESPONSE_DATA, loading: false });
     })
     .catch((error) =>
       obs.set({ loading: false, error, errorStr: error?.toString?.() })
