@@ -13,12 +13,12 @@ import {
   withDelay,
   withTiming,
 } from 'react-native-reanimated';
-import { reactions } from '../model';
+import { $reactions } from '../model';
 
 const FLY_OUT_Y = -SCREEN_HEIGHT / 2;
 
 const removeReaction = (id: string) => {
-  reactions.set((pr) => pr.filter((r) => id !== r.id));
+  $reactions.set((pr) => pr.filter((r) => id !== r.id));
 };
 
 const FlyingReaction = ({ id, type }: any) => {
@@ -75,7 +75,7 @@ const FlyingReaction = ({ id, type }: any) => {
 const ReactionsFeed = () => {
   return (
     <Box alignItems="center" gap={1}>
-      {Object.values(reactions.get()).map((reaction) => (
+      {Object.values($reactions.get()).map((reaction) => (
         <FlyingReaction
           key={reaction.id}
           id={reaction.id}

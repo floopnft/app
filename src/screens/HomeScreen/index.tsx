@@ -30,6 +30,7 @@ import { NFT } from '@entities/nft/model';
 import { getRecommendedNfts } from '@entities/nft/api/nft-api';
 import { clearNftViews, saveNftView } from '@entities/nft/api/nft-views-api';
 import ViewToken from '@shopify/flash-list/dist/viewability/ViewToken';
+import { $currentVisibleCard } from '@screens/HomeScreen/model';
 
 const listElementHeight = SCREEN_HEIGHT;
 
@@ -156,7 +157,13 @@ const HomeScreen = () => {
     if (viewableItems.length !== 1) {
       return;
     }
-    const nft = viewableItems[0].item as NFT;
+    const viewableItem = viewableItems[0];
+    const nft = viewableItem.item as NFT;
+    $currentVisibleCard.set({
+      id: nft.id,
+      index: viewableItem.index,
+      ts: viewableItem.timestamp,
+    });
     setItemViewingState((prev) => {
       return {
         current: {
