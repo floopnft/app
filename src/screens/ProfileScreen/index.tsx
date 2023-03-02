@@ -107,6 +107,7 @@ const renderTabBar = (
       fontSize: scale(12),
       fontWeight: '600',
       textTransform: 'none',
+      marginLeft: 1,
     }}
     renderIcon={({ route, focused, color }) => {
       switch (route.key) {
@@ -133,13 +134,13 @@ const ProfileScreen = () => {
   return (
     <View style={[sharedStyles.containerBlackBg, { paddingTop: insets.top }]}>
       <StatusBar style="light" />
-      <Box alignItems="center" justifyContent="center" mb={4}>
+      <Box alignItems="center" justifyContent="center" mb={6}>
         <Box
           width={scale(120)}
           aspectRatio={1}
           backgroundColor="darkGray"
           borderRadius={100}
-          mb={5}
+          mb={3}
         >
           {$userProfile?.avatarUrl.get() && (
             <Image
@@ -154,7 +155,7 @@ const ProfileScreen = () => {
           if={$userProfile}
           else={<Text fontSize={scale(20)}>loading...</Text>}
         >
-          <Text fontSize={scale(20)}>
+          <Text fontSize={scale(20)} fontWeight="600">
             {$userProfile?.name.get() ??
               shortenWalletAddress($userProfile?.walletAddress.get())}
           </Text>

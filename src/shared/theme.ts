@@ -20,7 +20,7 @@ const theme = createTheme({
 
     black: colors.black,
     white: colors.white,
-    darkGray: '#1E1E1E',
+    darkGray: '#141414',
 
     debug: '#ff00ff',
     debug1: '#ff0000',
