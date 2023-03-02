@@ -1,3 +1,4 @@
+import { uploadFloop } from '@features/upload-floop/model';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import XIcon from '@shared/ui/icons/XIcon';
@@ -65,7 +66,6 @@ const CreateScreen = () => {
   const takePhoto = useCallback(async () => {
     if (!cameraRef.current) return;
     const takenPhoto = await cameraRef.current.takePhoto();
-    console.log(takenPhoto);
     setEditImageUri(`file://${takenPhoto.path}`);
   }, [cameraRef]);
 
@@ -77,6 +77,12 @@ const CreateScreen = () => {
     if (!effectsSheetRef.current) return;
     effectsSheetRef.current.expand();
   }, []);
+
+  const onPublish = async () => {
+    const floopUpload = await uploadFloop(editImageUri);
+    console.log(floopUpload);
+    navigation.navigate('Profile');
+  };
 
   return (
     <SafeAreaView style={sharedStyles.containerBlackBg}>
@@ -96,6 +102,7 @@ const CreateScreen = () => {
         <Box height={verticalScale(64)} py={2} px={4} justifyContent="center">
           {editImageUri ? (
             <EditBottomBar
+              onPublish={onPublish}
               onCancelEditing={onCancelEditing}
               onEffectsBottomSheetOpenRequest={onEffectsBottomSheetOpenRequest}
             />

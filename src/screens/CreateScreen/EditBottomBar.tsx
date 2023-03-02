@@ -4,11 +4,13 @@ import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale } from '@shared/utils';
 import React from 'react';
 interface EditBottomBarProps {
+  onPublish: () => void;
   onCancelEditing: () => void;
   onEffectsBottomSheetOpenRequest: () => void;
 }
 
 const CaptureBottomBar: React.FC<EditBottomBarProps> = ({
+  onPublish,
   onCancelEditing,
   onEffectsBottomSheetOpenRequest,
 }) => {
@@ -37,6 +39,7 @@ const CaptureBottomBar: React.FC<EditBottomBarProps> = ({
         borderRadius={100}
         width={scale(48)}
         alignItems="center"
+        onPress={onPublish}
       >
         <Text color="black" fontWeight="500">
           Floop

@@ -14,6 +14,7 @@ const MIN_DP_IN_REAL_PIX = 1 / PixelRatio.get();
 const ANDROID_STRANGE_SMALLER_COEF = 2;
 
 // Source: https://stackoverflow.com/questions/33628677/react-native-responsive-font-size
+// deprecated
 export function normalize(desiredDp: number): number {
   const targetDp = desiredDp * scaleFactor;
   const scaledDp = PixelRatio.roundToNearestPixel(targetDp);
@@ -42,3 +43,11 @@ export const moderateScale = (size: number, factor = 0.5) =>
   size + (scale(size) - size) * factor;
 export const moderateVerticalScale = (size: number, factor = 0.5) =>
   size + (verticalScale(size) - size) * factor;
+
+export function getFilenameFromUrl(url: string) {
+  return url.split('/').pop();
+}
+
+export function ucarecdn(id: string) {
+  return `https://ucarecdn.com/${id}/`;
+}
