@@ -1,20 +1,19 @@
-import { User } from '@entities/user/model';
 import { NftDto } from '@entities/nft/model';
+import { User } from '@entities/user/model';
+import { event, observable } from '@legendapp/state';
 import { fetchUserProfile } from '@screens/ProfileScreen/api';
-import { observable } from '@legendapp/state';
-import { $lastNftReaction } from '@features/reactions/model';
 
 export type UserProfile = User & { createdNfts: NftDto[]; likedNfts: NftDto[] };
 
-export const { data: $userProfile } = fetchUserProfile();
+export const updateUserProfile = event();
 
-export const $likedNfts = observable<NftDto[]>([]);
-export const $createdNfts = observable<NftDto[]>([]);
+export const $userProfile = observable<UserProfile>(null);
 
-export const updateNftStores = (it: UserProfile) => {
-  $createdNfts.set(it.createdNfts);
-  $likedNfts.set(it.likedNfts);
-};
-$userProfile.onChange(updateNftStores);
+fetchUserProfile().then((it) => $userProfile.set(it));
 
-// $lastNftReaction.onChange((reaction) => {});
+updateUserProfile.on(() => {
+  fetchUserProfile().then((it) => $userProfile.set(it));
+});
+
+export const $likedNfts = $userProfile.likedNfts;
+export const $createdNfts = $userProfile.createdNfts;

@@ -19,7 +19,11 @@ import {
   TabView,
 } from 'react-native-tab-view';
 import { hslFromArray } from '@shared/ui/color-utils';
-import { $likedNfts, $userProfile } from '@screens/ProfileScreen/model';
+import {
+  $createdNfts,
+  $likedNfts,
+  $userProfile,
+} from '@screens/ProfileScreen/model';
 
 const Liked = observer(() => {
   return (
@@ -53,7 +57,36 @@ const Liked = observer(() => {
   );
 });
 
-const Created = () => <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
+const Created = observer(() => (
+  <FlashList
+    contentContainerStyle={{ padding: scale(16) }}
+    ItemSeparatorComponent={() => <Box height={scale(8)} />}
+    data={$createdNfts.get()}
+    numColumns={3}
+    estimatedItemSize={scale(152)}
+    renderItem={({ item }) => {
+      return (
+        <Box
+          style={[
+            {
+              backgroundColor: hslFromArray(item.bgColor),
+            },
+          ]}
+          width={scale(88)}
+          height={scale(152)}
+          borderRadius={12}
+          overflow="hidden"
+        >
+          <Image
+            // contentFit="contain"
+            style={sharedStyles.container}
+            source={item.imgUrl}
+          />
+        </Box>
+      );
+    }}
+  />
+));
 
 const routes = [
   { key: 'created', title: 'Created' },
@@ -87,8 +120,8 @@ const renderTabBar = (
 );
 
 const renderScene = SceneMap({
-  liked: Liked,
   created: Created,
+  liked: Liked,
 });
 
 const ProfileScreen = () => {

@@ -1,6 +1,7 @@
 import { uploadFloop } from '@features/upload-floop/model';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import { updateUserProfile } from '@screens/ProfileScreen/model';
 import XIcon from '@shared/ui/icons/XIcon';
 import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
@@ -81,7 +82,9 @@ const CreateScreen = () => {
   const onPublish = async () => {
     const floopUpload = await uploadFloop(editImageUri);
     console.log(floopUpload);
+    updateUserProfile.fire();
     navigation.navigate('Profile');
+    setEditImageUri(null);
   };
 
   return (

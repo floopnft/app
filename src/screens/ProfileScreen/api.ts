@@ -1,6 +1,6 @@
-import { httpObservableFetch } from '@shared/fetcher';
 import { UserProfile } from '@screens/ProfileScreen/model';
+import { httpFetch } from '@shared/fetcher';
 
 export function fetchUserProfile() {
-  return httpObservableFetch<UserProfile>('users/me/profile');
+  return httpFetch<UserProfile>('users/me/profile');
 }
