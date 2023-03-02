@@ -8,6 +8,7 @@ import UserIcon from '@shared/ui/icons/UserIcon';
 import React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useOnAppStart } from '@shared/useOnAppStart';
+import { scale } from '@shared/utils';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,10 +44,12 @@ function App(): JSX.Element | null {
           backgroundColor: 'transparent',
           borderTopWidth: 0,
           elevation: 0,
+          marginHorizontal: scale(32),
         },
         tabBarActiveTintColor: 'white',
         tabBarLabelStyle: {
           fontWeight: '500',
+          fontSize: scale(8),
         },
       }}
     >
