@@ -170,12 +170,12 @@ const NftDetails = ({ route, navigation }: any) => {
             <Image
               blurRadius={24}
               source={item.imgUrl}
-              resizeMode="cover"
+              contentFit="cover"
               style={StyleSheet.absoluteFillObject}
             />
             <Image
               style={sharedStyles.container}
-              resizeMode="contain"
+              contentFit="contain"
               source={{ uri: item.imgUrl }}
             />
           </>
@@ -185,7 +185,7 @@ const NftDetails = ({ route, navigation }: any) => {
               sharedStyles.container,
               { backgroundColor: hslFromArray(item.bgColor) },
             ]}
-            resizeMode="contain"
+            contentFit="contain"
             source={{ uri: item.imgUrl }}
           />
         )}

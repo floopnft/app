@@ -41,16 +41,16 @@ const NftItem = ({ item }: { item: NFT }) => {
             <Image
               blurRadius={24}
               source={item.imgUrl}
-              resizeMode="cover"
+              contentFit="cover"
               style={StyleSheet.absoluteFillObject}
             />
-            <Image flex={1} resizeMode="contain" source={item.imgUrl} />
+            <Image flex={1} contentFit="contain" source={item.imgUrl} />
           </>
         ) : (
           <Image
             flex={1}
             style={{ backgroundColor: hslFromArray(item.bgColor) }}
-            resizeMode="contain"
+            contentFit="contain"
             source={item.imgUrl}
           />
         )}
