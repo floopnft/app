@@ -19,7 +19,7 @@ import {
 } from '@shopify/flash-list';
 import ViewToken from '@shopify/flash-list/dist/viewability/ViewToken';
 import Card from '@src/widgets/feed/ui/Card';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ViewabilityConfig } from 'react-native';
 import Animated, {
   interpolateColor,
@@ -79,9 +79,21 @@ const HomeScreen = () => {
 
   const bgColorFromTo = useSharedValue([
     'transparent',
-    nftFeedItems[0].bgColor,
-    nftFeedItems[1].bgColor,
+    'transparent',
+    'transparent',
   ] as ('transparent' | HSLColor)[]);
+
+  // sets initial bgColorFromTo after nft loaded
+  useEffect(() => {
+    if (nftFeedItems.length === 0) return;
+    if (bgColorFromTo.value.every((it) => it === 'transparent')) {
+      bgColorFromTo.value = [
+        'transparent',
+        nftFeedItems[0].bgColor,
+        nftFeedItems[1].bgColor,
+      ];
+    }
+  }, [bgColorFromTo, nftFeedItems]);
 
   const progress = useSharedValue(0);
 

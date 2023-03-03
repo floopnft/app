@@ -62,6 +62,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         contentFit="contain"
         style={sharedStyles.container}
         source={imgUrl}
+        recyclingKey={imgUrl}
       />
       <LinearGradient
         colors={linearGradientColors}

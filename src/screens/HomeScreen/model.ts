@@ -10,6 +10,7 @@ interface VisibleCard {
   index: number;
   ts: number;
 }
+// clearNftViews(); // Comment this line to hide viewed nfts from feed
 
 export const $currentVisibleCard = observable<VisibleCard>(null);
 

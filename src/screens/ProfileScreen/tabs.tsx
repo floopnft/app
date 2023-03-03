@@ -1,17 +1,19 @@
 import { NFT } from '@entities/nft/model';
 import { observer } from '@legendapp/state/react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { hslFromArray } from '@shared/ui/color-utils';
 import { Box, Image } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale } from '@shared/utils';
 import { FlashList } from '@shopify/flash-list';
+import { MainRoutes } from '@src/route';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { $createdNfts, $likedNfts } from './model';
 
-const NftItem = ({ item }: { item: NFT }) => {
-  const navigation = useNavigation();
+const NftItem = ({ nft }: { nft: NFT }) => {
+  const navigation = useNavigation<NativeStackNavigationProp<MainRoutes>>();
   const [opacity, setOpacity] = useState(1);
 
   useFocusEffect(
@@ -20,13 +22,13 @@ const NftItem = ({ item }: { item: NFT }) => {
     }, [])
   );
 
-  const isHslCorrupted = item.bgColor[2] > 100;
+  const isHslCorrupted = nft.bgColor[2] > 100;
 
   return (
     <TouchableOpacity
       onPress={() => {
         setOpacity(0);
-        navigation.push('NftDetails', { item });
+        navigation.push('FullScreenNFTDetails', { nft });
       }}
     >
       <Box
@@ -40,18 +42,18 @@ const NftItem = ({ item }: { item: NFT }) => {
           <>
             <Image
               blurRadius={24}
-              source={item.imgUrl}
+              source={nft.imgUrl}
               contentFit="cover"
               style={StyleSheet.absoluteFillObject}
             />
-            <Image flex={1} contentFit="contain" source={item.imgUrl} />
+            <Image flex={1} contentFit="contain" source={nft.imgUrl} />
           </>
         ) : (
           <Image
             flex={1}
-            style={{ backgroundColor: hslFromArray(item.bgColor) }}
+            style={{ backgroundColor: hslFromArray(nft.bgColor) }}
             contentFit="contain"
-            source={item.imgUrl}
+            source={nft.imgUrl}
           />
         )}
       </Box>
@@ -68,7 +70,7 @@ export const LikedTab = observer(() => {
       numColumns={3}
       estimatedItemSize={scale(152)}
       renderItem={({ item }) => {
-        return <NftItem item={item} />;
+        return <NftItem nft={item} />;
       }}
     />
   );
@@ -83,7 +85,7 @@ export const CreatedTab = observer(() => {
       numColumns={3}
       estimatedItemSize={scale(152)}
       renderItem={({ item }) => {
-        return <NftItem item={item} />;
+        return <NftItem nft={item} />;
       }}
     />
   );

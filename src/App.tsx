@@ -1,18 +1,23 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateScreen from '@screens/CreateScreen';
+import FullScreenNFTDetails from '@screens/FullScreenNFTDetails';
 import HomeScreen from '@screens/HomeScreen';
 import ProfileScreen from '@screens/ProfileScreen';
 import HomeIcon from '@shared/ui/icons/HomeIcon';
 import PlusCircleIcon from '@shared/ui/icons/PlusCircleIcon';
 import UserIcon from '@shared/ui/icons/UserIcon';
-import React from 'react';
-import * as SplashScreen from 'expo-splash-screen';
 import { useOnAppStart } from '@shared/useOnAppStart';
 import { scale } from '@shared/utils';
+import * as SplashScreen from 'expo-splash-screen';
+import React from 'react';
+import { MainRoutes, TabRoutes } from './route';
 
 SplashScreen.preventAutoHideAsync();
 
-const Tab = createBottomTabNavigator();
+const MainStack = createNativeStackNavigator<MainRoutes>();
+
+const Tab = createBottomTabNavigator<TabRoutes>();
 
 const defaultTabBarStyle = {
   borderTopWidth: 0,
@@ -20,27 +25,7 @@ const defaultTabBarStyle = {
   paddingHorizontal: scale(32),
 };
 
-function App(): JSX.Element | null {
-  const { isDataLoaded } = useOnAppStart();
-
-  // doesn't work
-  // const onLayoutRootView = useCallback(async () => {//
-  //   if (isDataLoaded) {
-  //     // This tells the splash screen to hide immediately! If we call this after
-  //     // `setAppIsReady`, then we may see a blank screen while the app is
-  //     // loading its initial state and rendering its first pixels. So instead,
-  //     // we hide the splash screen once we know the root view has already
-  //     // performed layout.
-  //     await SplashScreen.hideAsync();
-  //   }
-  // }, [isDataLoaded]);
-
-  if (!isDataLoaded) {
-    return null;
-  }
-
-  SplashScreen.hideAsync();
-
+function TabActivity() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -84,6 +69,28 @@ function App(): JSX.Element | null {
         options={{ tabBarIcon: UserIcon }}
       />
     </Tab.Navigator>
+  );
+}
+
+function App(): JSX.Element | null {
+  useOnAppStart();
+
+  return (
+    <MainStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <MainStack.Screen name="Main" component={TabActivity} />
+      <MainStack.Screen
+        name="FullScreenNFTDetails"
+        component={FullScreenNFTDetails}
+        options={{
+          gestureEnabled: false,
+          presentation: 'transparentModal',
+        }}
+      />
+    </MainStack.Navigator>
   );
 }
 
