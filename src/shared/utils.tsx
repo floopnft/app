@@ -51,3 +51,11 @@ export function getFilenameFromUrl(url: string) {
 export function ucarecdn(id: string) {
   return `https://ucarecdn.com/${id}/`;
 }
+
+export function ucareId(url: string) {
+  return url.split('/').slice(-2)[0];
+}
+
+export function ucarecdnPreview(id: string) {
+  return `https://ucarecdn.com/${id}/-/preview/`;
+}

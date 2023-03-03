@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { hslFromArray } from '@shared/ui/color-utils';
 import { Box, Image } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
-import { scale } from '@shared/utils';
+import { scale, ucarecdnPreview, ucareId } from '@shared/utils';
 import { FlashList } from '@shopify/flash-list';
 import { MainRoutes } from '@src/route';
 import React, { useCallback, useState } from 'react';
@@ -42,11 +42,15 @@ const NftItem = ({ nft }: { nft: NFT }) => {
           <>
             <Image
               blurRadius={24}
-              source={nft.imgUrl}
+              source={ucarecdnPreview(ucareId(nft.imgUrl))}
               contentFit="cover"
               style={StyleSheet.absoluteFillObject}
             />
-            <Image flex={1} contentFit="contain" source={nft.imgUrl} />
+            <Image
+              flex={1}
+              contentFit="contain"
+              source={ucarecdnPreview(ucareId(nft.imgUrl))}
+            />
           </>
         ) : (
           <Image
