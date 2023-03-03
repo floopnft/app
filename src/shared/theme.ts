@@ -3,7 +3,7 @@ import { scale } from './utils';
 
 const colors = {
   purpleLight: '#8C6FF7',
-  purplePrimary: '#5A31F4',
+  purplePrimary: '#2802A5',
   purpleDark: '#3F22AB',
 
   greenLight: '#56DCBA',
@@ -17,6 +17,8 @@ const colors = {
 const theme = createTheme({
   colors: {
     primaryText: colors.white,
+
+    brandColor: colors.purplePrimary,
 
     black: colors.black,
     white: colors.white,

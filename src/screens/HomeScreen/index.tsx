@@ -1,6 +1,8 @@
 import { $nftFeed } from '@entities/feed/model';
 import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
 import { NFT } from '@entities/nft/model';
+import OnboardingCard from '@src/widgets/feed/ui/OnboardingCard';
+import OnboardingText from '@features/onboarding/ui/OnboardingText';
 import ReactionsFeed from '@features/reactions/ui/ReactionsFeed';
 import { observer } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -55,6 +57,15 @@ const CardTrackingVisibility = observer(({ nft }: { nft: NFT }) => {
   );
 });
 
+const OnboardingCardTrackingVisibility = observer(({ nft }: { nft: NFT }) => {
+  const isVisible = $currentVisibleCard.get()?.id === nft.id;
+  // console.log('isVisible', isVisible, nft.title);
+
+  return (
+    <OnboardingCard bgColor={hslFromArray([0, 100, 0])} imgUrl={nft.imgUrl} />
+  );
+});
+
 const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
@@ -72,6 +83,22 @@ const HomeScreen = () => {
         }}
       >
         <CardTrackingVisibility nft={item} />
+      </Box>
+    ),
+    [insets, tabBarHeight]
+  );
+
+  const renderOnboarding = useCallback(
+    ({ item, index }: ListRenderItemInfo<NFT>) => (
+      <Box
+        height={listElementHeight}
+        padding={3}
+        style={{
+          paddingTop: insets.top,
+          paddingBottom: tabBarHeight + verticalScale(12),
+        }}
+      >
+        <OnboardingCardTrackingVisibility nft={item} />
       </Box>
     ),
     [insets, tabBarHeight]
@@ -139,12 +166,27 @@ const HomeScreen = () => {
   return (
     <>
       <Animated.View style={[sharedStyles.container, animatedStyle]}>
-        <AnimatedFlashList
+        {/* <AnimatedFlashList
           onScroll={scrollHandler}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
           data={nftFeedItems}
           renderItem={renderItem}
+          estimatedItemSize={listElementHeight}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+          decelerationRate="fast"
+          snapToAlignment="start"
+          snapToInterval={listElementHeight}
+          // onEndReachedThreshold={2}
+          // onEndReached={loadNextRecommendedNfts}
+        /> */}
+        <AnimatedFlashList
+          onScroll={scrollHandler}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+          data={nftFeedItems}
+          renderItem={renderOnboarding}
           estimatedItemSize={listElementHeight}
           showsVerticalScrollIndicator={false}
           bounces={false}
