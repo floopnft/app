@@ -1,10 +1,9 @@
 import { ReactionCatalog, ReactionType } from '@entities/feed/ui/Reaction';
-import { observable } from '@legendapp/state';
-import { nanoid } from 'nanoid';
 import { upsertNftReaction } from '@entities/nft/api/nft-reactions-api';
+import { observable } from '@legendapp/state';
 import { $currentVisibleCard } from '@screens/HomeScreen/model';
-import { fetchUserProfile } from '@screens/ProfileScreen/api';
-import { updateNftStores } from '@screens/ProfileScreen/model';
+import { updateUserProfile } from '@screens/ProfileScreen/model';
+import { nanoid } from 'nanoid';
 
 interface UserNftReaction {
   id: string;
@@ -27,8 +26,7 @@ $lastNftReaction.onChange(async (reaction) => {
     reactionId: reaction.reactionId,
   };
   await upsertNftReaction(command);
-  const { data: profile } = fetchUserProfile();
-  profile.onChange(updateNftStores);
+  updateUserProfile.fire();
 });
 
 export function addReaction(
