@@ -35,6 +35,8 @@ const ReactionToolbox = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const style = useAnimatedStyle(() => {
+    // seems like this prevents flickering, hmm...
+    console.log('isOpen', isOpen);
     if (isOpen) {
       return {
         width: withTiming(targetWidth, { duration: 300 }),
