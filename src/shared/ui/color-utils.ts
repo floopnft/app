@@ -1,6 +1,7 @@
 export type HSLColor = [number, number, number];
 
 export function hslFromArray([h, s, l]: HSLColor): string {
+  'worklet';
   return `hsl(${h}, ${s}%, ${l}%)`;
 }
 

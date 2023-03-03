@@ -14,6 +14,12 @@ SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
 
+const defaultTabBarStyle = {
+  borderTopWidth: 0,
+  backgroundColor: 'black',
+  paddingHorizontal: scale(32),
+};
+
 function App(): JSX.Element | null {
   const { isDataLoaded } = useOnAppStart();
 
@@ -40,11 +46,9 @@ function App(): JSX.Element | null {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          position: 'absolute',
-          backgroundColor: 'transparent',
           borderTopWidth: 0,
-          elevation: 0,
-          marginHorizontal: scale(32),
+          backgroundColor: 'black',
+          paddingHorizontal: scale(32),
         },
         tabBarActiveTintColor: 'white',
         tabBarLabelStyle: {
@@ -56,7 +60,15 @@ function App(): JSX.Element | null {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{ tabBarIcon: HomeIcon }}
+        options={{
+          tabBarIcon: HomeIcon,
+          tabBarStyle: {
+            ...defaultTabBarStyle,
+            position: 'absolute',
+            backgroundColor: 'transparent',
+            elevation: 0,
+          },
+        }}
       />
       <Tab.Screen
         name="Create"

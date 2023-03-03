@@ -1,15 +1,27 @@
-import { observer, Show } from '@legendapp/state/react';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { Show } from '@legendapp/state/react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { $userProfile } from '@screens/ProfileScreen/model';
+import { hslFromArray } from '@shared/ui/color-utils';
 import HeartOutlineIcon from '@shared/ui/icons/HeartOutlineIcon';
 import ViewGridOutlineIcon from '@shared/ui/icons/ViewGridOutlineIcon';
 import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { scale } from '@shared/utils';
+import { scale, SCREEN_HEIGHT } from '@shared/utils';
 import { shortenWalletAddress } from '@shared/wallet';
-import { FlashList } from '@shopify/flash-list';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  runOnJS,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
+import { snapPoint, useVector } from 'react-native-redash';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   NavigationState,
@@ -18,80 +30,17 @@ import {
   TabBar,
   TabView,
 } from 'react-native-tab-view';
-import { hslFromArray } from '@shared/ui/color-utils';
-import {
-  $createdNfts,
-  $likedNfts,
-  $userProfile,
-} from '@screens/ProfileScreen/model';
-
-const Liked = observer(() => {
-  return (
-    <FlashList
-      contentContainerStyle={{ padding: scale(16) }}
-      ItemSeparatorComponent={() => <Box height={scale(8)} />}
-      data={$likedNfts.get()}
-      numColumns={3}
-      estimatedItemSize={scale(152)}
-      renderItem={({ item }) => {
-        return (
-          <Box
-            style={[
-              {
-                backgroundColor: hslFromArray(item.bgColor),
-              },
-            ]}
-            width={scale(88)}
-            height={scale(152)}
-            borderRadius={12}
-          >
-            <Image
-              contentFit="contain"
-              style={sharedStyles.container}
-              source={item.imgUrl}
-            />
-          </Box>
-        );
-      }}
-    />
-  );
-});
-
-const Created = observer(() => (
-  <FlashList
-    contentContainerStyle={{ padding: scale(16) }}
-    ItemSeparatorComponent={() => <Box height={scale(8)} />}
-    data={$createdNfts.get()}
-    numColumns={3}
-    estimatedItemSize={scale(152)}
-    renderItem={({ item }) => {
-      return (
-        <Box
-          style={[
-            {
-              backgroundColor: hslFromArray(item.bgColor),
-            },
-          ]}
-          width={scale(88)}
-          height={scale(152)}
-          borderRadius={12}
-          overflow="hidden"
-        >
-          <Image
-            // contentFit="contain"
-            style={sharedStyles.container}
-            source={item.imgUrl}
-          />
-        </Box>
-      );
-    }}
-  />
-));
+import { CreatedTab, LikedTab } from './tabs';
 
 const routes = [
   { key: 'created', title: 'Created' },
   { key: 'liked', title: 'Liked' },
 ];
+
+const renderScene = SceneMap({
+  created: CreatedTab,
+  liked: LikedTab,
+});
 
 const renderTabBar = (
   props: SceneRendererProps & {
@@ -120,13 +69,9 @@ const renderTabBar = (
   />
 );
 
-const renderScene = SceneMap({
-  created: Created,
-  liked: Liked,
-});
+const Stack = createNativeStackNavigator();
 
 const ProfileScreen = () => {
-  const bottomTabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
   const [index, setIndex] = React.useState(0);
@@ -163,7 +108,6 @@ const ProfileScreen = () => {
       </Box>
       <TabView
         renderTabBar={renderTabBar}
-        style={{ paddingBottom: bottomTabBarHeight }}
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
@@ -172,4 +116,97 @@ const ProfileScreen = () => {
   );
 };
 
-export default observer(ProfileScreen);
+const NftDetails = ({ route, navigation }: any) => {
+  const { item } = route.params;
+  const isGestureActive = useSharedValue(false);
+  const translation = useVector();
+
+  const onGestureEvent = useAnimatedGestureHandler({
+    onStart: () => (isGestureActive.value = true),
+    onActive: ({ translationX, translationY }) => {
+      translation.x.value = translationX;
+      translation.y.value = translationY;
+    },
+    onEnd: ({ translationY, velocityY }) => {
+      const snapBack =
+        snapPoint(translationY, velocityY, [0, SCREEN_HEIGHT]) ===
+        SCREEN_HEIGHT;
+
+      if (snapBack) {
+        runOnJS(navigation.goBack)();
+      } else {
+        isGestureActive.value = false;
+        translation.x.value = withSpring(0);
+        translation.y.value = withSpring(0);
+      }
+    },
+  });
+  const style = useAnimatedStyle(() => {
+    const scale = interpolate(
+      translation.y.value,
+      [0, SCREEN_HEIGHT],
+      [1, 0.5],
+      Extrapolate.CLAMP
+    );
+    return {
+      flex: 1,
+      transform: [
+        { translateX: translation.x.value * scale },
+        { translateY: translation.y.value * scale },
+        { scale },
+      ],
+      borderRadius: 12,
+      overflow: 'hidden',
+    };
+  });
+
+  const isHslCorrupted = item.bgColor[2] > 100;
+
+  return (
+    <PanGestureHandler onGestureEvent={onGestureEvent}>
+      <Animated.View style={style}>
+        {isHslCorrupted ? (
+          <>
+            <Image
+              blurRadius={24}
+              source={item.imgUrl}
+              resizeMode="cover"
+              style={StyleSheet.absoluteFillObject}
+            />
+            <Image
+              style={sharedStyles.container}
+              resizeMode="contain"
+              source={{ uri: item.imgUrl }}
+            />
+          </>
+        ) : (
+          <Image
+            style={[
+              sharedStyles.container,
+              { backgroundColor: hslFromArray(item.bgColor) },
+            ]}
+            resizeMode="contain"
+            source={{ uri: item.imgUrl }}
+          />
+        )}
+      </Animated.View>
+    </PanGestureHandler>
+  );
+};
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+        presentation: 'transparentModal',
+      }}
+    >
+      <Stack.Screen name="ProfilMain" component={ProfileScreen} />
+      <Stack.Screen name="NftDetails" component={NftDetails} />
+    </Stack.Navigator>
+  );
+};
+
+export default ProfileStack;
