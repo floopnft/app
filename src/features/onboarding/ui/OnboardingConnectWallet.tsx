@@ -25,7 +25,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
 }) => {
   return (
     <Box flex={1}>
-      <Box flex={1} overflow="hidden" borderRadius={20}>
+      <Box flex={1} overflow="hidden" borderRadius={20} my={12} mx={4}>
         <Image flex={1} source={img} contentFit={imgFit} />
       </Box>
       <Box marginBottom={3} flexDirection="row" alignItems="center">

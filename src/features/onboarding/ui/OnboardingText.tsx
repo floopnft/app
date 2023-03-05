@@ -17,7 +17,7 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
 }) => {
   return (
     <Box flex={1}>
-      <Box flex={1} overflow="hidden" borderRadius={20} margin={10}>
+      <Box flex={1} overflow="hidden" borderRadius={20} my={12} mx={4}>
         <Image flex={1} source={img} contentFit="cover" />
       </Box>
       <Box marginBottom={3} flexDirection="row" alignItems="center">
