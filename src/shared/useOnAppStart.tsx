@@ -1,24 +1,24 @@
-import { $nftFeed } from '@entities/feed/model';
-import { getRecommendedNfts } from '@entities/nft/api/nft-api';
-import { loginUser } from '@entities/user/api/user-login-api';
+import { $user } from '@entities/user/model';
+import { $nftFeed } from '@features/feed/model';
 import { event, when } from '@legendapp/state';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { loadWallet } from './wallet';
 
 export const navigationReady = event();
 
 export const useOnAppStart = () => {
-  const loadData = async () => {
-    await loginUser();
-    const recommendedNfts = await getRecommendedNfts({
-      count: 3,
-    });
-    $nftFeed.set(recommendedNfts);
-    
+  const init = async () => {
+    const wallet = await loadWallet();
+    if (wallet) {
+      await when($user);
+      await when($nftFeed);
+    }
+
     await when(navigationReady);
   };
 
   useEffect(() => {
-    loadData().finally(() => SplashScreen.hideAsync());
+    init().finally(() => SplashScreen.hideAsync());
   }, []);
 };

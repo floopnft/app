@@ -2,6 +2,7 @@ import { Dimensions, PixelRatio, Platform } from 'react-native';
 
 export const EMPTY_ARR: never[] = [];
 export const EMPTY_OBJ = {};
+export const NOOP = () => {};
 
 const { width, height } = Dimensions.get('screen');
 

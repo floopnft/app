@@ -1,5 +1,5 @@
 import { Observable, observable } from '@legendapp/state';
-import { wallet } from '@shared/wallet';
+import { $wallet } from '@shared/wallet';
 import { useMemo } from 'react';
 import { config } from './config';
 
@@ -52,7 +52,7 @@ export async function httpFetch<
       ...(params?.method !== 'GET' && {
         'Content-Type': 'application/json',
       }),
-      Authorization: `Bearer ${wallet.publicKey.toBase58()}`,
+      Authorization: `Bearer ${$wallet.publicKey.peek()}`,
     },
   });
 

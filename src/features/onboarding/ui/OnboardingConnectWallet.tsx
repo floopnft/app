@@ -1,19 +1,24 @@
+import { $nftFeedLoading } from '@features/feed/model';
+import { Show } from '@legendapp/state/react';
 import { Box, Image, Text } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale } from '@shared/utils';
+import {
+  $wallet,
+  initWallet,
+  isSaga,
+  shortenWalletAddress,
+} from '@shared/wallet';
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 
 export interface OnboardingConnectWalletProps {
-  title: string;
-  title2: string;
   hints?: string[];
   img?: number;
   imgFit?: 'cover' | 'contain';
 }
 
 const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
-  title,
-  title2,
   hints,
   img,
   imgFit = 'cover',
@@ -49,7 +54,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
         </Box>
       )}
       <Text fontSize={scale(24)} fontWeight="500">
-        {title}
+        Almost ready
       </Text>
       <Text
         fontSize={scale(14)}
@@ -58,23 +63,64 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
         fontWeight="400"
         color="secondaryText"
       >
-        {title2}
+        {isSaga
+          ? "Connect your existing wallet or just swipe and we'll generate a wallet for you"
+          : 'We created a wallet for you, just swipe to start exploring NFTs'}
       </Text>
       <Box flex={1} overflow="hidden" borderRadius={20} margin={2}>
         <Image flex={1} source={img} contentFit={imgFit} />
       </Box>
-      <TouchableOpacity
-        backgroundColor="darkBlue"
-        py={4}
-        width="90%"
-        alignSelf="center"
-        alignItems="center"
-        borderRadius={12}
-      >
-        <Text fontSize={scale(14)} fontWeight="600">
-          Connect wallet
-        </Text>
-      </TouchableOpacity>
+      {isSaga ? (
+        <TouchableOpacity
+          backgroundColor="darkBlue"
+          py={4}
+          width="90%"
+          alignSelf="center"
+          alignItems="center"
+          borderRadius={12}
+          onPress={initWallet}
+        >
+          <Show
+            if={$wallet}
+            else={
+              <Text fontSize={scale(14)} fontWeight="600">
+                Connect wallet
+              </Text>
+            }
+          >
+            <Text fontSize={scale(14)} fontWeight="600">
+              {shortenWalletAddress($wallet.publicKey.get())}
+            </Text>
+          </Show>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          backgroundColor="darkBlue"
+          py={4}
+          width="90%"
+          alignSelf="center"
+          alignItems="center"
+          borderRadius={12}
+          onPress={initWallet}
+        >
+          <Show
+            if={$wallet}
+            else={
+              <Text fontSize={scale(14)} fontWeight="600">
+                Generate wallet
+              </Text>
+            }
+          >
+            {$nftFeedLoading.get() ? (
+              <ActivityIndicator />
+            ) : (
+              <Text fontSize={scale(14)} fontWeight="600">
+                {shortenWalletAddress($wallet.publicKey.get())}
+              </Text>
+            )}
+          </Show>
+        </TouchableOpacity>
+      )}
     </>
   );
 };

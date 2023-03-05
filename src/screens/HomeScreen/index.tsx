@@ -1,4 +1,5 @@
-import { $nftFeed } from '@entities/feed/model';
+import { $nftFeed } from '@features/feed/model';
+import { $isUserOnboarded } from '@features/onboarding/model';
 import { $shouldShowReactions } from '@features/reactions/model';
 import Reactions from '@features/reactions/ui/Reactions';
 import { observer, Show } from '@legendapp/state/react';
@@ -31,7 +32,7 @@ import {
   viewabilityConfig,
 } from './list';
 import { $currentVisibleCard } from './model';
-import { onboarding } from './onboarding-data';
+import { ONBOARDING_DATA } from './onboarding-data';
 
 const VisibilityTracker = observer(
   //@ts-ignore
@@ -156,7 +157,9 @@ const HomeScreen = () => {
     }
   };
 
-  const data: FeedItem[] = [...onboarding, ...nftFeedItems];
+  const data: FeedItem[] = $isUserOnboarded.get()
+    ? nftFeedItems
+    : [...ONBOARDING_DATA, ...nftFeedItems];
 
   return (
     <>

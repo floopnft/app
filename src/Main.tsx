@@ -21,6 +21,8 @@ const onNavigationReady = () => {
   navigationReady.fire();
 };
 
+// AsyncStorage.clear(); // uncomment to clear storage
+
 const Main = () => {
   return (
     <GestureHandlerRootView style={sharedStyles.container}>

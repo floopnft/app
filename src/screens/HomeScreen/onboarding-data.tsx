@@ -9,7 +9,7 @@ const y00t = require('@shared/ui/static/y00t.png');
 const bot = require('@shared/ui/static/bot.png');
 const nfts = require('@shared/ui/static/nfts.png');
 
-export const onboarding: CustomFeedItem<any>[] = [
+export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   {
     id: 'onboarding_1',
     Component: ({ visible }) => {
@@ -69,8 +69,6 @@ export const onboarding: CustomFeedItem<any>[] = [
       return (
         <Box flex={1}>
           <OnboardingConnectWallet
-            title="Final step"
-            title2="Connect your wallet or just swipe to start exploring NFTs"
             hints={['welcome on board']}
             img={nfts}
             imgFit="contain"

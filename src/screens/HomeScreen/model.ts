@@ -1,6 +1,10 @@
-import { $nftFeed } from '@entities/feed/model';
 import { getRecommendedNfts } from '@entities/nft/api/nft-api';
 import { clearNftViews, saveNftView } from '@entities/nft/api/nft-views-api';
+import { $nftFeed } from '@features/feed/model';
+import {
+  $isUserOnboarded,
+  onboardingCompleted,
+} from '@features/onboarding/model';
 import { observable } from '@legendapp/state';
 
 const LOAD_THRESHOLD = 2;
@@ -22,25 +26,32 @@ $currentVisibleCard.onChange(({ value: card, changes, getPrevious }) => {
 
   const prevCard = getPrevious() as VisibleCard | null;
 
-  // if previous card - track
-  if (
-    prevCard &&
-    prevCard.id !== card.id &&
-    !prevCard.id.startsWith('onboarding')
-  ) {
-    // console.log('trackNftView', {
-    //   nftId: prevCard.id,
-    //   d: card.ts - prevCard.ts,
-    //   idx: prevCard.index,
-    // });
+  const reallySwipedPrevCard = prevCard && prevCard.id !== card.id;
 
-    saveNftView({
-      nftId: prevCard.id,
-      viewStartedAt: new Date(prevCard.ts),
-      viewFinishedAt: new Date(card.ts),
-    });
+  if (reallySwipedPrevCard) {
+    if (!prevCard.id.startsWith('onboarding')) {
+      // console.log('trackNftView', {
+      //   nftId: prevCard.id,
+      //   d: card.ts - prevCard.ts,
+      //   idx: prevCard.index,
+      // });
 
-    clearNftViews(); // Comment this line to hide viewed nfts from feed
+      saveNftView({
+        nftId: prevCard.id,
+        viewStartedAt: new Date(prevCard.ts),
+        viewFinishedAt: new Date(card.ts),
+      });
+
+      clearNftViews(); // Comment this line to hide viewed nfts from feed
+    }
+    if (prevCard.id === 'onboarding_wallet') {
+      onboardingCompleted.fire();
+    }
+  }
+
+  // it's a bit hacky actually :(
+  if (!$isUserOnboarded.peek()) {
+    return;
   }
 
   const feed = $nftFeed.peek();
