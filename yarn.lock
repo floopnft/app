@@ -1918,10 +1918,10 @@
     recyclerlistview "4.2.0"
     tslib "2.4.0"
 
-"@shopify/react-native-skia@^0.1.175":
-  version "0.1.175"
-  resolved "https://registry.yarnpkg.com/@shopify/react-native-skia/-/react-native-skia-0.1.175.tgz#4fc6b30f7d47d3dc9192791021d99e5d11f75739"
-  integrity sha512-vA5YPGu7GmBi5qliLyMzbpkH9mmCWAZoaoGhM9/g5o9zX8xAmUYcGgg3MOqxtnxCnfTmqFFBj43s+QGgMRTpqg==
+"@shopify/react-native-skia@^0.1.176":
+  version "0.1.176"
+  resolved "https://registry.yarnpkg.com/@shopify/react-native-skia/-/react-native-skia-0.1.176.tgz#98462607d5cbb812bd2467e342835139ce28e202"
+  integrity sha512-T4kvaQqreFG1V3TkzX5Bry69Eyz2UwWnA2Cd240HOGGRBHdcSCqJaAw07cPiFy/5YrJev85fdU0GxdrjjJQ0mA==
   dependencies:
     "@types/pixelmatch" "^5.2.4"
     "@types/pngjs" "^6.0.1"
@@ -1932,10 +1932,10 @@
     react-reconciler "^0.27.0"
     ws "^8.11.0"
 
-"@shopify/restyle@^2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@shopify/restyle/-/restyle-2.4.0.tgz#48da0b185d1bbaf9d0fb002e63828d6f7fd14d52"
-  integrity sha512-PbcExQEs42waVyR+rPhecRi/yr0WKgQe1W9Oz1FwD0wq9mSRMgtyJe1EdApl3+7UiM6xqCxYCHVxW+F4h9eq/g==
+"@shopify/restyle@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@shopify/restyle/-/restyle-2.4.1.tgz#d00179c17a6bb909497d439165118a67ca96abdb"
+  integrity sha512-GGQxKKBlhsnFSefgtUix3EUltT67ege7J5Rev5Md/wsiti44H6r33/Vklm7A1XL9UwaEou5PtEgAlflsG5ljAQ==
 
 "@sideway/address@^4.1.3":
   version "4.1.4"
@@ -7498,10 +7498,10 @@ react-native-svg@^13.8.0:
     css-select "^5.1.0"
     css-tree "^1.1.3"
 
-react-native-tab-view@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.4.1.tgz#50342777633b54822f0e905aaf5852bf5b256c81"
-  integrity sha512-pjhcm9bml91tbO7GkKQ5FGrwlHJXQqMzLcZtkXOSfFxoJ2XHJvbLxQSK0MpLyOjhbFdVbeeG4Zt083XQB1c1Lw==
+react-native-tab-view@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.5.1.tgz#2ad454afc0e186b43ea8b89053f39180d480d48b"
+  integrity sha512-qdrS5t+AEhfuKQyuCXkwHu4IVppkuTvzWWlkSZKrPaSkjjIa32xrsGxt1UW9YDdro2w4AMw5hKn1hFmg/5mvzA==
   dependencies:
     use-latest-callback "^0.1.5"
 
