@@ -1,7 +1,8 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": false, // lol, legend state what a u doing to me!!
+    "strict": true,
+    "strictNullChecks": false, // lol, legend state what a u doing to me!!
     "baseUrl": "./src",
     "paths": {
       "@entities/*": ["./entities/*"],

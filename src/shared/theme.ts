@@ -2,14 +2,6 @@ import { createTheme } from '@shopify/restyle';
 import { scale } from './utils';
 
 const colors = {
-  purpleLight: '#8C6FF7',
-  purplePrimary: '#5A31F4',
-  purpleDark: '#3F22AB',
-
-  greenLight: '#56DCBA',
-  greenPrimary: '#0ECD9D',
-  greenDark: '#0A906E',
-
   black: '#000',
   white: '#FFF',
 };
@@ -17,10 +9,12 @@ const colors = {
 const theme = createTheme({
   colors: {
     primaryText: colors.white,
+    secondaryText: '#A3A3A3',
 
     black: colors.black,
     white: colors.white,
     darkGray: '#141414',
+    darkBlue: '#2802A5',
 
     debug: '#ff00ff',
     debug1: '#ff0000',

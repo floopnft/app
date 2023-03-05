@@ -1,7 +1,7 @@
 import { $nftFeed } from '@entities/feed/model';
 import { getRecommendedNfts } from '@entities/nft/api/nft-api';
 import { clearNftViews, saveNftView } from '@entities/nft/api/nft-views-api';
-import { observable, observe } from '@legendapp/state';
+import { observable } from '@legendapp/state';
 
 const LOAD_THRESHOLD = 2;
 
@@ -14,24 +14,25 @@ interface VisibleCard {
 
 export const $currentVisibleCard = observable<VisibleCard>(null);
 
-observe<VisibleCard>((ev) => {
-  const card = $currentVisibleCard.get();
+$currentVisibleCard.onChange(({ value: card, changes, getPrevious }) => {
   // no card - no load
   if (!card) {
     return card;
   }
 
+  const prevCard = getPrevious() as VisibleCard | null;
+
   // if previous card - track
-  if (ev.previous) {
+  if (prevCard && prevCard.id !== card.id) {
     // console.log('trackNftView', {
-    //   nftId: ev.previous.id,
-    //   d: card.ts - ev.previous.ts,
-    //   idx: ev.previous.index,
+    //   nftId: prevCard.id,
+    //   d: card.ts - prevCard.ts,
+    //   idx: prevCard.index,
     // });
 
     saveNftView({
-      nftId: ev.previous.id,
-      viewStartedAt: new Date(ev.previous.ts),
+      nftId: prevCard.id,
+      viewStartedAt: new Date(prevCard.ts),
       viewFinishedAt: new Date(card.ts),
     });
 

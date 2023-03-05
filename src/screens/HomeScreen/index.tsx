@@ -1,8 +1,7 @@
 import { $nftFeed } from '@entities/feed/model';
-import ReactionToolbox from '@entities/feed/ui/ReactionToolbox';
-import { NFT } from '@entities/nft/model';
-import ReactionsFeed from '@features/reactions/ui/ReactionsFeed';
-import { observer } from '@legendapp/state/react';
+import { $shouldShowReactions } from '@features/reactions/model';
+import Reactions from '@features/reactions/ui/Reactions';
+import { observer, Show } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   HSLColor,
@@ -11,16 +10,11 @@ import {
 } from '@shared/ui/color-utils';
 import { Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { scale, SCREEN_HEIGHT, verticalScale } from '@shared/utils';
-import {
-  FlashList,
-  FlashListProps,
-  ListRenderItemInfo,
-} from '@shopify/flash-list';
+import { verticalScale } from '@shared/utils';
+import { ListRenderItemInfo } from '@shopify/flash-list';
 import ViewToken from '@shopify/flash-list/dist/viewability/ViewToken';
 import Card from '@src/widgets/feed/ui/Card';
 import React, { useCallback, useEffect } from 'react';
-import { ViewabilityConfig } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedScrollHandler,
@@ -28,32 +22,31 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  AnimatedFlashList,
+  FeedItem,
+  getItemType,
+  keyExtractor,
+  listElementHeight,
+  viewabilityConfig,
+} from './list';
 import { $currentVisibleCard } from './model';
+import { onboarding } from './onboarding-data';
 
-const listElementHeight = SCREEN_HEIGHT;
+const VisibilityTracker = observer(
+  //@ts-ignore
+  ({ item, children }: { item: FeedItem; children: React.ReactNode }) => {
+    const isVisible = $currentVisibleCard.get()?.id === item.id;
 
-const AnimatedFlashList =
-  Animated.createAnimatedComponent<FlashListProps<NFT>>(FlashList);
-
-const viewabilityConfig: ViewabilityConfig = {
-  itemVisiblePercentThreshold: 80,
-};
-
-const CardTrackingVisibility = observer(({ nft }: { nft: NFT }) => {
-  const isVisible = $currentVisibleCard.get()?.id === nft.id;
-  // console.log('isVisible', isVisible, nft.title);
-
-  return (
-    <Card
-      imgUrl={nft.imgUrl}
-      bgColor={hslFromArray(nft.bgColor)}
-      avatarUrl={nft.collectionAvatarUrl}
-      hints={nft.hints}
-      title={nft.title}
-      username={nft.collectionName}
-    />
-  );
-});
+    return React.Children.map(children, (child) => {
+      if (React.isValidElement(child)) {
+        // @ts-ignore
+        return React.cloneElement(child, { visible: isVisible });
+      }
+      return child;
+    });
+  }
+);
 
 const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
@@ -62,18 +55,45 @@ const HomeScreen = () => {
   const nftFeedItems = $nftFeed.get();
 
   const renderItem = useCallback(
-    ({ item, index }: ListRenderItemInfo<NFT>) => (
-      <Box
-        height={listElementHeight}
-        padding={3}
-        style={{
-          paddingTop: insets.top,
-          paddingBottom: tabBarHeight + verticalScale(12),
-        }}
-      >
-        <CardTrackingVisibility nft={item} />
-      </Box>
-    ),
+    ({ item, index }: ListRenderItemInfo<FeedItem>) => {
+      if ('Component' in item) {
+        return (
+          <Box
+            height={listElementHeight}
+            padding={3}
+            style={{
+              paddingTop: insets.top,
+              paddingBottom: tabBarHeight + verticalScale(12),
+            }}
+            backgroundColor="black"
+          >
+            <VisibilityTracker item={item}>
+              <item.Component />
+            </VisibilityTracker>
+          </Box>
+        );
+      }
+
+      return (
+        <Box
+          height={listElementHeight}
+          padding={3}
+          style={{
+            paddingTop: insets.top,
+            paddingBottom: tabBarHeight + verticalScale(12),
+          }}
+        >
+          <Card
+            imgUrl={item.imgUrl}
+            bgColor={hslFromArray(item.bgColor)}
+            avatarUrl={item.collectionAvatarUrl}
+            hints={item.hints}
+            title={item.title}
+            username={item.collectionName}
+          />
+        </Box>
+      );
+    },
     [insets, tabBarHeight]
   );
 
@@ -125,7 +145,7 @@ const HomeScreen = () => {
   const onViewableItemsChanged: (info: {
     viewableItems: ViewToken[];
     changed: ViewToken[];
-  }) => void = ({ viewableItems }) => {
+  }) => void = ({ viewableItems, changed }) => {
     // new card is visible
     if (viewableItems.length === 1) {
       $currentVisibleCard.set({
@@ -136,15 +156,19 @@ const HomeScreen = () => {
     }
   };
 
+  const data: FeedItem[] = [...onboarding, ...nftFeedItems];
+
   return (
     <>
       <Animated.View style={[sharedStyles.container, animatedStyle]}>
         <AnimatedFlashList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          getItemType={getItemType}
           onScroll={scrollHandler}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
-          data={nftFeedItems}
-          renderItem={renderItem}
           estimatedItemSize={listElementHeight}
           showsVerticalScrollIndicator={false}
           bounces={false}
@@ -155,21 +179,9 @@ const HomeScreen = () => {
           // onEndReached={loadNextRecommendedNfts}
         />
       </Animated.View>
-      <Box
-        position="absolute"
-        bottom={tabBarHeight + verticalScale(24)}
-        right={scale(24)}
-      >
-        <ReactionToolbox />
-      </Box>
-      <Box
-        pointerEvents="none"
-        position="absolute"
-        bottom={tabBarHeight + scale(72)}
-        right={scale(20)}
-      >
-        <ReactionsFeed />
-      </Box>
+      <Show if={$shouldShowReactions}>
+        <Reactions />
+      </Show>
     </>
   );
 };

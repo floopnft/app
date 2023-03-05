@@ -1595,10 +1595,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@legendapp/state@^0.23.4":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@legendapp/state/-/state-0.23.4.tgz#ace2f7805cd0279f1bda7f1734c14dabca84ba1f"
-  integrity sha512-9N4HIG+RIyIfdbb7B9i6wW1B+8SO/zSno2lu6ztj48Vz6UixFPsn8dNgJv/qC1B9YjXp8f5Lh0gKhgudX0jDhA==
+"@legendapp/state@^1.0.0-rc.16":
+  version "1.0.0-rc.16"
+  resolved "https://registry.yarnpkg.com/@legendapp/state/-/state-1.0.0-rc.16.tgz#3d38c93fc87d0df3168b64c589d7330b29423631"
+  integrity sha512-ZRG1uUMNJ4eJro2I6HYWtQoNhXXZWxkmdpL1YG/Q1b+0PAX4orb44UF2JnL2urhAeU+feivEQQyljkOXJ65NZw==
 
 "@noble/ed25519@^1.7.0":
   version "1.7.3"

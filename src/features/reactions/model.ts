@@ -17,10 +17,12 @@ export interface NftReaction {
   reactionId: string;
 }
 
+export const $shouldShowReactions = observable<boolean>(true);
+
 export const $reactions = observable<UserNftReaction[]>([]);
 export const $lastNftReaction = observable<NftReaction | null>(null);
 
-$lastNftReaction.onChange(async (reaction) => {
+$lastNftReaction.onChange(async ({ value: reaction }) => {
   const command = {
     nftId: reaction.nftId,
     reactionId: reaction.reactionId,
