@@ -1,4 +1,4 @@
-import { ReactionCatalog, ReactionType } from '@entities/feed/ui/Reaction';
+import { ReactionCatalog, ReactionType } from '@entities/feed/ui/AnimatedReaction';
 import { upsertNftReaction } from '@entities/nft/api/nft-reactions-api';
 import { observable } from '@legendapp/state';
 import { $currentVisibleCard } from '@screens/HomeScreen/model';
@@ -16,8 +16,6 @@ export interface NftReaction {
   nftId: string;
   reactionId: string;
 }
-
-export const $shouldShowReactions = observable<boolean>(true);
 
 export const $reactions = observable<UserNftReaction[]>([]);
 export const $lastNftReaction = observable<NftReaction | null>(null);

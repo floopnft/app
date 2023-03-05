@@ -13,7 +13,7 @@ import {
   withDelay,
   withTiming,
 } from 'react-native-reanimated';
-import ReactionAnimation, { ReactionType } from '../../../entities/feed/ui/Reaction';
+import ReactionAnimation, { ReactionType } from '../../../entities/feed/ui/AnimatedReaction';
 
 const targetWidth = scale(24 * 4 + 28);
 

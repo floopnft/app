@@ -1,13 +1,11 @@
 import { $nftFeed } from '@features/feed/model';
 import { $isUserOnboarded } from '@features/onboarding/model';
-import { $shouldShowReactions } from '@features/reactions/model';
-import Reactions from '@features/reactions/ui/Reactions';
-import { observer, Show } from '@legendapp/state/react';
+import { observer } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   HSLColor,
   hslFromArray,
-  reduceLightning,
+  reduceLightning
 } from '@shared/ui/color-utils';
 import { Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
@@ -20,7 +18,7 @@ import Animated, {
   interpolateColor,
   useAnimatedScrollHandler,
   useAnimatedStyle,
-  useSharedValue,
+  useSharedValue
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -29,7 +27,7 @@ import {
   getItemType,
   keyExtractor,
   listElementHeight,
-  viewabilityConfig,
+  viewabilityConfig
 } from './list';
 import { $currentVisibleCard } from './model';
 import { ONBOARDING_DATA } from './onboarding-data';
@@ -68,9 +66,7 @@ const HomeScreen = () => {
             }}
             backgroundColor="black"
           >
-            <VisibilityTracker item={item}>
-              <item.Component />
-            </VisibilityTracker>
+            <item.Component />
           </Box>
         );
       }
@@ -182,9 +178,6 @@ const HomeScreen = () => {
           // onEndReached={loadNextRecommendedNfts}
         />
       </Animated.View>
-      <Show if={$shouldShowReactions}>
-        <Reactions />
-      </Show>
     </>
   );
 };

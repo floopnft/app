@@ -16,12 +16,15 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
   img,
 }) => {
   return (
-    <>
-      <Box marginBottom={6} flexDirection="row" alignItems="center">
+    <Box flex={1}>
+      <Box flex={1} overflow="hidden" borderRadius={20} margin={10}>
+        <Image flex={1} source={img} contentFit="cover" />
+      </Box>
+      <Box marginBottom={3} flexDirection="row" alignItems="center">
         <Image
-          width={scale(32)}
-          height={scale(32)}
-          borderRadius={100}
+          width={scale(20)}
+          height={scale(20)}
+          borderRadius={4}
           marginRight={1}
           source={require('../../../shared/ui/static/icon.png')}
         />
@@ -29,38 +32,27 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
           floopNFT
         </Text>
       </Box>
+      <Text fontSize={scale(18)} fontWeight="500" mb={2}>
+        {title}
+      </Text>
+      <Text
+        fontSize={scale(12)}
+        lineHeight={24}
+        fontWeight="500"
+        color="secondaryText"
+      >
+        {title2}
+      </Text>
       {hints && (
-        <Box flexDirection="row" gap={1} marginBottom={2}>
+        <Box flexDirection="row" gap={1}>
           {hints.map((hint, index) => (
-            <Box
-              key={index}
-              borderWidth={1}
-              borderRadius={14}
-              borderColor="primaryText"
-              paddingHorizontal={2}
-              paddingVertical={1}
-            >
+            <Box key={index} p={1} backgroundColor="darkGray" borderRadius={4}>
               <Text>{hint}</Text>
             </Box>
           ))}
         </Box>
       )}
-      <Text fontSize={scale(24)} fontWeight="500">
-        {title}
-      </Text>
-      <Text
-        fontSize={scale(14)}
-        marginTop={2}
-        lineHeight={24}
-        fontWeight="400"
-        color="secondaryText"
-      >
-        {title2}
-      </Text>
-      <Box flex={1} overflow="hidden" borderRadius={20} margin={2}>
-        <Image flex={1} source={img} contentFit="cover" />
-      </Box>
-    </>
+    </Box>
   );
 };
 

@@ -1,5 +1,7 @@
-import { AnimatedBox, Box, Image } from '@shared/ui/primitives';
+import Reactions from '@features/reactions/ui/Reactions';
+import { AnimatedBox, Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
+import { moderateVerticalScale, scale, verticalScale } from '@shared/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -22,7 +24,7 @@ const animatedSensorConfig: SensorConfig = {
   adjustToInterfaceOrientation: true,
 } as SensorConfig;
 
-const linearGradientColors = ['rgba(0,0,0,0.35)', 'rgba(0,0,0,0)'];
+const linearGradientColors = ['rgba(0,0,0,0)', 'rgba(0,0,0,0.35)'];
 
 const Card: React.FC<CardProps & CardInfoProps> = ({
   imgUrl,
@@ -68,8 +70,20 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         colors={linearGradientColors}
         style={StyleSheet.absoluteFill}
       />
-      <Box position="absolute" top={20} left={20}>
+      <Box
+        position="absolute"
+        bottom={moderateVerticalScale(72)}
+        left={scale(20)}
+      >
         <CardInfo {...props} />
+      </Box>
+      <Box
+        position="absolute"
+        bottom={moderateVerticalScale(20)}
+        left={scale(20)}
+        flexDirection="row"
+      >
+        <Reactions />
       </Box>
     </AnimatedBox>
   );

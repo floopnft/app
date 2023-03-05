@@ -1,4 +1,4 @@
-import Reaction from '@entities/feed/ui/Reaction';
+import AnimatedReaction from '@entities/feed/ui/AnimatedReaction';
 import { observer } from '@legendapp/state/react';
 import { AnimatedBox, Box, Text } from '@shared/ui/primitives';
 import { scale, SCREEN_HEIGHT } from '@shared/utils';
@@ -66,7 +66,7 @@ const FlyingReaction = ({ id, type }: any) => {
         solana
       </Text>
       <Box width={scale(16)} height={scale(16)}>
-        <Reaction type={type} />
+        <AnimatedReaction type={type} />
       </Box>
     </AnimatedBox>
   );

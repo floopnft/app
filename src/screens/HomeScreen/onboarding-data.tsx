@@ -1,6 +1,5 @@
 import OnboardingConnectWallet from '@features/onboarding/ui/OnboardingConnectWallet';
 import OnboardingText from '@features/onboarding/ui/OnboardingText';
-import { $shouldShowReactions } from '@features/reactions/model';
 import { Box } from '@shared/ui/primitives';
 import { CustomFeedItem } from './list';
 
@@ -13,12 +12,6 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   {
     id: 'onboarding_1',
     Component: ({ visible }) => {
-      if (visible) {
-        $shouldShowReactions.set(false);
-      } else {
-        $shouldShowReactions.set(true);
-      }
-
       return (
         <Box flex={1}>
           <OnboardingText
@@ -60,19 +53,9 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   {
     id: 'onboarding_wallet',
     Component: ({ visible }) => {
-      if (visible) {
-        $shouldShowReactions.set(false);
-      } else {
-        $shouldShowReactions.set(true);
-      }
-
       return (
         <Box flex={1}>
-          <OnboardingConnectWallet
-            hints={['welcome on board']}
-            img={nfts}
-            imgFit="contain"
-          />
+          <OnboardingConnectWallet img={nfts} imgFit="contain" />
         </Box>
       );
     },

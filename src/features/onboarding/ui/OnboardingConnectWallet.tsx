@@ -24,12 +24,15 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
   imgFit = 'cover',
 }) => {
   return (
-    <>
-      <Box marginBottom={6} flexDirection="row" alignItems="center">
+    <Box flex={1}>
+      <Box flex={1} overflow="hidden" borderRadius={20}>
+        <Image flex={1} source={img} contentFit={imgFit} />
+      </Box>
+      <Box marginBottom={3} flexDirection="row" alignItems="center">
         <Image
-          width={scale(32)}
-          height={scale(32)}
-          borderRadius={100}
+          width={scale(20)}
+          height={scale(20)}
+          borderRadius={4}
           marginRight={1}
           source={require('../../../shared/ui/static/icon.png')}
         />
@@ -37,44 +40,34 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
           floopNFT
         </Text>
       </Box>
-      {hints && (
-        <Box flexDirection="row" gap={1} marginBottom={2}>
-          {hints.map((hint, index) => (
-            <Box
-              key={index}
-              borderWidth={1}
-              borderRadius={14}
-              borderColor="primaryText"
-              paddingHorizontal={2}
-              paddingVertical={1}
-            >
-              <Text>{hint}</Text>
-            </Box>
-          ))}
-        </Box>
-      )}
-      <Text fontSize={scale(24)} fontWeight="500">
+      <Text fontSize={scale(18)} fontWeight="500" mb={2}>
         Almost ready
       </Text>
       <Text
-        fontSize={scale(14)}
-        marginTop={2}
+        fontSize={scale(12)}
         lineHeight={24}
-        fontWeight="400"
+        fontWeight="500"
         color="secondaryText"
+        marginBottom={6}
       >
         {isSaga
           ? "Connect your existing wallet or just swipe and we'll generate a wallet for you"
           : 'We created a wallet for you, just swipe to start exploring NFTs'}
       </Text>
-      <Box flex={1} overflow="hidden" borderRadius={20} margin={2}>
-        <Image flex={1} source={img} contentFit={imgFit} />
-      </Box>
+      {hints && (
+        <Box flexDirection="row" gap={1}>
+          {hints.map((hint, index) => (
+            <Box key={index} p={1} backgroundColor="darkGray" borderRadius={4}>
+              <Text>{hint}</Text>
+            </Box>
+          ))}
+        </Box>
+      )}
       {isSaga ? (
         <TouchableOpacity
           backgroundColor="darkBlue"
           py={4}
-          width="90%"
+          width="100%"
           alignSelf="center"
           alignItems="center"
           borderRadius={12}
@@ -97,7 +90,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
         <TouchableOpacity
           backgroundColor="darkBlue"
           py={4}
-          width="90%"
+          width="100%"
           alignSelf="center"
           alignItems="center"
           borderRadius={12}
@@ -121,7 +114,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
           </Show>
         </TouchableOpacity>
       )}
-    </>
+    </Box>
   );
 };
 
