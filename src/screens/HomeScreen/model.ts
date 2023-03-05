@@ -23,7 +23,11 @@ $currentVisibleCard.onChange(({ value: card, changes, getPrevious }) => {
   const prevCard = getPrevious() as VisibleCard | null;
 
   // if previous card - track
-  if (prevCard && prevCard.id !== card.id) {
+  if (
+    prevCard &&
+    prevCard.id !== card.id &&
+    !prevCard.id.startsWith('onboarding')
+  ) {
     // console.log('trackNftView', {
     //   nftId: prevCard.id,
     //   d: card.ts - prevCard.ts,
