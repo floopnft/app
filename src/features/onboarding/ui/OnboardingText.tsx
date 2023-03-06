@@ -32,7 +32,7 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
           floopNFT
         </Text>
       </Box>
-      <Text fontSize={scale(18)} fontWeight="500" mb={2}>
+      <Text fontSize={scale(18)} fontWeight="500" mb={1}>
         {title}
       </Text>
       <Text
@@ -44,7 +44,7 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
         {title2}
       </Text>
       {hints && (
-        <Box flexDirection="row" gap={1}>
+        <Box flexDirection="row" mt={3} gap={1}>
           {hints.map((hint, index) => (
             <Box key={index} p={1} backgroundColor="darkGray" borderRadius={4}>
               <Text>{hint}</Text>

@@ -13,7 +13,7 @@ const Reaction: React.FC<ReactionProps> = ({ kind, counter, selected }) => {
       flexDirection="row"
       borderRadius={4}
       borderWidth={1}
-      style={{ borderColor: selected ? 'white' : 'rgba(0,0,0,0.12)' }}
+      style={{ borderColor: selected ? 'white' : 'rgba(255,255,255,0.12)' }}
       p={1}
       backgroundColor={selected ? 'white' : 'transparent'}
     >

@@ -13,7 +13,7 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
     id: 'onboarding_1',
     Component: ({ visible }) => {
       return (
-        <Box flex={1}>
+        <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
           <OnboardingText
             title="Welcome to Floop"
             title2="Swipe up and explore more NFTs"
@@ -27,7 +27,7 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   {
     id: 'onboarding_2',
     Component: () => (
-      <Box flex={1}>
+      <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
         <OnboardingText
           title="Personalized feed"
           title2="Use reactions on NFTs and our AI will generate personalized feed for you"
@@ -40,7 +40,7 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   {
     id: 'onboarding_3',
     Component: () => (
-      <Box flex={1}>
+      <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
         <OnboardingText
           title="Create your own NFT"
           title2="Look at the bottom of the app, u can create your own NFTs and post it"
@@ -54,7 +54,7 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
     id: 'onboarding_wallet',
     Component: ({ visible }) => {
       return (
-        <Box flex={1}>
+        <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
           <OnboardingConnectWallet img={nfts} imgFit="contain" />
         </Box>
       );
