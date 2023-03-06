@@ -18,7 +18,7 @@ interface VisibleCard {
 
 export const $currentVisibleCard = observable<VisibleCard>(null);
 
-$currentVisibleCard.onChange(({ value: card, changes, getPrevious }) => {
+$currentVisibleCard.onChange(({ value: card, getPrevious }) => {
   // no card - no load
   if (!card) {
     return card;
@@ -42,25 +42,29 @@ $currentVisibleCard.onChange(({ value: card, changes, getPrevious }) => {
         viewFinishedAt: new Date(card.ts),
       });
 
-      clearNftViews(); // Comment this line to hide viewed nfts from feed
+      // clearNftViews(); // Comment this line to hide viewed nfts from feed
     }
-    if (prevCard.id === 'onboarding_wallet') {
+    // this is a bit hacky
+    if (
+      prevCard.id === 'onboarding_wallet' &&
+      !card.id.startsWith('onboarding')
+    ) {
       onboardingCompleted.fire();
     }
   }
 
-  // it's a bit hacky actually :(
+  // hacky as well
   if (!$isUserOnboarded.peek()) {
     return;
   }
 
   const feed = $nftFeed.peek();
   // should we load more?
-  if (feed.length - card.index > LOAD_THRESHOLD) {
+  if (feed.length - card.index - 4 > LOAD_THRESHOLD) {
     return card;
   }
 
-  const excluded = feed.slice(card.index - 1).map((it) => it.id);
+  const excluded = feed.slice(card.index - 1 - 4).map((it) => it.id);
 
   getRecommendedNfts({
     count: 3,

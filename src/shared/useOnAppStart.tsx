@@ -12,7 +12,7 @@ export const useOnAppStart = () => {
     const wallet = await loadWallet();
     if (wallet) {
       await when($user);
-      await when($nftFeed);
+      // await when($nftFeed);
     }
 
     await when(navigationReady);

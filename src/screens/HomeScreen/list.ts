@@ -4,9 +4,11 @@ import { SCREEN_HEIGHT } from '@shared/utils';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import Animated from 'react-native-reanimated';
 import { ViewabilityConfig } from 'react-native';
+import { HSLColor } from '@shared/ui/color-utils';
 
 export type CustomFeedItem<T> = {
   id: string;
+  bgColor: HSLColor;
   Component: React.FC<T & { visible: boolean }>;
 };
 
@@ -26,7 +28,7 @@ export const getItemType: FlashListProps<FeedItem>['getItemType'] = (
   item: FeedItem
 ) => {
   if ('Component' in item) {
-    return -1;
+    return 'custom_component_' + item.id;
   }
   return 0;
 };

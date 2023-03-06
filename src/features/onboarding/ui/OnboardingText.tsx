@@ -1,5 +1,6 @@
+import Reactions from '@features/reactions/ui/Reactions';
 import { Box, Image, Text } from '@shared/ui/primitives';
-import { scale } from '@shared/utils';
+import { moderateVerticalScale, scale } from '@shared/utils';
 import React from 'react';
 
 export interface OnboardingTextProps {
@@ -7,6 +8,7 @@ export interface OnboardingTextProps {
   title2: string;
   hints?: string[];
   img?: number;
+  showReactions?: boolean;
 }
 
 const OnboardingText: React.FC<OnboardingTextProps> = ({
@@ -14,6 +16,7 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
   title2,
   hints,
   img,
+  showReactions = false,
 }) => {
   return (
     <Box flex={1}>
@@ -50,6 +53,11 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
               <Text>{hint}</Text>
             </Box>
           ))}
+        </Box>
+      )}
+      {showReactions && (
+        <Box mt={1}>
+          <Reactions />
         </Box>
       )}
     </Box>

@@ -11,6 +11,7 @@ const nfts = require('@shared/ui/static/nfts.png');
 export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   {
     id: 'onboarding_1',
+    bgColor: [30, 7, 6],
     Component: ({ visible }) => {
       return (
         <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
@@ -26,6 +27,7 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   },
   {
     id: 'onboarding_2',
+    bgColor: [30, 7, 6],
     Component: () => (
       <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
         <OnboardingText
@@ -33,12 +35,14 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
           title2="Use reactions on NFTs and our AI will generate personalized feed for you"
           hints={['onboarding', '2/3']}
           img={y00t}
+          showReactions
         />
       </Box>
     ),
   },
   {
     id: 'onboarding_3',
+    bgColor: [30, 7, 6],
     Component: () => (
       <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
         <OnboardingText
@@ -52,6 +56,7 @@ export const ONBOARDING_DATA: CustomFeedItem<any>[] = [
   },
   {
     id: 'onboarding_wallet',
+    bgColor: [30, 7, 6],
     Component: ({ visible }) => {
       return (
         <Box flex={1} backgroundColor="black" borderRadius={20} padding={5}>
