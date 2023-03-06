@@ -8,7 +8,7 @@ import HomeIcon from '@shared/ui/icons/HomeIcon';
 import PlusCircleIcon from '@shared/ui/icons/PlusCircleIcon';
 import UserIcon from '@shared/ui/icons/UserIcon';
 import { useOnAppStart } from '@shared/useOnAppStart';
-import { scale } from '@shared/utils';
+import { moderateVerticalScale, scale, verticalScale } from '@shared/utils';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
 import { MainRoutes, TabRoutes } from './route';
@@ -30,11 +30,7 @@ function TabActivity() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          borderTopWidth: 0,
-          backgroundColor: 'black',
-          paddingHorizontal: scale(32),
-        },
+        tabBarStyle: defaultTabBarStyle,
         tabBarActiveTintColor: 'white',
         tabBarLabelStyle: {
           fontWeight: '500',
@@ -47,6 +43,8 @@ function TabActivity() {
         component={HomeScreen}
         options={{
           tabBarIcon: HomeIcon,
+          tabBarActiveTintColor: 'white',
+          tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.32)',
           tabBarStyle: {
             ...defaultTabBarStyle,
             position: 'absolute',
