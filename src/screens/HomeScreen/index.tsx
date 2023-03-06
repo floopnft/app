@@ -5,7 +5,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   HSLColor,
   hslFromArray,
-  reduceLightning
+  reduceLightning,
 } from '@shared/ui/color-utils';
 import { Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
@@ -18,7 +18,7 @@ import Animated, {
   interpolateColor,
   useAnimatedScrollHandler,
   useAnimatedStyle,
-  useSharedValue
+  useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -27,7 +27,7 @@ import {
   getItemType,
   keyExtractor,
   listElementHeight,
-  viewabilityConfig
+  viewabilityConfig,
 } from './list';
 import { $currentVisibleCard } from './model';
 import { ONBOARDING_DATA } from './onboarding-data';
@@ -64,7 +64,7 @@ const HomeScreen = () => {
               paddingTop: insets.top,
               paddingBottom: tabBarHeight + verticalScale(12),
             }}
-            backgroundColor="black"
+            backgroundColor="bgGray"
           >
             <item.Component />
           </Box>
