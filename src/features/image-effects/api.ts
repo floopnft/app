@@ -2,12 +2,11 @@ import { httpFetch } from '@shared/fetcher';
 import { NftDto } from '@entities/nft/model';
 
 export interface ApplyEffectCommand {
-  imageUrl: string;
+  imageUploadCareId: string;
   presetId: string;
 }
 
 export interface ImageWithEffect {
-  imageUrl: string;
   imageUploadCareId: string;
 }
 
@@ -16,7 +15,7 @@ async function applyAiEffect(command: ApplyEffectCommand) {
     method: 'POST',
     body: JSON.stringify({
       presetId: command.presetId,
-      imageUrl: command.imageUrl,
+      imageUploadCareId: command.imageUploadCareId,
     }),
   };
   return httpFetch<ImageWithEffect>('image-effects', options);

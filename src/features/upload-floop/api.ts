@@ -1,5 +1,4 @@
 import { httpFetch } from '@shared/fetcher';
-import { ucarecdn } from '@shared/utils';
 
 interface ImageUploadCommand {
   name: string;
@@ -27,15 +26,13 @@ export async function uploadImage(
 }
 
 export async function createNft(
-  contentUrl: string,
   hints: string[],
   presetId: string,
-  imageUploadCareId?: string
+  imageUploadCareId: string
 ) {
   return httpFetch('/nfts', {
     method: 'POST',
     body: JSON.stringify({
-      imageUrl: contentUrl,
       hints,
       presetId,
       imageUploadCareId,
