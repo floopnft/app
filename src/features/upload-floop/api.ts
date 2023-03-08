@@ -28,10 +28,17 @@ export async function uploadImage(
 
 export async function createNft(
   contentUrl: string,
+  hints: string[],
+  presetId: string,
   imageUploadCareId?: string
 ) {
   return httpFetch('/nfts', {
     method: 'POST',
-    body: JSON.stringify({ imageUrl: contentUrl, imageUploadCareId }),
+    body: JSON.stringify({
+      imageUrl: contentUrl,
+      hints,
+      presetId,
+      imageUploadCareId,
+    }),
   });
 }
