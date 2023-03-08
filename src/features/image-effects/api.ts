@@ -1,15 +1,9 @@
 import { httpFetch } from '@shared/fetcher';
+import { NftDto } from '@entities/nft/model';
 
-export enum AiEffectType {
-  DREAMSHAPER = 'dreamshaper',
-  REALISTIC_VISION = 'realistic_vision_1_3',
-  TSHIRT_DIFFUSION = 'tshirt_diffusion',
-  STABLE_DIFFUSION_VOXELART = 'stable_diffusion_voxelart',
-}
-
-export interface ApplyAiEffectCommand {
+export interface ApplyEffectCommand {
   imageUrl: string;
-  type: AiEffectType;
+  presetId: string;
 }
 
 export interface ImageWithEffect {
@@ -17,13 +11,34 @@ export interface ImageWithEffect {
   imageUploadCareId: string;
 }
 
-async function applyAiEffect(command: ApplyAiEffectCommand) {
+async function applyAiEffect(command: ApplyEffectCommand) {
   const options: RequestInit = {
     method: 'POST',
     body: JSON.stringify({
-      preset: command.type,
+      presetId: command.presetId,
       imageUrl: command.imageUrl,
     }),
   };
-  return httpFetch<ImageWithEffect>('image-effects/ai', options);
+  return httpFetch<ImageWithEffect>('image-effects', options);
+}
+
+export class PresetDto {
+  id!: string;
+  name!: string;
+  nfts!: NftDto[];
+}
+
+export class TrendDto {
+  id!: string;
+  name!: string;
+  nfts!: NftDto[];
+}
+
+export class CreatorConfigDto {
+  presets!: PresetDto[];
+  trends!: TrendDto[];
+}
+
+async function creatorConfig(): Promise<CreatorConfigDto> {
+  return httpFetch('creator-config');
 }
