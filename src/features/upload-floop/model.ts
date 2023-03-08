@@ -8,5 +8,6 @@ export async function uploadFloop(uri: string) {
     type: 'image/jpeg', //TODO mime type detection?
   });
 
-  return createNft(ucarecdn(cdnImage.file));
+  const contentUrl = ucarecdn(cdnImage.file);
+  return createNft(contentUrl, [], 'lego', cdnImage.file); // TODO: pass presetId and hints
 }
