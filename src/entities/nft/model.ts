@@ -4,11 +4,12 @@ export interface NftDto {
   id: string;
   collectionName: string;
   collectionAvatarUrl: string;
+  collectionAvatarUploadCareId: string | null;
   title: string;
   imgUrl: string;
+  imgUploadCareId: string | null;
   price: string;
   presetId: string | null;
-  imgUploadCareId: string | null;
   bgColor: [number, number, number];
   hints: string[];
   createdByUserId: string | null;
