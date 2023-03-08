@@ -6,6 +6,8 @@ export interface NftDto {
   collectionAvatarUrl: string;
   title: string;
   imgUrl: string;
+  price: string;
+  presetId: string | null;
   imgUploadCareId: string | null;
   bgColor: [number, number, number];
   hints: string[];
