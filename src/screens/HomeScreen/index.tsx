@@ -1,5 +1,3 @@
-import { $nftFeed } from '@features/feed/model';
-import { $isUserOnboarded } from '@features/onboarding/model';
 import { observer } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
@@ -25,33 +23,16 @@ import {
   AnimatedFlashList,
   FeedItem,
   getItemType,
-  keyExtractor,
   listElementHeight,
   viewabilityConfig,
 } from './list';
-import { $currentVisibleCard } from './model';
-import { ONBOARDING_DATA } from './onboarding-data';
-
-const VisibilityTracker = observer(
-  //@ts-ignore
-  ({ item, children }: { item: FeedItem; children: React.ReactNode }) => {
-    const isVisible = $currentVisibleCard.get()?.id === item.id;
-
-    return React.Children.map(children, (child) => {
-      if (React.isValidElement(child)) {
-        // @ts-ignore
-        return React.cloneElement(child, { visible: isVisible });
-      }
-      return child;
-    });
-  }
-);
+import { $currentVisibleCard, $feedData } from './model';
 
 const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
-  const nftFeedItems = $nftFeed.get();
+  const data = $feedData.get();
 
   const renderItem = useCallback(
     ({ item, index }: ListRenderItemInfo<FeedItem>) => {
@@ -64,7 +45,6 @@ const HomeScreen = () => {
               paddingTop: insets.top,
               paddingBottom: tabBarHeight + verticalScale(12),
             }}
-            backgroundColor="bgGray"
           >
             <item.Component />
           </Box>
@@ -100,18 +80,6 @@ const HomeScreen = () => {
     'transparent',
   ] as ('transparent' | HSLColor)[]);
 
-  // sets initial bgColorFromTo after nft loaded
-  useEffect(() => {
-    if (nftFeedItems.length === 0) return;
-    if (bgColorFromTo.value.every((it) => it === 'transparent')) {
-      bgColorFromTo.value = [
-        'transparent',
-        nftFeedItems[0].bgColor,
-        nftFeedItems[1].bgColor,
-      ];
-    }
-  }, [bgColorFromTo, nftFeedItems]);
-
   const progress = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(
@@ -129,15 +97,26 @@ const HomeScreen = () => {
     [bgColorFromTo]
   );
 
-  const scrollHandler = useAnimatedScrollHandler((ev) => {
-    const idx = Math.floor(ev.contentOffset.y / listElementHeight);
-    bgColorFromTo.value = [
-      nftFeedItems[idx - 1]?.bgColor || 'transparent',
-      nftFeedItems[idx]?.bgColor || 'transparent',
-      nftFeedItems[idx + 1]?.bgColor || 'transparent',
-    ];
-    progress.value = ev.contentOffset.y / listElementHeight - idx;
-  });
+  // sets initial bgColorFromTo after nft loaded
+  useEffect(() => {
+    if (data.length === 0) return;
+    if (bgColorFromTo.value.every((it) => it === 'transparent')) {
+      bgColorFromTo.value = ['transparent', data[0].bgColor, data[1].bgColor];
+    }
+  }, [bgColorFromTo, data]);
+
+  const scrollHandler = useAnimatedScrollHandler(
+    (ev) => {
+      const idx = Math.floor(ev.contentOffset.y / listElementHeight);
+      bgColorFromTo.value = [
+        data[idx - 1]?.bgColor || 'transparent',
+        data[idx]?.bgColor || 'transparent',
+        data[idx + 1]?.bgColor || 'transparent',
+      ];
+      progress.value = ev.contentOffset.y / listElementHeight - idx;
+    },
+    [data]
+  );
 
   const onViewableItemsChanged: (info: {
     viewableItems: ViewToken[];
@@ -153,17 +132,13 @@ const HomeScreen = () => {
     }
   };
 
-  const data: FeedItem[] = $isUserOnboarded.get()
-    ? nftFeedItems
-    : [...ONBOARDING_DATA, ...nftFeedItems];
-
   return (
     <>
       <Animated.View style={[sharedStyles.container, animatedStyle]}>
         <AnimatedFlashList
           data={data}
           renderItem={renderItem}
-          keyExtractor={keyExtractor}
+          // keyExtractor={keyExtractor}
           getItemType={getItemType}
           onScroll={scrollHandler}
           onViewableItemsChanged={onViewableItemsChanged}

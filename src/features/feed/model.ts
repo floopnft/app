@@ -3,17 +3,23 @@ import { NFT } from '@entities/nft/model';
 import { $user } from '@entities/user/model';
 import { observable, when } from '@legendapp/state';
 
-export const $nftFeed = observable<NFT[]>([]);
-export const $nftFeedLoading = observable(false);
+export const FLOOPS_LOAD_COUNT = 7;
 
-export const loadFirstNFTs = async () => {
-  $nftFeedLoading.set(true);
-  const feed = await getRecommendedNfts({
-    count: 3,
+export const $floops = observable<NFT[]>([]);
+export const $floopsLoading = observable(false);
+
+export const $currentVisibleFloop = observable<NFT>(null);
+
+export const loadMoreFloops = async (excludeIds?: string[]) => {
+  $floopsLoading.set(true);
+  const newFloops = await getRecommendedNfts({
+    count: FLOOPS_LOAD_COUNT,
+    excludeIds,
   });
-  $nftFeedLoading.set(false);
+  $floopsLoading.set(false);
 
-  $nftFeed.set(feed);
+  $floops.set((prev) => [...prev, ...newFloops]);
 };
 
-when($user, () => loadFirstNFTs());
+// prob won't work in case of user logout
+when($user, () => loadMoreFloops());

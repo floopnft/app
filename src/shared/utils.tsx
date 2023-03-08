@@ -63,3 +63,16 @@ export function ucareId(url: string) {
 export function ucarecdnPreview(id: string) {
   return `https://ucarecdn.com/${id}/-/preview/`;
 }
+
+export function ucr(imageUrl: string, width?: number, height?: number) {
+  if (!width || !height) {
+    return `https://be7be1fc84c93f2fb6e1.ucr.io/${imageUrl}`;
+  }
+  if (width && !height) {
+    return `https://be7be1fc84c93f2fb6e1.ucr.io/-/resize/${width}x/${imageUrl}/`;
+  }
+  if (!width && height) {
+    return `https://be7be1fc84c93f2fb6e1.ucr.io/-/resize/x${height}/${imageUrl}/`;
+  }
+  return `https://be7be1fc84c93f2fb6e1.ucr.io/-/resize/${width}x${height}/${imageUrl}/`;
+}

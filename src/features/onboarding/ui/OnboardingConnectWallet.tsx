@@ -1,5 +1,5 @@
-import { $nftFeedLoading } from '@features/feed/model';
-import { Show } from '@legendapp/state/react';
+import { $floopsLoading } from '@features/feed/model';
+import { observer, Show } from '@legendapp/state/react';
 import { Box, Image, Text } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale } from '@shared/utils';
@@ -65,7 +65,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
       )}
       {isSaga ? (
         <TouchableOpacity
-          backgroundColor="darkBlue"
+          backgroundColor={$wallet.get() ? 'darkGray' : 'darkBlue'}
           py={4}
           width="100%"
           alignSelf="center"
@@ -88,7 +88,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          backgroundColor="darkBlue"
+          backgroundColor={$wallet.get() ? 'darkGray' : 'darkBlue'}
           py={4}
           width="100%"
           alignSelf="center"
@@ -104,7 +104,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
               </Text>
             }
           >
-            {$nftFeedLoading.get() ? (
+            {$floopsLoading.get() ? (
               <ActivityIndicator />
             ) : (
               <Text fontSize={scale(14)} fontWeight="600">
@@ -118,4 +118,4 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
   );
 };
 
-export default OnboardingConnectWallet;
+export default observer(OnboardingConnectWallet);

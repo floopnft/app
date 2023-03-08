@@ -14,6 +14,7 @@ import {
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigationReady } from '@shared/useOnAppStart';
 import App from './App';
 

@@ -32,7 +32,7 @@ interface AnimatedReactionProps {
 }
 
 const AnimatedReaction: React.FC<AnimatedReactionProps> = ({ type }) => {
-  return <Lottie autoPlay source={ReactionCatalog[type].animation} />;
+  return <Lottie source={ReactionCatalog[type].animation} />;
 };
 
 export default AnimatedReaction;

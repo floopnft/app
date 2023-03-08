@@ -12,8 +12,6 @@ export interface User {
   updatedAt: Date;
 }
 
-export const userLoggedIn = event();
-
 export const $user = observable<User | null>(null);
 
 export const loginUser = async () => {
