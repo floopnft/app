@@ -22,7 +22,7 @@ export interface NFT {
   collectionAvatarUrl: string;
   title: string;
   imgUrl: string;
-  bgColor: HSLColor;
+  bgColor?: HSLColor;
   hints: string[];
 }
 

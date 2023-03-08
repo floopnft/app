@@ -1,4 +1,4 @@
-import { $nftFeedLoading } from '@features/feed/model';
+import { $floopsLoading } from '@features/feed/model';
 import { observer, Show } from '@legendapp/state/react';
 import { Box, Image, Text } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
@@ -104,7 +104,7 @@ const OnboardingConnectWallet: React.FC<OnboardingConnectWalletProps> = ({
               </Text>
             }
           >
-            {$nftFeedLoading.get() ? (
+            {$floopsLoading.get() ? (
               <ActivityIndicator />
             ) : (
               <Text fontSize={scale(14)} fontWeight="600">

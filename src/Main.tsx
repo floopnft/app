@@ -14,15 +14,15 @@ import {
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigationReady } from '@shared/useOnAppStart';
 import App from './App';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const onNavigationReady = () => {
   navigationReady.fire();
 };
 
-AsyncStorage.clear(); // uncomment to clear storage
+// AsyncStorage.clear(); // uncomment to clear storage
 
 const Main = () => {
   return (

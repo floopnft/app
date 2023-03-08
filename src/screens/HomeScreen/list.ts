@@ -5,6 +5,8 @@ import { FlashList, FlashListProps } from '@shopify/flash-list';
 import Animated from 'react-native-reanimated';
 import { ViewabilityConfig } from 'react-native';
 import { HSLColor } from '@shared/ui/color-utils';
+import { observer } from '@legendapp/state/react';
+import { $currentVisibleCard } from './model';
 
 export type CustomFeedItem<T> = {
   id: string;
@@ -32,3 +34,18 @@ export const getItemType: FlashListProps<FeedItem>['getItemType'] = (
   }
   return 0;
 };
+
+export const VisibilityTracker = observer(
+  //@ts-ignore
+  ({ item, children }: { item: FeedItem; children: React.ReactNode }) => {
+    const isVisible = $currentVisibleCard.get()?.id === item.id;
+
+    return React.Children.map(children, (child) => {
+      if (React.isValidElement(child)) {
+        // @ts-ignore
+        return React.cloneElement(child, { visible: isVisible });
+      }
+      return child;
+    });
+  }
+);

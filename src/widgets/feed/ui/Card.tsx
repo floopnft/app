@@ -1,7 +1,7 @@
 import Reactions from '@features/reactions/ui/Reactions';
-import { AnimatedBox, Box, Image, Text } from '@shared/ui/primitives';
+import { AnimatedBox, Box, Image } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { moderateVerticalScale, scale, verticalScale } from '@shared/utils';
+import { moderateVerticalScale, scale } from '@shared/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet } from 'react-native';

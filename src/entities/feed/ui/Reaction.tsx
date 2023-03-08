@@ -1,7 +1,7 @@
-import { Box, Text } from '@shared/ui/primitives';
+import { Text } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale } from '@shared/utils';
-import AnimatedReaction, { ReactionType } from './AnimatedReaction';
+import React from 'react';
 
 interface ReactionProps {
   kind: string;
@@ -29,17 +29,7 @@ const Reaction: React.FC<ReactionProps> = ({
       backgroundColor={selected ? 'white' : 'transparent'}
       onPress={onPress}
     >
-      <Box height={scale(20)} aspectRatio={1}>
-        <AnimatedReaction
-          type={
-            kind === '💜'
-              ? ReactionType.HOT
-              : kind === '👍'
-              ? ReactionType.THUMBS_UP
-              : ReactionType.MEH
-          }
-        />
-      </Box>
+      <Text>{kind}</Text>
       <Text
         fontWeight="500"
         marginLeft={1}

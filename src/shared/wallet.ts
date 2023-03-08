@@ -49,6 +49,7 @@ export const generateWallet = () => {
 
 export const isSaga = Device.modelName === 'Saga';
 
+export const $isWalletLoaded = observable(false);
 export const $wallet = observable<{ publicKey: string } | null>(null);
 
 export const initWallet = async () => {
@@ -67,15 +68,19 @@ export const initWallet = async () => {
 };
 
 export const loadWallet = async () => {
-  const walletJson = await AsyncStorage.getItem(STORAGE_WALLET_KEY);
-  if (!walletJson) {
-    return null;
+  try {
+    const walletJson = await AsyncStorage.getItem(STORAGE_WALLET_KEY);
+    if (!walletJson) {
+      return null;
+    }
+    const wallet: { publicKey: string } = JSON.parse(walletJson);
+
+    $wallet.set(wallet);
+
+    return wallet;
+  } finally {
+    $isWalletLoaded.set(true);
   }
-  const wallet: { publicKey: string } = JSON.parse(walletJson);
-
-  $wallet.set(wallet);
-
-  return wallet;
 };
 
 export function shortenWalletAddress(address: string) {

@@ -1,11 +1,11 @@
-import { getRecommendedNfts } from '@entities/nft/api/nft-api';
-import { clearNftViews, saveNftView } from '@entities/nft/api/nft-views-api';
-import { $nftFeed } from '@features/feed/model';
-import {
-  $isUserOnboarded,
-  onboardingCompleted,
-} from '@features/onboarding/model';
-import { observable } from '@legendapp/state';
+import { saveNftView } from '@entities/nft/api/nft-views-api';
+import { $user } from '@entities/user/model';
+import { $floops, loadMoreFloops } from '@features/feed/model';
+import { onboardingCompleted } from '@features/onboarding/model';
+import { ONBOARDING_DATA } from '@features/onboarding/onboarding-data';
+import { observable, observe, when } from '@legendapp/state';
+import { $isWalletLoaded, $wallet } from '@shared/wallet';
+import { FeedItem } from './list';
 
 const LOAD_THRESHOLD = 2;
 
@@ -14,21 +14,35 @@ interface VisibleCard {
   index: number;
   ts: number;
 }
-// clearNftViews(); // Comment this line to hide viewed nfts from feed
+
+export const $feedData = observable<FeedItem[]>([]);
+
+when($isWalletLoaded, () => {
+  if (!$wallet.peek()) {
+    $feedData.set(ONBOARDING_DATA);
+  }
+  when($user, (user) => {
+    observe(() => {
+      const feed = $floops.get();
+      $feedData.set(user.onboarded ? feed : [...ONBOARDING_DATA, ...feed]);
+    });
+  });
+});
 
 export const $currentVisibleCard = observable<VisibleCard>(null);
 
 $currentVisibleCard.onChange(({ value: card, getPrevious }) => {
   // no card - no load
   if (!card) {
-    return card;
+    return null;
   }
 
   const prevCard = getPrevious() as VisibleCard | null;
 
-  const reallySwipedPrevCard = prevCard && prevCard.id !== card.id;
+  const isReallySwiped = prevCard && prevCard.id !== card.id;
 
-  if (reallySwipedPrevCard) {
+  if (isReallySwiped) {
+    // track view for non onboarding cards
     if (!prevCard.id.startsWith('onboarding')) {
       // console.log('trackNftView', {
       //   nftId: prevCard.id,
@@ -53,25 +67,23 @@ $currentVisibleCard.onChange(({ value: card, getPrevious }) => {
     }
   }
 
-  // hacky as well
-  if (!$isUserOnboarded.peek()) {
-    return;
-  }
-
-  const feed = $nftFeed.peek();
-  // should we load more?
-  if (feed.length - card.index - 4 > LOAD_THRESHOLD) {
+  const user = $user.peek();
+  if (!user || !user.onboarded) {
     return card;
   }
 
-  const excluded = feed.slice(card.index - 1 - 4).map((it) => it.id);
+  const feed = $feedData.peek();
 
-  getRecommendedNfts({
-    count: 3,
-    excludeIds: excluded,
-  }).then((nextRecommended) =>
-    $nftFeed.set((prev) => [...prev, ...nextRecommended])
-  );
+  if (feed.length - card.index > LOAD_THRESHOLD) {
+    return card;
+  }
+
+  const excluded = feed
+    .slice(card.index - 1)
+    .filter((it) => !it.id.startsWith('onboarding'))
+    .map((it) => it.id);
+
+  loadMoreFloops(excluded);
 
   return card;
 });

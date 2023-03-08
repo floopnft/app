@@ -1,6 +1,6 @@
 import { $user } from '@entities/user/model';
-import { $nftFeed } from '@features/feed/model';
 import { event, when } from '@legendapp/state';
+import { $feedData } from '@screens/HomeScreen/model';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { loadWallet } from './wallet';
@@ -12,7 +12,7 @@ export const useOnAppStart = () => {
     const wallet = await loadWallet();
     if (wallet) {
       await when($user);
-      // await when($nftFeed);
+      await when($feedData);
     }
 
     await when(navigationReady);

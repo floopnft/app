@@ -1,7 +1,7 @@
 import OnboardingConnectWallet from '@features/onboarding/ui/OnboardingConnectWallet';
 import OnboardingText from '@features/onboarding/ui/OnboardingText';
 import { Box } from '@shared/ui/primitives';
-import { CustomFeedItem } from './list';
+import { CustomFeedItem } from '../../screens/HomeScreen/list';
 
 const dino = require('@shared/ui/static/dino.gif');
 const y00t = require('@shared/ui/static/y00t.png');

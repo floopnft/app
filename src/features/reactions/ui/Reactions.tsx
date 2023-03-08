@@ -1,6 +1,6 @@
-import React, { startTransition } from 'react';
 import Reaction from '@entities/feed/ui/Reaction';
 import { Box } from '@shared/ui/primitives';
+import React from 'react';
 
 const reactions = ['💜', '👍', '💩'];
 
