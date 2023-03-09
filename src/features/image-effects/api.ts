@@ -1,6 +1,13 @@
 import { httpFetch } from '@shared/fetcher';
 import { NftDto } from '@entities/nft/model';
 
+// Temporary, until we have integrate with creator/config API to get presets
+export enum PresetId {
+  Art = 'art',
+  Lego = 'lego',
+  Froggo = 'froggo',
+}
+
 export interface ApplyEffectCommand {
   imageUploadCareId: string;
   presetId: string;
@@ -14,7 +21,7 @@ async function applyAiEffect(command: ApplyEffectCommand) {
   const options: RequestInit = {
     method: 'POST',
     body: JSON.stringify({
-      presetId: command.presetId,
+      presetId: PresetId.Lego, // TODO: use presetId from command after we have integrate with creator/config API
       imageUploadCareId: command.imageUploadCareId,
     }),
   };
