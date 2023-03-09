@@ -18,9 +18,10 @@ export interface GetRecommendedNftsQuery {
 
 export async function getRecommendedNfts(query: GetRecommendedNftsQuery) {
   try {
-    return await httpFetch<NftDto[]>(`nfts/recommended`, {
+    const res = await httpFetch<NftDto[]>(`nfts/recommended`, {
       query,
     });
+    return res;
   } catch (e) {
     return [];
   }

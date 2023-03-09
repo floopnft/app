@@ -4,13 +4,13 @@ import { SCREEN_HEIGHT } from '@shared/utils';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import Animated from 'react-native-reanimated';
 import { ViewabilityConfig } from 'react-native';
-import { HSLColor } from '@shared/ui/color-utils';
 import { observer } from '@legendapp/state/react';
 import { $currentVisibleCard } from './model';
+import { ColorArray } from '@shared/ui/color-utils';
 
 export type CustomFeedItem<T> = {
   id: string;
-  bgColor: HSLColor;
+  screenBgColorRgb?: ColorArray;
   Component: React.FC<T & { visible: boolean }>;
 };
 

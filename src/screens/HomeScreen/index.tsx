@@ -1,13 +1,13 @@
 import { observer } from '@legendapp/state/react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
-  HSLColor,
-  hslFromArray,
-  reduceLightning,
+  OptionalColorArray,
+  optionalRgbFromArray,
+  TRANSPARENT_COLOR,
 } from '@shared/ui/color-utils';
 import { Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { verticalScale } from '@shared/utils';
+import { ucarecdn, verticalScale } from '@shared/utils';
 import { ListRenderItemInfo } from '@shopify/flash-list';
 import ViewToken from '@shopify/flash-list/dist/viewability/ViewToken';
 import Card from '@src/widgets/feed/ui/Card';
@@ -51,6 +51,14 @@ const HomeScreen = () => {
         );
       }
 
+      const imgUrl = item.imgUploadCareId
+        ? ucarecdn(item.imgUploadCareId)
+        : item.imgUrl;
+
+      const avatarUrl = item.collectionAvatarUploadCareId
+        ? ucarecdn(item.collectionAvatarUploadCareId)
+        : item.collectionAvatarUrl;
+
       return (
         <Box
           height={listElementHeight}
@@ -61,9 +69,9 @@ const HomeScreen = () => {
           }}
         >
           <Card
-            imgUrl={item.imgUrl}
-            bgColor={hslFromArray(item.bgColor)}
-            avatarUrl={item.collectionAvatarUrl}
+            imgUrl={imgUrl}
+            bgColor={optionalRgbFromArray(item.cardBgColorRgb)}
+            avatarUrl={avatarUrl}
             hints={item.hints}
             title={item.title}
             username={item.collectionName}
@@ -74,11 +82,11 @@ const HomeScreen = () => {
     [insets, tabBarHeight]
   );
 
-  const bgColorFromTo = useSharedValue([
-    'transparent',
-    'transparent',
-    'transparent',
-  ] as ('transparent' | HSLColor)[]);
+  const screenBgColorFromTo = useSharedValue([
+    TRANSPARENT_COLOR,
+    TRANSPARENT_COLOR,
+    TRANSPARENT_COLOR,
+  ] as OptionalColorArray[]);
 
   const progress = useSharedValue(0);
 
@@ -88,30 +96,34 @@ const HomeScreen = () => {
         progress.value,
         [-1, 0, 1],
         [
-          reduceLightning(bgColorFromTo.value[0]),
-          reduceLightning(bgColorFromTo.value[1]),
-          reduceLightning(bgColorFromTo.value[2]),
+          optionalRgbFromArray(screenBgColorFromTo.value[0]),
+          optionalRgbFromArray(screenBgColorFromTo.value[1]),
+          optionalRgbFromArray(screenBgColorFromTo.value[2]),
         ]
       ),
     }),
-    [bgColorFromTo]
+    [screenBgColorFromTo]
   );
 
   // sets initial bgColorFromTo after nft loaded
   useEffect(() => {
     if (data.length === 0) return;
-    if (bgColorFromTo.value.every((it) => it === 'transparent')) {
-      bgColorFromTo.value = ['transparent', data[0].bgColor, data[1].bgColor];
+    if (screenBgColorFromTo.value.every((it) => it === TRANSPARENT_COLOR)) {
+      screenBgColorFromTo.value = [
+        TRANSPARENT_COLOR,
+        data[0].screenBgColorRgb || TRANSPARENT_COLOR,
+        data[1].screenBgColorRgb || TRANSPARENT_COLOR,
+      ];
     }
-  }, [bgColorFromTo, data]);
+  }, [screenBgColorFromTo, data]);
 
   const scrollHandler = useAnimatedScrollHandler(
     (ev) => {
       const idx = Math.floor(ev.contentOffset.y / listElementHeight);
-      bgColorFromTo.value = [
-        data[idx - 1]?.bgColor || 'transparent',
-        data[idx]?.bgColor || 'transparent',
-        data[idx + 1]?.bgColor || 'transparent',
+      screenBgColorFromTo.value = [
+        data[idx - 1]?.screenBgColorRgb || TRANSPARENT_COLOR,
+        data[idx]?.screenBgColorRgb || TRANSPARENT_COLOR,
+        data[idx + 1]?.screenBgColorRgb || TRANSPARENT_COLOR,
       ];
       progress.value = ev.contentOffset.y / listElementHeight - idx;
     },

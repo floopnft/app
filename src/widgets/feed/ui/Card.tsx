@@ -1,4 +1,5 @@
 import Reactions from '@features/reactions/ui/Reactions';
+import { TRANSPARENT_COLOR } from '@shared/ui/color-utils';
 import { AnimatedBox, Box, Image } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { moderateVerticalScale, scale } from '@shared/utils';
@@ -51,7 +52,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
     <AnimatedBox
       flex={1}
       borderRadius={24}
-      padding={5}
+      padding={0}
       overflow="hidden"
       style={[
         {
@@ -60,6 +61,14 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         style,
       ]}
     >
+      {bgColor === TRANSPARENT_COLOR && (
+        <Image
+          style={StyleSheet.absoluteFillObject}
+          blurRadius={50}
+          source={imgUrl}
+          recyclingKey={imgUrl}
+        />
+      )}
       <Image
         contentFit="contain"
         style={sharedStyles.container}

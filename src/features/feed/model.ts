@@ -18,7 +18,7 @@ export const loadMoreFloops = async (excludeIds?: string[]) => {
   });
   $floopsLoading.set(false);
 
-  $floops.set((prev) => [...prev, ...newFloops]);
+  $floops.set((prev): NFT[] => [...prev, ...newFloops]);
 };
 
 // prob won't work in case of user logout

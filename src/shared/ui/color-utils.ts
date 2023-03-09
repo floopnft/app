@@ -1,15 +1,19 @@
-export type HSLColor = [number, number, number];
+export type ColorArray = [number, number, number];
+export type OptionalColorArray = ColorArray | 'transparent';
 
-export function hslFromArray([h, s, l]: HSLColor): string {
+export const TRANSPARENT_COLOR = 'transparent';
+
+export function rgbFromArray(color: ColorArray): string {
   'worklet';
-  return `hsl(${h}, ${s}%, ${l}%)`;
+  if (color.length !== 3) {
+    return TRANSPARENT_COLOR;
+  }
+  return `rgb(${color[0]}, ${color[1]}%, ${color[2]}%)`;
 }
 
-export function reduceLightning(hsl: HSLColor | 'transparent'): string {
+export function optionalRgbFromArray(color: OptionalColorArray): string {
   'worklet';
-  if (hsl === 'transparent') return hsl;
-  const [h, s, l] = hsl;
-  const sFix = Math.max(0, s - 40);
-  const lFix = Math.max(0, l - 30);
-  return `hsl(${h}, ${sFix}%, ${lFix}%)`;
+  if (!color) return TRANSPARENT_COLOR;
+  if (color === TRANSPARENT_COLOR) return color;
+  return rgbFromArray(color);
 }

@@ -1,4 +1,4 @@
-import { HSLColor } from '@shared/ui/color-utils';
+import { ColorArray } from '@shared/ui/color-utils';
 
 export interface NftDto {
   id: string;
@@ -10,7 +10,8 @@ export interface NftDto {
   imgUploadCareId: string | null;
   price: string;
   presetId: string | null;
-  bgColor: [number, number, number];
+  cardBgColorRgb?: ColorArray;
+  screenBgColorRgb?: ColorArray;
   hints: string[];
   createdByUserId: string | null;
   showDuringOnboarding: boolean;
@@ -23,9 +24,12 @@ export interface NFT {
   id: string;
   collectionName: string;
   collectionAvatarUrl: string;
+  collectionAvatarUploadCareId: string | null;
   title: string;
   imgUrl: string;
-  bgColor?: HSLColor;
+  imgUploadCareId: string | null;
+  cardBgColorRgb?: ColorArray;
+  screenBgColorRgb?: ColorArray;
   hints: string[];
 }
 
