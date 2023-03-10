@@ -1,3 +1,4 @@
+import 'expo-dev-client';
 // eslint-disable-next-line import/no-duplicates
 import 'react-native-gesture-handler';
 
@@ -13,16 +14,15 @@ import {
   initialWindowMetrics,
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
+import { registerDevMenuItems } from 'expo-dev-menu';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigationReady } from '@shared/useOnAppStart';
 import App from './App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const onNavigationReady = () => {
   navigationReady.fire();
 };
-
-// AsyncStorage.clear(); // uncomment to clear storage
 
 const Main = () => {
   return (
@@ -38,5 +38,14 @@ const Main = () => {
     </GestureHandlerRootView>
   );
 };
+
+const devMenuItems = [
+  {
+    name: 'Clear storage',
+    callback: () => AsyncStorage.clear(),
+  },
+];
+
+registerDevMenuItems(devMenuItems);
 
 export default Main;
