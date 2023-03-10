@@ -1,6 +1,6 @@
 import PhotoIcon from '@shared/ui/icons/PhotoIcon';
 import RefreshIcon from '@shared/ui/icons/RefreshIcon';
-import { Box } from '@shared/ui/primitives';
+import { Box, Text } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import {
   Canvas,
@@ -9,20 +9,28 @@ import {
   useTouchHandler,
   useValue,
 } from '@shopify/react-native-skia';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import FireOutlineIcon from '@shared/ui/icons/FireOutlineIcon';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { scale, verticalScale } from '@shared/utils';
+import BottomSheet from '@gorhom/bottom-sheet';
+import Trends from '@src/widgets/trends/ui/Trends';
 
 interface CaptureBottomBarWidgetProps {
   onPhotoTake: () => void;
   onPhotoSelect: (uri: string) => void;
   onCameraFlip: () => void;
+  onTrendsBottomSheetOpenRequest: () => void;
 }
 
 const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
   onPhotoTake,
   onPhotoSelect,
   onCameraFlip,
+  onTrendsBottomSheetOpenRequest,
 }) => {
+  const insets = useSafeAreaInsets();
   const r = useValue(26);
 
   const touchHandler = useTouchHandler({
@@ -47,23 +55,41 @@ const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
   }, [onPhotoSelect]);
 
   return (
-    <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-      <TouchableOpacity onPress={onPhotoSelectPress}>
-        <PhotoIcon color="white" />
-      </TouchableOpacity>
-      <Canvas style={{ width: 64, height: 64 }} onTouch={touchHandler}>
-        <Circle
-          cx={32}
-          cy={32}
-          r={(64 - 4) / 2}
-          style="stroke"
-          color="white"
-          strokeWidth={2}
-        />
-        <Circle cx={32} cy={32} r={r} color="white" />
-      </Canvas>
-      <TouchableOpacity onPress={onCameraFlip}>
-        <RefreshIcon color="white" />
+    <Box flex={1} pt={4} justifyContent="space-between">
+      <Box
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <TouchableOpacity onPress={onPhotoSelectPress}>
+          <PhotoIcon color="white" />
+        </TouchableOpacity>
+        <Canvas style={{ width: 64, height: 64 }} onTouch={touchHandler}>
+          <Circle
+            cx={32}
+            cy={32}
+            r={(64 - 4) / 2}
+            style="stroke"
+            color="white"
+            strokeWidth={2}
+          />
+          <Circle cx={32} cy={32} r={r} color="white" />
+        </Canvas>
+        <TouchableOpacity onPress={onCameraFlip}>
+          <RefreshIcon color="white" />
+        </TouchableOpacity>
+      </Box>
+      <TouchableOpacity
+        backgroundColor="bgGray"
+        flexDirection="row"
+        justifyContent="center"
+        style={{ height: insets.bottom + scale(16) }}
+        onPress={onTrendsBottomSheetOpenRequest}
+      >
+        <Box flexDirection="row" pt={2}>
+          <FireOutlineIcon color="white" />
+          <Text>Trends</Text>
+        </Box>
       </TouchableOpacity>
     </Box>
   );

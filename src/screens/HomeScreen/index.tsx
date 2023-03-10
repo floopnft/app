@@ -3,7 +3,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import {
   OptionalColorArray,
   optionalRgbFromArray,
-  TRANSPARENT_COLOR,
+  COLOR_TRANSPARENT,
 } from '@shared/ui/color-utils';
 import { Box } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
@@ -83,9 +83,9 @@ const HomeScreen = () => {
   );
 
   const screenBgColorFromTo = useSharedValue([
-    TRANSPARENT_COLOR,
-    TRANSPARENT_COLOR,
-    TRANSPARENT_COLOR,
+    COLOR_TRANSPARENT,
+    COLOR_TRANSPARENT,
+    COLOR_TRANSPARENT,
   ] as OptionalColorArray[]);
 
   const progress = useSharedValue(0);
@@ -108,11 +108,11 @@ const HomeScreen = () => {
   // sets initial bgColorFromTo after nft loaded
   useEffect(() => {
     if (data.length === 0) return;
-    if (screenBgColorFromTo.value.every((it) => it === TRANSPARENT_COLOR)) {
+    if (screenBgColorFromTo.value.every((it) => it === COLOR_TRANSPARENT)) {
       screenBgColorFromTo.value = [
-        TRANSPARENT_COLOR,
-        data[0].screenBgColorRgb || TRANSPARENT_COLOR,
-        data[1].screenBgColorRgb || TRANSPARENT_COLOR,
+        COLOR_TRANSPARENT,
+        data[0].screenBgColorRgb || COLOR_TRANSPARENT,
+        data[1].screenBgColorRgb || COLOR_TRANSPARENT,
       ];
     }
   }, [screenBgColorFromTo, data]);
@@ -121,9 +121,9 @@ const HomeScreen = () => {
     (ev) => {
       const idx = Math.floor(ev.contentOffset.y / listElementHeight);
       screenBgColorFromTo.value = [
-        data[idx - 1]?.screenBgColorRgb || TRANSPARENT_COLOR,
-        data[idx]?.screenBgColorRgb || TRANSPARENT_COLOR,
-        data[idx + 1]?.screenBgColorRgb || TRANSPARENT_COLOR,
+        data[idx - 1]?.screenBgColorRgb || COLOR_TRANSPARENT,
+        data[idx]?.screenBgColorRgb || COLOR_TRANSPARENT,
+        data[idx + 1]?.screenBgColorRgb || COLOR_TRANSPARENT,
       ];
       progress.value = ev.contentOffset.y / listElementHeight - idx;
     },

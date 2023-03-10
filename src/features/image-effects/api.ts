@@ -45,6 +45,6 @@ export class CreatorConfigDto {
   trends!: TrendDto[];
 }
 
-async function creatorConfig(): Promise<CreatorConfigDto> {
+export async function creatorConfig(): Promise<CreatorConfigDto> {
   return httpFetch('creator-config');
 }

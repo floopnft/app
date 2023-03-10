@@ -53,15 +53,18 @@ export function getFilenameFromUrl(url: string) {
 }
 
 export function ucarecdn(id: string) {
-  return `https://ucarecdn.com/${id}/`;
+  return `https://ucarecdn.com/${id}/-/quality/smart/-/format/auto/`;
 }
 
 export function ucareId(url: string) {
   return url.split('/').slice(-2)[0];
 }
 
-export function ucarecdnPreview(id: string) {
-  return `https://ucarecdn.com/${id}/-/preview/`;
+export function ucarecdnPreview(id: string, width?: number, height?: number) {
+  if (!width || !height) {
+    return `https://ucarecdn.com/${id}/-/preview/`;
+  }
+  return `https://ucarecdn.com/${id}/-/preview/${width}x${height}/`;
 }
 
 export function ucr(imageUrl: string, width?: number, height?: number) {

@@ -2,11 +2,13 @@ import { uploadFloop } from '@features/upload-floop/model';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { updateUserProfile } from '@screens/ProfileScreen/model';
+import FireOutlineIcon from '@shared/ui/icons/FireOutlineIcon';
 import XIcon from '@shared/ui/icons/XIcon';
 import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { verticalScale } from '@shared/utils';
+import Trends from '@src/widgets/trends/ui/Trends';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -50,7 +52,7 @@ const CameraWidget: React.FC<CameraWidgetProps> = ({
 
 const CreateScreen = () => {
   const cameraRef = useRef<Camera>(null);
-  const effectsSheetRef = useRef<BottomSheet>(null);
+  const trendsSheetRef = useRef<BottomSheet>(null);
   const navigation = useNavigation();
 
   const [activeCamera, setActiveCamera] = useState<ActiveCamera>('back');
@@ -74,9 +76,9 @@ const CreateScreen = () => {
     setEditImageUri(null);
   }, []);
 
-  const onEffectsBottomSheetOpenRequest = useCallback(() => {
-    if (!effectsSheetRef.current) return;
-    effectsSheetRef.current.expand();
+  const onTrendsBottomSheetOpenRequest = useCallback(() => {
+    if (!trendsSheetRef.current) return;
+    trendsSheetRef.current.expand();
   }, []);
 
   const onPublish = async () => {
@@ -88,7 +90,7 @@ const CreateScreen = () => {
   };
 
   return (
-    <SafeAreaView style={sharedStyles.containerBlackBg}>
+    <Box style={sharedStyles.containerBlackBg}>
       <StatusBar style="light" />
       <Box flex={1} backgroundColor="black">
         <Box flex={1} borderRadius={16} overflow="hidden">
@@ -102,35 +104,42 @@ const CreateScreen = () => {
             />
           )}
         </Box>
-        <Box height={verticalScale(64)} py={2} px={4} justifyContent="center">
+        <Box height={verticalScale(96)} pb={0} px={0} justifyContent="center">
           {editImageUri ? (
             <EditBottomBar
               onPublish={onPublish}
               onCancelEditing={onCancelEditing}
-              onEffectsBottomSheetOpenRequest={onEffectsBottomSheetOpenRequest}
+              onEffectsBottomSheetOpenRequest={onTrendsBottomSheetOpenRequest}
             />
           ) : (
             <CaptureBottomBar
               onPhotoSelect={setEditImageUri}
               onPhotoTake={takePhoto}
               onCameraFlip={onCameraFlip}
+              onTrendsBottomSheetOpenRequest={onTrendsBottomSheetOpenRequest}
             />
           )}
         </Box>
       </Box>
       <BottomSheet
-        ref={effectsSheetRef}
+        ref={trendsSheetRef}
+        enablePanDownToClose
         index={-1}
         snapPoints={['50%']}
-        enablePanDownToClose
-        backgroundStyle={sharedStyles.blackBg}
-        handleIndicatorStyle={sharedStyles.whiteBg}
+        containerStyle={{ position: 'absolute' }}
+        backgroundStyle={{ backgroundColor: '#090909' }}
+        handleComponent={() => (
+          <Box flexDirection="row" pt={2} justifyContent="center">
+            <FireOutlineIcon color="white" />
+            <Text>Trends</Text>
+          </Box>
+        )}
       >
-        <Box flex={1}>
-          <Text>shit</Text>
+        <Box flex={1} p={5}>
+          <Trends />
         </Box>
       </BottomSheet>
-    </SafeAreaView>
+    </Box>
   );
 };
 

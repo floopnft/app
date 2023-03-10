@@ -1,5 +1,5 @@
 import Reactions from '@features/reactions/ui/Reactions';
-import { TRANSPARENT_COLOR } from '@shared/ui/color-utils';
+import { COLOR_TRANSPARENT } from '@shared/ui/color-utils';
 import { AnimatedBox, Box, Image } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { moderateVerticalScale, scale } from '@shared/utils';
@@ -61,7 +61,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         style,
       ]}
     >
-      {bgColor === TRANSPARENT_COLOR && (
+      {bgColor === COLOR_TRANSPARENT && (
         <Image
           style={StyleSheet.absoluteFillObject}
           blurRadius={50}
