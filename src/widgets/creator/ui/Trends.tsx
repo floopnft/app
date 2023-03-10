@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { observer } from '@legendapp/state/react';
-import EyeOutlineIcon from '@shared/ui/icons/EyeOutlineIcon';
+import FireIcon from '@shared/ui/icons/FireIcon';
 import Chip from '@shared/ui/molecules/Chip';
 import { Box, Image, Text } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
@@ -23,12 +23,19 @@ const Trends = forwardRef<BottomSheet>(({}, ref) => {
       ref={ref}
       enablePanDownToClose
       index={-1}
-      snapPoints={['50%']}
+      snapPoints={['72%']}
       backgroundStyle={{ backgroundColor: '#090909' }}
       handleComponent={() => (
-        <Box flexDirection="row" py={2} justifyContent="center">
-          <EyeOutlineIcon color="white" />
-          <Text>Trends</Text>
+        <Box
+          flexDirection="row"
+          py={2}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <FireIcon color="white" />
+          <Text fontSize={scale(14)} marginLeft={1} fontWeight="500">
+            Trends
+          </Text>
         </Box>
       )}
     >

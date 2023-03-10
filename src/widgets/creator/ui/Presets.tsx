@@ -23,12 +23,19 @@ const Presets = forwardRef<BottomSheet>(({}, ref) => {
       ref={ref}
       enablePanDownToClose
       index={-1}
-      snapPoints={['50%']}
+      snapPoints={['72%']}
       backgroundStyle={{ backgroundColor: '#090909' }}
       handleComponent={() => (
-        <Box flexDirection="row" py={2} justifyContent="center">
+        <Box
+          flexDirection="row"
+          py={2}
+          justifyContent="center"
+          alignItems="center"
+        >
           <EyeOutlineIcon color="white" />
-          <Text>Presets</Text>
+          <Text fontSize={scale(14)} marginLeft={1} fontWeight="500">
+            Presets
+          </Text>
         </Box>
       )}
     >

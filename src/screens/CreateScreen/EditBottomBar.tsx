@@ -26,7 +26,12 @@ const CaptureBottomBar: React.FC<EditBottomBarProps> = ({
         alignItems="center"
         px={3}
       >
-        <TouchableOpacity onPress={onCancelEditing} width={scale(48)}>
+        <TouchableOpacity
+          onPress={onCancelEditing}
+          backgroundColor="lightGray"
+          borderRadius={100}
+          padding={2}
+        >
           <ArrowLeftIcon color="white" />
         </TouchableOpacity>
         <TouchableOpacity
@@ -47,12 +52,14 @@ const CaptureBottomBar: React.FC<EditBottomBarProps> = ({
         backgroundColor="bgGray"
         flexDirection="row"
         justifyContent="center"
-        style={{ height: insets.bottom + scale(16) }}
+        style={{ height: insets.bottom + scale(24) }}
         onPress={onEffectsBottomSheetOpenRequest}
       >
         <Box flexDirection="row" pt={2}>
           <EyeOutlineIcon color="white" />
-          <Text>Presets</Text>
+          <Text fontSize={scale(14)} marginLeft={1} fontWeight="500">
+            Presets
+          </Text>
         </Box>
       </TouchableOpacity>
     </Box>
