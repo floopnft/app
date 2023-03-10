@@ -43,7 +43,9 @@ const CardInfo: React.FC<CardInfoProps> = ({
               paddingVertical={1}
               style={styles.hint}
             >
-              <Text>{hint}</Text>
+              <Text fontSize={scale(12)} lineHeight={scale(16)}>
+                {hint}
+              </Text>
             </Box>
           ))}
         </Box>

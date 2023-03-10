@@ -17,6 +17,7 @@ const theme = createTheme({
     darkBlue: '#2802A5',
 
     bgGray: '#0B0B0B',
+    lightGray: '#1F1F1F',
 
     transparent: 'transparent',
 

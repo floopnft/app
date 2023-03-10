@@ -55,14 +55,19 @@ const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
   }, [onPhotoSelect]);
 
   return (
-    <Box flex={1} pt={4} justifyContent="space-between">
+    <Box flex={1} pt={2} justifyContent="space-between">
       <Box
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
         px={3}
       >
-        <TouchableOpacity onPress={onPhotoSelectPress}>
+        <TouchableOpacity
+          onPress={onPhotoSelectPress}
+          backgroundColor="lightGray"
+          borderRadius={100}
+          padding={2}
+        >
           <PhotoIcon color="white" />
         </TouchableOpacity>
         <Canvas style={{ width: 64, height: 64 }} onTouch={touchHandler}>
@@ -76,7 +81,12 @@ const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
           />
           <Circle cx={32} cy={32} r={r} color="white" />
         </Canvas>
-        <TouchableOpacity onPress={onCameraFlip}>
+        <TouchableOpacity
+          onPress={onCameraFlip}
+          backgroundColor="lightGray"
+          borderRadius={100}
+          padding={2}
+        >
           <RefreshIcon color="white" />
         </TouchableOpacity>
       </Box>
@@ -84,12 +94,14 @@ const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
         backgroundColor="bgGray"
         flexDirection="row"
         justifyContent="center"
-        style={{ height: insets.bottom + scale(16) }}
+        style={{ height: insets.bottom + scale(24) }}
         onPress={onTrendsBottomSheetOpenRequest}
       >
         <Box flexDirection="row" pt={2}>
           <FireOutlineIcon color="white" />
-          <Text>Trends</Text>
+          <Text fontSize={scale(14)} marginLeft={1} fontWeight="500">
+            Trends
+          </Text>
         </Box>
       </TouchableOpacity>
     </Box>

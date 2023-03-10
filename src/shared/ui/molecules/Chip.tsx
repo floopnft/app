@@ -1,3 +1,4 @@
+import { scale } from '@shared/utils';
 import { COLOR_TRANSPARENT } from '../color-utils';
 import { Box, Text } from '../primitives';
 
@@ -20,7 +21,12 @@ const Chip: React.FC<ChipProps> = ({ title, selected }) => {
           : COLOR_TRANSPARENT,
       }}
     >
-      <Text color="white" fontWeight="500">
+      <Text
+        fontSize={scale(12)}
+        lineHeight={scale(16)}
+        color="white"
+        fontWeight="500"
+      >
         {title}
       </Text>
     </Box>

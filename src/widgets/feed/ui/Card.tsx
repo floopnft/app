@@ -1,11 +1,13 @@
 import Reactions from '@features/reactions/ui/Reactions';
 import { COLOR_TRANSPARENT } from '@shared/ui/color-utils';
-import { AnimatedBox, Box, Image } from '@shared/ui/primitives';
+import Camera from '@shared/ui/icons/CameraIcon';
+import SolanaIcon from '@shared/ui/icons/SolanaIcon';
+import { AnimatedBox, Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { moderateVerticalScale, scale } from '@shared/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import {
   SensorConfig,
   SensorType,
@@ -84,6 +86,27 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         bottom={moderateVerticalScale(72)}
         left={scale(20)}
       >
+        <TouchableOpacity>
+          <Box
+            style={styles.tryPreset}
+            borderRadius={4}
+            paddingHorizontal={1}
+            paddingVertical={1}
+            marginBottom={2}
+            flexDirection="row"
+            alignSelf="flex-start"
+          >
+            <Camera color="white" />
+            <Text
+              fontSize={scale(12)}
+              marginLeft={1}
+              fontWeight="500"
+              lineHeight={scale(16)}
+            >
+              Try preset
+            </Text>
+          </Box>
+        </TouchableOpacity>
         <CardInfo {...props} />
       </Box>
       <Box
@@ -94,8 +117,38 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
       >
         <Reactions />
       </Box>
+      <Box
+        position="absolute"
+        bottom={moderateVerticalScale(20)}
+        right={scale(20)}
+        paddingHorizontal={1}
+        paddingVertical={1}
+        backgroundColor="white"
+        borderRadius={4}
+      >
+        <TouchableOpacity>
+          <Box flexDirection="row">
+            <SolanaIcon />
+            <Text
+              color="black"
+              marginLeft={1}
+              fontWeight="500"
+              lineHeight={scale(16)}
+              fontSize={scale(14)}
+            >
+              2.1
+            </Text>
+          </Box>
+        </TouchableOpacity>
+      </Box>
     </AnimatedBox>
   );
 };
+
+const styles = StyleSheet.create({
+  tryPreset: {
+    backgroundColor: 'rgba(0, 0, 0, 0.24)',
+  },
+});
 
 export default Card;
