@@ -8,11 +8,15 @@ import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { verticalScale } from '@shared/utils';
-import Trends from '@src/widgets/trends/ui/Trends';
+import Presets from '@src/widgets/creator/ui/Presets';
+import Trends from '@src/widgets/creator/ui/Trends';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import CaptureBottomBar from './CaptureBottomBar';
 import EditBottomBar from './EditBottomBar';
@@ -32,17 +36,17 @@ const CameraWidget: React.FC<CameraWidgetProps> = ({
   const devices = useCameraDevices('wide-angle-camera');
   const device = devices[activeCamera];
 
-  if (device == null) return null;
-
   return (
     <Box flex={1}>
-      <Camera
-        ref={cameraRef}
-        style={StyleSheet.absoluteFill}
-        device={device}
-        isActive
-        photo
-      />
+      {device && (
+        <Camera
+          ref={cameraRef}
+          style={StyleSheet.absoluteFill}
+          device={device}
+          isActive
+          photo
+        />
+      )}
       <TouchableOpacity onPress={onClose} p={4} flexDirection="row">
         <XIcon color="white" />
       </TouchableOpacity>
@@ -51,8 +55,10 @@ const CameraWidget: React.FC<CameraWidgetProps> = ({
 };
 
 const CreateScreen = () => {
+  const insets = useSafeAreaInsets();
   const cameraRef = useRef<Camera>(null);
   const trendsSheetRef = useRef<BottomSheet>(null);
+  const presetsSheetRef = useRef<BottomSheet>(null);
   const navigation = useNavigation();
 
   const [activeCamera, setActiveCamera] = useState<ActiveCamera>('back');
@@ -81,6 +87,11 @@ const CreateScreen = () => {
     trendsSheetRef.current.expand();
   }, []);
 
+  const onPresetsBottomSheetOpenRequest = useCallback(() => {
+    if (!presetsSheetRef.current) return;
+    presetsSheetRef.current.expand();
+  }, []);
+
   const onPublish = async () => {
     const floopUpload = await uploadFloop(editImageUri);
     console.log(floopUpload);
@@ -90,10 +101,10 @@ const CreateScreen = () => {
   };
 
   return (
-    <Box style={sharedStyles.containerBlackBg}>
+    <Box style={[sharedStyles.containerBlackBg, { paddingTop: insets.top }]}>
       <StatusBar style="light" />
-      <Box flex={1} backgroundColor="black">
-        <Box flex={1} borderRadius={16} overflow="hidden">
+      <Box flex={1} backgroundColor="black" px={3}>
+        <Box flex={1} borderRadius={20} overflow="hidden">
           {editImageUri ? (
             <Image source={editImageUri} flex={1} />
           ) : (
@@ -104,12 +115,12 @@ const CreateScreen = () => {
             />
           )}
         </Box>
-        <Box height={verticalScale(96)} pb={0} px={0} justifyContent="center">
+        <Box height={verticalScale(96)} mx={-3} justifyContent="center">
           {editImageUri ? (
             <EditBottomBar
               onPublish={onPublish}
               onCancelEditing={onCancelEditing}
-              onEffectsBottomSheetOpenRequest={onTrendsBottomSheetOpenRequest}
+              onEffectsBottomSheetOpenRequest={onPresetsBottomSheetOpenRequest}
             />
           ) : (
             <CaptureBottomBar
@@ -121,24 +132,8 @@ const CreateScreen = () => {
           )}
         </Box>
       </Box>
-      <BottomSheet
-        ref={trendsSheetRef}
-        enablePanDownToClose
-        index={-1}
-        snapPoints={['50%']}
-        containerStyle={{ position: 'absolute' }}
-        backgroundStyle={{ backgroundColor: '#090909' }}
-        handleComponent={() => (
-          <Box flexDirection="row" pt={2} justifyContent="center">
-            <FireOutlineIcon color="white" />
-            <Text>Trends</Text>
-          </Box>
-        )}
-      >
-        <Box flex={1} p={5}>
-          <Trends />
-        </Box>
-      </BottomSheet>
+      <Trends ref={trendsSheetRef} />
+      <Presets ref={presetsSheetRef} />
     </Box>
   );
 };

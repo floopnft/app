@@ -15,7 +15,7 @@ import FireOutlineIcon from '@shared/ui/icons/FireOutlineIcon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scale, verticalScale } from '@shared/utils';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Trends from '@src/widgets/trends/ui/Trends';
+import Trends from '@src/widgets/creator/ui/Trends';
 
 interface CaptureBottomBarWidgetProps {
   onPhotoTake: () => void;
@@ -60,6 +60,7 @@ const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
+        px={3}
       >
         <TouchableOpacity onPress={onPhotoSelectPress}>
           <PhotoIcon color="white" />
