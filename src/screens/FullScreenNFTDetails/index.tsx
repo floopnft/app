@@ -1,4 +1,11 @@
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { optionalRgbFromArray } from '@shared/ui/color-utils';
+import { Image } from '@shared/ui/primitives';
+import { sharedStyles } from '@shared/ui/styles';
 import { SCREEN_HEIGHT } from '@shared/utils';
+import { MainRoutes } from '@src/route';
+import { StyleSheet } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
@@ -10,13 +17,6 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { snapPoint, useVector } from 'react-native-redash';
-import { Image } from '@shared/ui/primitives';
-import { StyleSheet } from 'react-native';
-import { sharedStyles } from '@shared/ui/styles';
-import { hslFromArray } from '@shared/ui/color-utils';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { MainRoutes } from '@src/route';
 
 const NftDetails = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainRoutes>>();
@@ -66,12 +66,10 @@ const NftDetails = () => {
     };
   });
 
-  const isHslCorrupted = nft.bgColor[2] > 100;
-
   return (
     <PanGestureHandler onGestureEvent={onGestureEvent}>
       <Animated.View style={style}>
-        {isHslCorrupted ? (
+        {nft.cardBgColorRgb ? (
           <>
             <Image
               blurRadius={24}
@@ -88,7 +86,9 @@ const NftDetails = () => {
         ) : (
           <Image
             flex={1}
-            style={{ backgroundColor: hslFromArray(nft.bgColor) }}
+            style={{
+              backgroundColor: optionalRgbFromArray(nft.cardBgColorRgb),
+            }}
             contentFit="contain"
             source={nft.imgUrl}
           />

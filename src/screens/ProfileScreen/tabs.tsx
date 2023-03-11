@@ -2,7 +2,7 @@ import { NFT } from '@entities/nft/model';
 import { observer } from '@legendapp/state/react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { hslFromArray } from '@shared/ui/color-utils';
+import { optionalRgbFromArray } from '@shared/ui/color-utils';
 import { Box, Image } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale, ucarecdnPreview, ucareId } from '@shared/utils';
@@ -22,8 +22,6 @@ const NftItem = ({ nft }: { nft: NFT }) => {
     }, [])
   );
 
-  const isHslCorrupted = nft.bgColor[2] > 100;
-
   return (
     <TouchableOpacity
       onPress={() => {
@@ -38,7 +36,7 @@ const NftItem = ({ nft }: { nft: NFT }) => {
         overflow="hidden"
         opacity={opacity}
       >
-        {isHslCorrupted ? (
+        {nft.cardBgColorRgb ? (
           <>
             <Image
               blurRadius={24}
@@ -55,7 +53,9 @@ const NftItem = ({ nft }: { nft: NFT }) => {
         ) : (
           <Image
             flex={1}
-            style={{ backgroundColor: hslFromArray(nft.bgColor) }}
+            style={{
+              backgroundColor: optionalRgbFromArray(nft.cardBgColorRgb),
+            }}
             contentFit="contain"
             source={nft.imgUrl}
           />
