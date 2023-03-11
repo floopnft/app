@@ -17,11 +17,11 @@ export interface ImageWithEffect {
   imageUploadCareId: string;
 }
 
-async function applyAiEffect(command: ApplyEffectCommand) {
+export async function applyAiEffect(command: ApplyEffectCommand) {
   const options: RequestInit = {
     method: 'POST',
     body: JSON.stringify({
-      presetId: PresetId.Lego, // TODO: use presetId from command after we have integrate with creator/config API
+      presetId: command.presetId,
       imageUploadCareId: command.imageUploadCareId,
     }),
   };

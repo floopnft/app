@@ -1,22 +1,20 @@
+import { applyAiEffect } from '@features/image-effects/api';
+import { createNft, uploadImage } from '@features/upload-floop/api';
 import { uploadFloop } from '@features/upload-floop/model';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { updateUserProfile } from '@screens/ProfileScreen/model';
-import FireOutlineIcon from '@shared/ui/icons/FireOutlineIcon';
 import XIcon from '@shared/ui/icons/XIcon';
-import { Box, Image, Text } from '@shared/ui/primitives';
+import { Box, Image } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
 import { TouchableOpacity } from '@shared/ui/touchables';
-import { verticalScale } from '@shared/utils';
+import { getFilenameFromUrl, ucarecdn, verticalScale } from '@shared/utils';
 import Presets from '@src/widgets/creator/ui/Presets';
 import Trends from '@src/widgets/creator/ui/Trends';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import CaptureBottomBar from './CaptureBottomBar';
 import EditBottomBar from './EditBottomBar';
@@ -56,13 +54,22 @@ const CameraWidget: React.FC<CameraWidgetProps> = ({
 
 const CreateScreen = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+
   const cameraRef = useRef<Camera>(null);
   const trendsSheetRef = useRef<BottomSheet>(null);
   const presetsSheetRef = useRef<BottomSheet>(null);
-  const navigation = useNavigation();
 
   const [activeCamera, setActiveCamera] = useState<ActiveCamera>('back');
-  const [editImageUri, setEditImageUri] = useState<string | null>(null);
+  const [originalImageUri, setOriginalImageUri] = useState<string | null>(null);
+  const [editedImageUcareId, setEditedImageUcareId] = useState<string | null>(
+    null
+  );
+
+  const isEditingImage = originalImageUri || editedImageUcareId;
+
+  const [presetId, setPresetId] = useState<string | null>(null);
+  const [isApplyingPreset, setIsApplyingPreset] = useState(false);
 
   const onCameraFlip = useCallback(() => {
     if (activeCamera === 'back') {
@@ -72,32 +79,67 @@ const CreateScreen = () => {
     }
   }, [activeCamera]);
 
-  const takePhoto = useCallback(async () => {
+  const takePhoto = async () => {
     if (!cameraRef.current) return;
     const takenPhoto = await cameraRef.current.takePhoto();
-    setEditImageUri(`file://${takenPhoto.path}`);
-  }, [cameraRef]);
+    setOriginalImageUri(`file://${takenPhoto.path}`);
+  };
 
-  const onCancelEditing = useCallback(() => {
-    setEditImageUri(null);
-  }, []);
+  const onCancelEditing = () => {
+    if (editedImageUcareId) {
+      setEditedImageUcareId(null);
+      return;
+    }
+    setOriginalImageUri(null);
+  };
 
-  const onTrendsBottomSheetOpenRequest = useCallback(() => {
+  const onTrendsBottomSheetOpenRequest = () => {
     if (!trendsSheetRef.current) return;
     trendsSheetRef.current.expand();
-  }, []);
+  };
 
-  const onPresetsBottomSheetOpenRequest = useCallback(() => {
+  const onPresetsBottomSheetOpenRequest = () => {
     if (!presetsSheetRef.current) return;
     presetsSheetRef.current.expand();
-  }, []);
+  };
 
   const onPublish = async () => {
-    const floopUpload = await uploadFloop(editImageUri);
-    console.log(floopUpload);
+    if (editedImageUcareId) {
+      await createNft([], presetId, editedImageUcareId);
+      updateUserProfile.fire();
+      setOriginalImageUri(null);
+      setEditedImageUcareId(null);
+      setPresetId(null);
+      navigation.navigate('Profile');
+      return;
+    }
+    await uploadFloop(originalImageUri);
     updateUserProfile.fire();
+    setOriginalImageUri(null);
+    setEditedImageUcareId(null);
+    setPresetId(null);
     navigation.navigate('Profile');
-    setEditImageUri(null);
+  };
+
+  const onPresetApply = async (presetId: string) => {
+    trendsSheetRef.current?.close();
+    presetsSheetRef.current?.close();
+    setPresetId(presetId);
+    setIsApplyingPreset(true);
+    try {
+      const { file: ucareId } = await uploadImage({
+        name: getFilenameFromUrl(originalImageUri),
+        type: 'image/jpeg',
+        uri: originalImageUri,
+      });
+      const withEffect = await applyAiEffect({
+        presetId,
+        imageUploadCareId: ucareId,
+      });
+      setEditedImageUcareId(withEffect.imageUploadCareId);
+    } finally {
+      setIsApplyingPreset(false);
+    }
   };
 
   return (
@@ -105,8 +147,16 @@ const CreateScreen = () => {
       <StatusBar style="light" />
       <Box flex={1} backgroundColor="black" px={3}>
         <Box flex={1} borderRadius={20} overflow="hidden">
-          {editImageUri ? (
-            <Image source={editImageUri} flex={1} />
+          {isEditingImage ? (
+            <Image
+              flex={1}
+              source={
+                editedImageUcareId
+                  ? ucarecdn(editedImageUcareId)
+                  : originalImageUri
+              }
+              transition={700}
+            />
           ) : (
             <CameraWidget
               activeCamera={activeCamera}
@@ -116,15 +166,16 @@ const CreateScreen = () => {
           )}
         </Box>
         <Box height={verticalScale(96)} mx={-3} justifyContent="center">
-          {editImageUri ? (
+          {isEditingImage ? (
             <EditBottomBar
+              isApplyingFilter={isApplyingPreset}
               onPublish={onPublish}
               onCancelEditing={onCancelEditing}
               onEffectsBottomSheetOpenRequest={onPresetsBottomSheetOpenRequest}
             />
           ) : (
             <CaptureBottomBar
-              onPhotoSelect={setEditImageUri}
+              onPhotoSelect={setOriginalImageUri}
               onPhotoTake={takePhoto}
               onCameraFlip={onCameraFlip}
               onTrendsBottomSheetOpenRequest={onTrendsBottomSheetOpenRequest}
@@ -133,7 +184,7 @@ const CreateScreen = () => {
         </Box>
       </Box>
       <Trends ref={trendsSheetRef} />
-      <Presets ref={presetsSheetRef} />
+      <Presets ref={presetsSheetRef} onPresetApply={onPresetApply} />
     </Box>
   );
 };

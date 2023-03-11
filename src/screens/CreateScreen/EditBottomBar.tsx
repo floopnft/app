@@ -6,12 +6,14 @@ import { scale } from '@shared/utils';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface EditBottomBarProps {
+  isApplyingFilter: boolean;
   onPublish: () => void;
   onCancelEditing: () => void;
   onEffectsBottomSheetOpenRequest: () => void;
 }
 
-const CaptureBottomBar: React.FC<EditBottomBarProps> = ({
+const EditBottomBar: React.FC<EditBottomBarProps> = ({
+  isApplyingFilter,
   onPublish,
   onCancelEditing,
   onEffectsBottomSheetOpenRequest,
@@ -34,6 +36,11 @@ const CaptureBottomBar: React.FC<EditBottomBarProps> = ({
         >
           <ArrowLeftIcon color="white" />
         </TouchableOpacity>
+        {isApplyingFilter && (
+          <Text color="white" fontWeight="500">
+            Applying filter...
+          </Text>
+        )}
         <TouchableOpacity
           backgroundColor="white"
           py={1}
@@ -66,4 +73,4 @@ const CaptureBottomBar: React.FC<EditBottomBarProps> = ({
   );
 };
 
-export default CaptureBottomBar;
+export default EditBottomBar;
