@@ -1,5 +1,5 @@
 import { httpFetch } from '@shared/fetcher';
-import { NftDto } from '@entities/nft/model';
+import { Nft } from '@entities/nft/model';
 
 // Temporary, until we have integrate with creator/config API to get presets
 export enum PresetId {
@@ -31,13 +31,13 @@ export async function applyAiEffect(command: ApplyEffectCommand) {
 export class PresetDto {
   id!: string;
   name!: string;
-  nfts!: NftDto[];
+  nfts!: Nft[];
 }
 
 export class TrendDto {
   id!: string;
   name!: string;
-  nfts!: NftDto[];
+  nfts!: Nft[];
 }
 
 export class CreatorConfigDto {

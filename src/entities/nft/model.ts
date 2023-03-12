@@ -1,6 +1,6 @@
 import { ColorArray } from '@shared/ui/color-utils';
 
-export interface NftDto {
+export interface Nft {
   id: string;
   collectionName: string;
   collectionAvatarUrl: string;
@@ -18,20 +18,6 @@ export interface NftDto {
   createdAt: Date;
   updatedAt: Date;
   nftCategoryId: string;
-  reactionsByUser?: NftReactionsByUser[];
-}
-
-export interface NFT {
-  id: string;
-  collectionName: string;
-  collectionAvatarUrl: string;
-  collectionAvatarUploadCareId: string | null;
-  title: string;
-  imgUrl: string;
-  imgUploadCareId: string | null;
-  cardBgColorRgb?: ColorArray;
-  screenBgColorRgb?: ColorArray;
-  hints: string[];
   reactionsByUser?: NftReactionsByUser[];
 }
 

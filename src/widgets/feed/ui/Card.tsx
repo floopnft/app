@@ -1,11 +1,14 @@
-import { NftReactionsByUser } from '@entities/nft/model';
+import { Nft } from '@entities/nft/model';
 import Reactions from '@features/reactions/ui/Reactions';
-import { COLOR_TRANSPARENT } from '@shared/ui/color-utils';
+import {
+  COLOR_TRANSPARENT,
+  optionalRgbFromArray,
+} from '@shared/ui/color-utils';
 import Camera from '@shared/ui/icons/CameraIcon';
 import SolanaIcon from '@shared/ui/icons/SolanaIcon';
 import { AnimatedBox, Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { moderateVerticalScale, scale } from '@shared/utils';
+import { moderateVerticalScale, scale, ucarecdn } from '@shared/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -16,13 +19,10 @@ import {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import CardInfo, { CardInfoProps } from '../../../entities/feed/ui/CardInfo';
+import CardInfo from '../../../entities/feed/ui/CardInfo';
 
 interface CardProps {
-  nftId: string;
-  reactionsByUser: NftReactionsByUser[];
-  imgUrl: string;
-  bgColor: string;
+  nft: Nft;
 }
 
 const animatedSensorConfig: SensorConfig = {
@@ -32,13 +32,7 @@ const animatedSensorConfig: SensorConfig = {
 
 const linearGradientColors = ['rgba(0,0,0,0)', 'rgba(0,0,0,0.35)'];
 
-const Card: React.FC<CardProps & CardInfoProps> = ({
-  nftId,
-  reactionsByUser,
-  imgUrl,
-  bgColor,
-  ...props
-}) => {
+const Card: React.FC<CardProps> = ({ nft }) => {
   const animatedSensor = useAnimatedSensor(
     SensorType.ROTATION,
     animatedSensorConfig
@@ -55,6 +49,17 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
     };
   });
 
+  const bgColor = optionalRgbFromArray(nft.cardBgColorRgb);
+
+  const imgUrl = nft.imgUploadCareId
+    ? ucarecdn(nft.imgUploadCareId)
+    : nft.imgUrl;
+  const avatarUrl = nft.collectionAvatarUploadCareId
+    ? ucarecdn(nft.collectionAvatarUploadCareId)
+    : nft.collectionAvatarUrl;
+
+  const isFloop = nft.hints.includes('floop') || nft.createdByUserId;
+
   return (
     <AnimatedBox
       flex={1}
@@ -68,16 +73,8 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         style,
       ]}
     >
-      {bgColor === COLOR_TRANSPARENT && (
-        <Image
-          style={StyleSheet.absoluteFillObject}
-          blurRadius={50}
-          source={imgUrl}
-          recyclingKey={imgUrl}
-        />
-      )}
       <Image
-        contentFit="contain"
+        contentFit={isFloop ? 'cover' : 'contain'}
         style={sharedStyles.container}
         source={imgUrl}
         recyclingKey={imgUrl}
@@ -113,7 +110,12 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
             </Text>
           </Box>
         </TouchableOpacity>
-        <CardInfo {...props} />
+        <CardInfo
+          avatarUrl={avatarUrl}
+          hints={nft.hints}
+          title={nft.title}
+          username={nft.collectionName}
+        />
       </Box>
       <Box
         position="absolute"
@@ -121,7 +123,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         left={scale(20)}
         flexDirection="row"
       >
-        <Reactions nftId={nftId} reactionsByUser={reactionsByUser} />
+        <Reactions nftId={nft.id} reactionsByUser={nft.reactionsByUser} />
       </Box>
       <Box
         position="absolute"

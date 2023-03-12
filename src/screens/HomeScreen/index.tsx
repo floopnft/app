@@ -51,14 +51,6 @@ const HomeScreen = () => {
         );
       }
 
-      const imgUrl = item.imgUploadCareId
-        ? ucarecdn(item.imgUploadCareId)
-        : item.imgUrl;
-
-      const avatarUrl = item.collectionAvatarUploadCareId
-        ? ucarecdn(item.collectionAvatarUploadCareId)
-        : item.collectionAvatarUrl;
-
       return (
         <Box
           height={listElementHeight}
@@ -68,16 +60,7 @@ const HomeScreen = () => {
             paddingBottom: tabBarHeight + verticalScale(12),
           }}
         >
-          <Card
-            nftId={item.id}
-            reactionsByUser={item.reactionsByUser}
-            imgUrl={imgUrl}
-            bgColor={optionalRgbFromArray(item.cardBgColorRgb)}
-            avatarUrl={avatarUrl}
-            hints={item.hints}
-            title={item.title}
-            username={item.collectionName}
-          />
+          <Card nft={item} />
         </Box>
       );
     },

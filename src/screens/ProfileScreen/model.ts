@@ -1,9 +1,9 @@
-import { NftDto } from '@entities/nft/model';
+import { Nft } from '@entities/nft/model';
 import { $user, User } from '@entities/user/model';
 import { event, observable } from '@legendapp/state';
 import { fetchUserProfile } from '@screens/ProfileScreen/api';
 
-export type UserProfile = User & { createdNfts: NftDto[]; likedNfts: NftDto[] };
+export type UserProfile = User & { createdNfts: Nft[]; likedNfts: Nft[] };
 
 export const updateUserProfile = event();
 
