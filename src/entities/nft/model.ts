@@ -18,6 +18,7 @@ export interface NftDto {
   createdAt: Date;
   updatedAt: Date;
   nftCategoryId: string;
+  reactionsByUser?: NftReactionsByUser[];
 }
 
 export interface NFT {
@@ -31,6 +32,7 @@ export interface NFT {
   cardBgColorRgb?: ColorArray;
   screenBgColorRgb?: ColorArray;
   hints: string[];
+  reactionsByUser?: NftReactionsByUser[];
 }
 
 export interface NftViewsByUser {

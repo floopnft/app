@@ -1,50 +1,29 @@
-import { ReactionCatalog, ReactionType } from '@entities/feed/ui/AnimatedReaction';
 import { upsertNftReaction } from '@entities/nft/api/nft-reactions-api';
-import { observable } from '@legendapp/state';
-import { $currentVisibleCard } from '@screens/HomeScreen/model';
-import { updateUserProfile } from '@screens/ProfileScreen/model';
-import { nanoid } from 'nanoid';
 
-interface UserNftReaction {
-  id: string;
-  reactionId: string;
-  type: ReactionType;
-  press: { x: number; y: number };
-}
+export const ReactionCatalog = {
+  heart: {
+    id: 'af960861-4961-4d04-9245-a557413abaee',
+    symbol: '💜',
+  },
+  thumbsUp: {
+    id: '3a5c1e8b-7cbb-4e9e-b220-2682862438c7',
+    symbol: '👍',
+  },
+  dislike: {
+    id: 'b02ec2b4-7d3d-45e9-adc8-57eabd0d2fe9',
+    symbol: '💩',
+  },
+};
 
-export interface NftReaction {
-  nftId: string;
-  reactionId: string;
-}
+export type ReactionKind = keyof typeof ReactionCatalog;
 
-export const $reactions = observable<UserNftReaction[]>([]);
-export const $lastNftReaction = observable<NftReaction | null>(null);
+export const ReactionKindById: Record<string, ReactionKind> = {
+  'af960861-4961-4d04-9245-a557413abaee': 'heart',
+  '3a5c1e8b-7cbb-4e9e-b220-2682862438c7': 'thumbsUp',
+  'b02ec2b4-7d3d-45e9-adc8-57eabd0d2fe9': 'dislike',
+};
 
-$lastNftReaction.onChange(async ({ value: reaction }) => {
-  const command = {
-    nftId: reaction.nftId,
-    reactionId: reaction.reactionId,
-  };
-  await upsertNftReaction(command);
-  updateUserProfile.fire();
-});
-
-export function addReaction(
-  setReactionCommand: Omit<UserNftReaction, 'id' | 'reactionId'>
-) {
-  const reactionId = ReactionCatalog[setReactionCommand.type].id;
-  const reaction = {
-    id: nanoid(),
-    reactionId: reactionId,
-    ...setReactionCommand,
-  };
-  $reactions.push(reaction);
-  const card = $currentVisibleCard.get();
-  if (!card) {
-    return;
-  }
-  $lastNftReaction.set({
-    nftId: card.id,
-    reactionId: reactionId,
-  });
+export function saveReaction(nftId: string, reactionKind: ReactionKind) {
+  const reactionId = ReactionCatalog[reactionKind].id;
+  upsertNftReaction({ nftId, reactionId });
 }

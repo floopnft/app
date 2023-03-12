@@ -1,59 +1,63 @@
 import Reaction from '@entities/feed/ui/Reaction';
+import { NftReactionsByUser } from '@entities/nft/model';
+import { $user } from '@entities/user/model';
 import { Box } from '@shared/ui/primitives';
-import React from 'react';
+import { EMPTY_ARR } from '@shared/utils';
+import React, { useMemo } from 'react';
+import {
+  ReactionCatalog,
+  ReactionKind,
+  ReactionKindById,
+  saveReaction,
+} from '../model';
 
-const reactions = ['💜', '👍', '💩'];
+interface ReactionsProps {
+  nftId: string;
+  reactionsByUser: NftReactionsByUser[];
+}
 
-// interface ReactionsProps {
-//   onReactionSelected: string
-// }
+const Reactions: React.FC<ReactionsProps> = ({
+  nftId,
+  reactionsByUser = EMPTY_ARR,
+}) => {
+  const [selectedReaction, setSelectedReaction] =
+    React.useState<ReactionKind | null>(null);
 
-const Reactions = () => {
-  const [counter, setCounter] = React.useState([
-    Math.round(Math.random() * 10) || 0,
-    Math.round(Math.random() * 10) || 0,
-    Math.round(Math.random() * 10) || 0,
-  ]);
-  const [selectedReaction, setSelectedReaction] = React.useState<number | null>(
-    null
-  );
+  const stats = useMemo(() => {
+    setSelectedReaction(null);
+    const userId = $user.id.peek();
+    const newStats: Record<ReactionKind, number> = {} as any;
+    reactionsByUser.forEach((reaction) => {
+      const kind = ReactionKindById[reaction.reactionId];
+      if (reaction.userId === userId) {
+        setSelectedReaction(kind);
+        return;
+      }
+      newStats[kind] = (newStats[kind] || 0) + 1;
+    });
+    return newStats;
+  }, [reactionsByUser]);
 
-  const selectReaction = (newReaction: number) => {
-    if (newReaction === selectedReaction) {
-      setCounter((prev) => [
-        ...prev.slice(0, selectedReaction),
-        Math.max(0, prev[selectedReaction] - 1),
-        ...prev.slice(selectedReaction + 1),
-      ]);
-      setSelectedReaction(null);
-      return;
-    }
-    if (selectedReaction !== null) {
-      setCounter((prev) => [
-        ...prev.slice(0, selectedReaction),
-        Math.max(0, prev[selectedReaction] - 1),
-        ...prev.slice(selectedReaction + 1),
-      ]);
-    }
+  const selectReaction = (newReaction: ReactionKind) => {
     setSelectedReaction(newReaction);
-    setCounter((prev) => [
-      ...prev.slice(0, newReaction),
-      prev[newReaction] + 1,
-      ...prev.slice(newReaction + 1),
-    ]);
+    saveReaction(nftId, newReaction);
   };
 
   return (
     <Box flexDirection="row" gap={1}>
-      {reactions.map((reaction, index) => (
-        <Reaction
-          key={reaction}
-          kind={reaction}
-          counter={counter[index]}
-          selected={index === selectedReaction}
-          onPress={() => selectReaction(index)}
-        />
-      ))}
+      {Object.entries(ReactionCatalog).map(([type, { symbol }]) => {
+        const kind = type as ReactionKind;
+        const isSelected = kind === selectedReaction;
+        return (
+          <Reaction
+            key={kind}
+            symbol={symbol}
+            counter={(stats[kind] || 0) + (isSelected ? 1 : 0)}
+            selected={kind === selectedReaction}
+            onPress={() => selectReaction(kind)}
+          />
+        );
+      })}
     </Box>
   );
 };

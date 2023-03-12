@@ -4,14 +4,14 @@ import { scale } from '@shared/utils';
 import React from 'react';
 
 interface ReactionProps {
-  kind: string;
+  symbol: string;
   counter: number;
   selected: boolean;
   onPress: () => void;
 }
 
 const Reaction: React.FC<ReactionProps> = ({
-  kind,
+  symbol,
   counter,
   selected,
   onPress,
@@ -29,7 +29,7 @@ const Reaction: React.FC<ReactionProps> = ({
       backgroundColor={selected ? 'white' : 'transparent'}
       onPress={onPress}
     >
-      <Text>{kind}</Text>
+      <Text>{symbol}</Text>
       <Text
         fontWeight="500"
         marginLeft={1}

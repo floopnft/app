@@ -1,3 +1,4 @@
+import { NftReactionsByUser } from '@entities/nft/model';
 import Reactions from '@features/reactions/ui/Reactions';
 import { COLOR_TRANSPARENT } from '@shared/ui/color-utils';
 import Camera from '@shared/ui/icons/CameraIcon';
@@ -18,6 +19,8 @@ import {
 import CardInfo, { CardInfoProps } from '../../../entities/feed/ui/CardInfo';
 
 interface CardProps {
+  nftId: string;
+  reactionsByUser: NftReactionsByUser[];
   imgUrl: string;
   bgColor: string;
 }
@@ -30,6 +33,8 @@ const animatedSensorConfig: SensorConfig = {
 const linearGradientColors = ['rgba(0,0,0,0)', 'rgba(0,0,0,0.35)'];
 
 const Card: React.FC<CardProps & CardInfoProps> = ({
+  nftId,
+  reactionsByUser,
   imgUrl,
   bgColor,
   ...props
@@ -115,7 +120,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
         left={scale(20)}
         flexDirection="row"
       >
-        <Reactions />
+        <Reactions nftId={nftId} reactionsByUser={reactionsByUser} />
       </Box>
       <Box
         position="absolute"

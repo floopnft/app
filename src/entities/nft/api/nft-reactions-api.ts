@@ -7,12 +7,8 @@ export interface UpsertNftReactionCommand {
 }
 
 export async function upsertNftReaction(command: UpsertNftReactionCommand) {
-  try {
-    await httpFetch<NftReactionsByUser>('nft-reactions', {
-      method: 'POST',
-      body: JSON.stringify(command),
-    });
-  } catch (e) {
-    return null;
-  }
+  return httpFetch<NftReactionsByUser>('nft-reactions', {
+    method: 'POST',
+    body: JSON.stringify(command),
+  });
 }

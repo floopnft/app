@@ -69,6 +69,8 @@ const HomeScreen = () => {
           }}
         >
           <Card
+            nftId={item.id}
+            reactionsByUser={item.reactionsByUser}
             imgUrl={imgUrl}
             bgColor={optionalRgbFromArray(item.cardBgColorRgb)}
             avatarUrl={avatarUrl}
