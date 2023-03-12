@@ -100,6 +100,7 @@ const Card: React.FC<CardProps & CardInfoProps> = ({
             marginBottom={2}
             flexDirection="row"
             alignSelf="flex-start"
+            alignItems="center"
           >
             <Camera color="white" />
             <Text

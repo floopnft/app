@@ -94,10 +94,10 @@ const CaptureBottomBar: React.FC<CaptureBottomBarWidgetProps> = ({
         backgroundColor="bgGray"
         flexDirection="row"
         justifyContent="center"
-        style={{ height: insets.bottom + scale(24) }}
+        style={{ paddingBottom: insets.bottom }}
         onPress={onTrendsBottomSheetOpenRequest}
       >
-        <Box flexDirection="row" pt={2}>
+        <Box flexDirection="row" pt={2} alignItems="center">
           <FireOutlineIcon color="white" />
           <Text fontSize={scale(14)} marginLeft={1} fontWeight="500">
             Trends

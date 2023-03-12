@@ -85,9 +85,15 @@ const CreateScreen = () => {
     setOriginalImageUri(`file://${takenPhoto.path}`);
   };
 
+  const onPresetCancel = () => {
+    setEditedImageUcareId(null);
+    setIsApplyingPreset(false);
+    setPresetId(null);
+  };
+
   const onCancelEditing = () => {
     if (editedImageUcareId) {
-      setEditedImageUcareId(null);
+      onPresetCancel();
       return;
     }
     setOriginalImageUri(null);
@@ -168,8 +174,14 @@ const CreateScreen = () => {
         <Box height={verticalScale(96)} mx={-3} justifyContent="center">
           {isEditingImage ? (
             <EditBottomBar
-              isApplyingFilter={isApplyingPreset}
+              appliedPreset={
+                presetId
+                  ? presetId.charAt(0).toUpperCase() + presetId.slice(1)
+                  : null
+              }
+              isApplyingPreset={isApplyingPreset}
               onPublish={onPublish}
+              onPresetCancel={() => setPresetId(null)}
               onCancelEditing={onCancelEditing}
               onEffectsBottomSheetOpenRequest={onPresetsBottomSheetOpenRequest}
             />
