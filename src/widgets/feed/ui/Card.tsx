@@ -88,28 +88,30 @@ const Card: React.FC<CardProps> = ({ nft }) => {
         bottom={moderateVerticalScale(72)}
         left={scale(20)}
       >
-        <TouchableOpacity>
-          <Box
-            style={styles.tryPreset}
-            borderRadius={4}
-            paddingHorizontal={1}
-            paddingVertical={1}
-            marginBottom={2}
-            flexDirection="row"
-            alignSelf="flex-start"
-            alignItems="center"
-          >
-            <Camera color="white" />
-            <Text
-              fontSize={scale(12)}
-              marginLeft={1}
-              fontWeight="500"
-              lineHeight={scale(16)}
+        {nft.presetId && (
+          <TouchableOpacity>
+            <Box
+              style={styles.tryPreset}
+              borderRadius={4}
+              paddingHorizontal={1}
+              paddingVertical={1}
+              marginBottom={2}
+              flexDirection="row"
+              alignSelf="flex-start"
+              alignItems="center"
             >
-              Try preset
-            </Text>
-          </Box>
-        </TouchableOpacity>
+              <Camera color="white" />
+              <Text
+                fontSize={scale(12)}
+                marginLeft={1}
+                fontWeight="500"
+                lineHeight={scale(16)}
+              >
+                Try preset
+              </Text>
+            </Box>
+          </TouchableOpacity>
+        )}
         <CardInfo
           avatarUrl={avatarUrl}
           hints={nft.hints}
