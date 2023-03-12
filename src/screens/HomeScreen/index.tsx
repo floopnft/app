@@ -161,7 +161,7 @@ const HomeScreen = () => {
           showsVerticalScrollIndicator={false}
           bounces={false}
           decelerationRate="fast"
-          snapToAlignment="start"
+          disableIntervalMomentum
           snapToInterval={listElementHeight}
           // onEndReachedThreshold={2}
           // onEndReached={loadNextRecommendedNfts}
