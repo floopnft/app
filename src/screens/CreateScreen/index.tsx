@@ -92,10 +92,7 @@ const CreateScreen = () => {
   };
 
   const onCancelEditing = () => {
-    if (editedImageUcareId) {
-      onPresetCancel();
-      return;
-    }
+    onPresetCancel();
     setOriginalImageUri(null);
   };
 
@@ -181,7 +178,7 @@ const CreateScreen = () => {
               }
               isApplyingPreset={isApplyingPreset}
               onPublish={onPublish}
-              onPresetCancel={() => setPresetId(null)}
+              onPresetCancel={onPresetCancel}
               onCancelEditing={onCancelEditing}
               onEffectsBottomSheetOpenRequest={onPresetsBottomSheetOpenRequest}
             />

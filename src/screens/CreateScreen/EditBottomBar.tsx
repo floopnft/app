@@ -43,29 +43,52 @@ const EditBottomBar: React.FC<EditBottomBarProps> = ({
           <ArrowLeftIcon color="white" />
         </TouchableOpacity>
         {isApplyingPreset && (
-          <Text color="white" fontWeight="500">
-            Applying preset...
-          </Text>
+          <Box
+            flexDirection="row"
+            alignItems="center"
+            borderWidth={1}
+            borderColor="lightGray"
+            px={2}
+            py={2}
+            borderRadius={100}
+          >
+            <Text
+              fontSize={scale(12)}
+              lineHeight={scale(20)}
+              color="white"
+              fontWeight="500"
+            >
+              Applying preset...
+            </Text>
+          </Box>
         )}
         {appliedPreset && !isApplyingPreset && (
-          <TouchableOpacity
-            onPress={onPresetCancel}
+          <Box
             flexDirection="row"
             alignItems="center"
             backgroundColor="lightGray"
-            p={2}
+            px={2}
+            py={2}
             borderRadius={100}
           >
-            <Text color="white" fontWeight="500" mr={1}>
+            <Text
+              fontSize={scale(12)}
+              lineHeight={scale(20)}
+              color="white"
+              fontWeight="500"
+              mr={1}
+            >
               {appliedPreset}
             </Text>
-            <XIcon
-              width={scale(12)}
-              height={scale(12)}
-              color="white"
-              opacity={0.12}
-            />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={onPresetCancel}>
+              <XIcon
+                width={scale(14)}
+                height={scale(14)}
+                color="white"
+                opacity={0.24}
+              />
+            </TouchableOpacity>
+          </Box>
         )}
         <TouchableOpacity
           onPress={onPublish}
