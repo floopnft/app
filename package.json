@@ -22,7 +22,7 @@
     "@solana/web3.js": "^1.73.3",
     "@types/react": "~18.0.27",
     "bs58": "^5.0.0",
-    "expo": "~48.0.4",
+    "expo": "~48.0.6",
     "expo-build-properties": "~0.5.1",
     "expo-constants": "~14.2.1",
     "expo-dev-client": "~2.1.5",
