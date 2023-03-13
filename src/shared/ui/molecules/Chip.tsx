@@ -4,7 +4,7 @@ import { Box, Text } from '../primitives';
 
 interface ChipProps {
   title: string;
-  selected: boolean;
+  selected?: boolean;
 }
 
 const Chip: React.FC<ChipProps> = ({ title, selected }) => {

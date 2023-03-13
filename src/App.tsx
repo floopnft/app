@@ -4,6 +4,7 @@ import CreateScreen from '@screens/CreateScreen';
 import FullScreenNFTDetails from '@screens/FullScreenNFTDetails';
 import HomeScreen from '@screens/HomeScreen';
 import ProfileScreen from '@screens/ProfileScreen';
+import PublishScreen from '@screens/PublishScreen';
 import HomeIcon from '@shared/ui/icons/HomeIcon';
 import PlusCircleIcon from '@shared/ui/icons/PlusCircleIcon';
 import UserIcon from '@shared/ui/icons/UserIcon';
@@ -80,6 +81,7 @@ function App(): JSX.Element | null {
       }}
     >
       <MainStack.Screen name="Main" component={TabActivity} />
+      <MainStack.Screen name="Publish" component={PublishScreen} />
       <MainStack.Screen
         name="FullScreenNFTDetails"
         component={FullScreenNFTDetails}

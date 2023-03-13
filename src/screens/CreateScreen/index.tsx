@@ -108,20 +108,31 @@ const CreateScreen = () => {
 
   const onPublish = async () => {
     if (editedImageUcareId) {
-      await createNft([], presetId, editedImageUcareId);
-      updateUserProfile.fire();
-      setOriginalImageUri(null);
-      setEditedImageUcareId(null);
-      setPresetId(null);
-      navigation.navigate('Profile');
+      navigation.navigate('Publish', { imgUcareId: editedImageUcareId });
       return;
     }
-    await uploadFloop(originalImageUri);
-    updateUserProfile.fire();
+    const { file: ucareId } = await uploadImage({
+      name: getFilenameFromUrl(originalImageUri),
+      type: 'image/jpeg',
+      uri: originalImageUri,
+    });
+    navigation.navigate('Publish', { imgUcareId: ucareId });
+
+    // if (editedImageUcareId) {
+    //   await createNft([], presetId, editedImageUcareId);
+    //   updateUserProfile.fire();
     setOriginalImageUri(null);
     setEditedImageUcareId(null);
     setPresetId(null);
-    navigation.navigate('Profile');
+    //   navigation.navigate('Profile');
+    //   return;
+    // }
+    // await uploadFloop(originalImageUri);
+    // updateUserProfile.fire();
+    // setOriginalImageUri(null);
+    // setEditedImageUcareId(null);
+    // setPresetId(null);
+    // navigation.navigate('Profile');
   };
 
   const onPresetApply = async (presetId: string) => {

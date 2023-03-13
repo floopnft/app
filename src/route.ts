@@ -1,8 +1,9 @@
-import { NFT } from '@entities/nft/model';
+import { Nft } from '@entities/nft/model';
 
 export type MainRoutes = {
   Main: undefined;
-  FullScreenNFTDetails: { nft: NFT };
+  FullScreenNFTDetails: { nft: Nft };
+  Publish: { imgUcareId: string };
 };
 
 export type TabRoutes = {
