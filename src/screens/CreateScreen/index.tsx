@@ -13,7 +13,7 @@ import Presets from '@src/widgets/creator/ui/Presets';
 import Trends from '@src/widgets/creator/ui/Trends';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import CaptureBottomBar from './CaptureBottomBar';
@@ -107,16 +107,20 @@ const CreateScreen = () => {
   };
 
   const onPublish = async () => {
-    if (editedImageUcareId) {
-      navigation.navigate('Publish', { imgUcareId: editedImageUcareId });
+    if (!editedImageUcareId || !presetId) {
+      Alert.alert('Please apply a preset first');
       return;
     }
-    const { file: ucareId } = await uploadImage({
-      name: getFilenameFromUrl(originalImageUri),
-      type: 'image/jpeg',
-      uri: originalImageUri,
+    navigation.navigate('Publish', {
+      imgUcareId: editedImageUcareId,
+      presetId: presetId,
     });
-    navigation.navigate('Publish', { imgUcareId: ucareId });
+    // const { file: ucareId } = await uploadImage({
+    //   name: getFilenameFromUrl(originalImageUri),
+    //   type: 'image/jpeg',
+    //   uri: originalImageUri,
+    // });
+    // navigation.navigate('Publish', { imgUcareId: ucareId });
 
     // if (editedImageUcareId) {
     //   await createNft([], presetId, editedImageUcareId);

@@ -1,29 +1,48 @@
+import { createNft } from '@features/upload-floop/api';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Box, Text, Image } from '@shared/ui/primitives';
+import { updateUserProfile } from '@screens/ProfileScreen/model';
+import ArrowLeftIcon from '@shared/ui/icons/ArrowLeftIcon';
+import Chip from '@shared/ui/molecules/Chip';
+import { Box, Image, Text } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
-import { scale, ucarecdn, ucarecdnPreview } from '@shared/utils';
+import { TouchableOpacity } from '@shared/ui/touchables';
+import { scale, ucarecdnPreview } from '@shared/utils';
 import { MainRoutes } from '@src/route';
 import React from 'react';
+import { ActivityIndicator, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TextInput } from 'react-native';
-import Chip from '@shared/ui/molecules/Chip';
-import { createNft } from '@features/upload-floop/api';
-import ArrowLeftIcon from '@shared/ui/icons/ArrowLeftIcon';
-import { TouchableOpacity } from '@shared/ui/touchables';
 
 type PublishScreenRouteProp = RouteProp<MainRoutes, 'Publish'>;
 
-const tags = ['Pets', 'Nature'];
+const tags = [
+  'Fun',
+  'Pets',
+  'Lego',
+  'Cosmic',
+  'Art',
+  'Kawaii',
+  'Fractal',
+  'Pixel',
+  'Comic',
+  'Cartoon',
+];
 
 const PublishScreen = () => {
   const navigation = useNavigation();
 
   const { params } = useRoute<PublishScreenRouteProp>();
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const publish = () => {
-    // TODO save preset
-    createNft(selectedTags, null, params.imgUcareId);
+  const publish = async () => {
+    setIsLoading(true);
+    try {
+      await createNft(selectedTags, params.presetId, params.imgUcareId);
+      updateUserProfile.fire();
+      navigation.navigate('Profile');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -82,7 +101,7 @@ const PublishScreen = () => {
         <Text fontWeight="600" fontSize={scale(12)}>
           Add tags
         </Text>
-        <Box flexDirection="row" gap={1} mt={2}>
+        <Box flexDirection="row" gap={1} mt={2} flexWrap="wrap">
           {tags.map((tag) => {
             const selected = selectedTags.includes(tag);
             return (
@@ -104,15 +123,19 @@ const PublishScreen = () => {
       </Box>
       <Box my={4} height={1} backgroundColor="lightGray" width="100%" />
       <TouchableOpacity
-        onPress={publish}
+        onPress={isLoading ? null : publish}
         backgroundColor="darkBlue"
         borderRadius={12}
         py={4}
         alignItems="center"
       >
-        <Text fontSize={scale(14)} lineHeight={scale(16)} fontWeight="500">
-          Floop it
-        </Text>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text fontSize={scale(14)} lineHeight={scale(16)} fontWeight="500">
+            Floop it
+          </Text>
+        )}
       </TouchableOpacity>
     </SafeAreaView>
   );
