@@ -106,6 +106,7 @@ const PublishScreen = () => {
             const selected = selectedTags.includes(tag);
             return (
               <TouchableOpacity
+                key={tag}
                 onPress={() => {
                   if (selected) {
                     return setSelectedTags((prev) =>
