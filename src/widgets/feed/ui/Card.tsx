@@ -127,30 +127,32 @@ const Card: React.FC<CardProps> = ({ nft }) => {
       >
         <Reactions nftId={nft.id} reactionsByUser={nft.reactionsByUser} />
       </Box>
-      <Box
-        position="absolute"
-        bottom={moderateVerticalScale(20)}
-        right={scale(20)}
-        paddingHorizontal={1}
-        paddingVertical={1}
-        backgroundColor="white"
-        borderRadius={4}
-      >
-        <TouchableOpacity>
-          <Box flexDirection="row">
-            <SolanaIcon />
-            <Text
-              color="black"
-              marginLeft={1}
-              fontWeight="500"
-              lineHeight={scale(16)}
-              fontSize={scale(14)}
-            >
-              2.1
-            </Text>
-          </Box>
-        </TouchableOpacity>
-      </Box>
+      {!isFloop && nft.price && (
+        <Box
+          position="absolute"
+          bottom={moderateVerticalScale(20)}
+          right={scale(20)}
+          paddingHorizontal={1}
+          paddingVertical={1}
+          backgroundColor="white"
+          borderRadius={4}
+        >
+          <TouchableOpacity>
+            <Box flexDirection="row">
+              <SolanaIcon />
+              <Text
+                color="black"
+                marginLeft={1}
+                fontWeight="500"
+                lineHeight={scale(16)}
+                fontSize={scale(14)}
+              >
+                {nft.price}
+              </Text>
+            </Box>
+          </TouchableOpacity>
+        </Box>
+      )}
     </AnimatedBox>
   );
 };
