@@ -56,7 +56,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
 
 const styles = StyleSheet.create({
   hint: {
-    backgroundColor: 'rgba(255,255,255,0.12)',
+    backgroundColor: 'rgba(255,255,255,0.16)',
   },
 });
 
