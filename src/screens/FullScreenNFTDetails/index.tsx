@@ -1,13 +1,11 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { optionalRgbFromArray } from '@shared/ui/color-utils';
-import { Image } from '@shared/ui/primitives';
-import { sharedStyles } from '@shared/ui/styles';
-import { SCREEN_HEIGHT } from '@shared/utils';
+import { AnimatedBox, Box } from '@shared/ui/primitives';
+import { SCREEN_HEIGHT, verticalScale } from '@shared/utils';
 import { MainRoutes } from '@src/route';
-import { StyleSheet } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, {
+import {
   Extrapolate,
   interpolate,
   runOnJS,
@@ -17,12 +15,19 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { snapPoint, useVector } from 'react-native-redash';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { listElementHeight } from '@screens/HomeScreen/list';
+import FullScreenCard from './ui/FullScreenCard';
 
 const NftDetails = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainRoutes>>();
+  const insets = useSafeAreaInsets();
+
   const {
     params: { nft },
   } = useRoute<RouteProp<MainRoutes, 'FullScreenNFTDetails'>>();
+
+  const bgColor = optionalRgbFromArray(nft.cardBgColorRgb);
 
   const isGestureActive = useSharedValue(false);
   const translation = useVector();
@@ -61,39 +66,36 @@ const NftDetails = () => {
         { translateY: translation.y.value * scale },
         { scale },
       ],
-      borderRadius: 12,
+      borderRadius: 24,
       overflow: 'hidden',
     };
   });
 
   return (
     <PanGestureHandler onGestureEvent={onGestureEvent}>
-      <Animated.View style={style}>
-        {nft.cardBgColorRgb ? (
-          <>
-            <Image
-              blurRadius={24}
-              source={nft.imgUrl}
-              contentFit="cover"
-              style={StyleSheet.absoluteFillObject}
-            />
-            <Image
-              style={sharedStyles.container}
-              contentFit="contain"
-              source={nft.imgUrl}
-            />
-          </>
-        ) : (
-          <Image
-            flex={1}
-            style={{
-              backgroundColor: optionalRgbFromArray(nft.cardBgColorRgb),
-            }}
-            contentFit="contain"
-            source={nft.imgUrl}
-          />
-        )}
-      </Animated.View>
+      <AnimatedBox
+        flex={1}
+        borderRadius={24}
+        padding={0}
+        overflow="hidden"
+        style={[
+          {
+            backgroundColor: bgColor,
+          },
+          style,
+        ]}
+      >
+        <Box
+          padding={3}
+          height={listElementHeight}
+          style={{
+            paddingTop: insets.top,
+            paddingBottom: verticalScale(24),
+          }}
+        >
+          <FullScreenCard nft={nft} />
+        </Box>
+      </AnimatedBox>
     </PanGestureHandler>
   );
 };
