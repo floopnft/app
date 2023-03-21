@@ -1,9 +1,9 @@
-import { NFT } from '@entities/nft/model';
+import { Nft } from '@entities/nft/model';
 import { observer } from '@legendapp/state/react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { optionalRgbFromArray } from '@shared/ui/color-utils';
-import { Box, Image } from '@shared/ui/primitives';
+import { Box, Image, Text } from '@shared/ui/primitives';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale, ucarecdnPreview, ucareId } from '@shared/utils';
 import { FlashList } from '@shopify/flash-list';
@@ -12,7 +12,7 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { $createdNfts, $likedNfts } from './model';
 
-const NftItem = ({ nft }: { nft: NFT }) => {
+const NftItem = ({ nft }: { nft: Nft }) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainRoutes>>();
   const [opacity, setOpacity] = useState(1);
 
@@ -73,6 +73,22 @@ export const LikedTab = observer(() => {
       data={$likedNfts.get()}
       numColumns={3}
       estimatedItemSize={scale(152)}
+      ListEmptyComponent={
+        <Box alignItems="center" mt={32}>
+          <Text color="white" fontSize={scale(16)} fontWeight="600">
+            No liked NFTs? Explore to find art you love
+          </Text>
+          <Text
+            color="secondaryText"
+            fontSize={scale(14)}
+            fontWeight="500"
+            mt={2}
+            textAlign="center"
+          >
+            AI creates personalized feed based on your reactions
+          </Text>
+        </Box>
+      }
       renderItem={({ item }) => {
         return <NftItem nft={item} />;
       }}
@@ -88,6 +104,23 @@ export const CreatedTab = observer(() => {
       data={$createdNfts.get()}
       numColumns={3}
       estimatedItemSize={scale(152)}
+      ListEmptyComponent={
+        <Box alignItems="center" mt={32}>
+          <Text color="white" fontSize={scale(16)} fontWeight="600">
+            Life moments as Unique NFTs
+          </Text>
+          <Text
+            color="secondaryText"
+            fontSize={scale(14)}
+            fontWeight="500"
+            mt={2}
+            textAlign="center"
+          >
+            Create unique NFTs with our built-in creator. Share your story
+            through digital art
+          </Text>
+        </Box>
+      }
       renderItem={({ item }) => {
         return <NftItem nft={item} />;
       }}
