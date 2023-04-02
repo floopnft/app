@@ -1,4 +1,5 @@
 import { upsertNftReaction } from '@entities/nft/api/nft-reactions-api';
+import { updateUserProfile } from '@screens/ProfileScreen/model';
 
 export const ReactionCatalog = {
   heart: {
@@ -25,5 +26,5 @@ export const ReactionKindById: Record<string, ReactionKind> = {
 
 export function saveReaction(nftId: string, reactionKind: ReactionKind) {
   const reactionId = ReactionCatalog[reactionKind].id;
-  upsertNftReaction({ nftId, reactionId });
+  upsertNftReaction({ nftId, reactionId }).then(() => updateUserProfile.fire());
 }
