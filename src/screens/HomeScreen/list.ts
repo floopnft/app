@@ -1,5 +1,5 @@
 import React from 'react';
-import { NFT } from '@entities/nft/model';
+import { Nft } from '@entities/nft/model';
 import { SCREEN_HEIGHT } from '@shared/utils';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import Animated from 'react-native-reanimated';
@@ -14,7 +14,7 @@ export type CustomFeedItem<T> = {
   Component: React.FC<T & { visible: boolean }>;
 };
 
-export type FeedItem = NFT | CustomFeedItem<any>;
+export type FeedItem = Nft | CustomFeedItem<any>;
 
 export const listElementHeight = SCREEN_HEIGHT;
 
