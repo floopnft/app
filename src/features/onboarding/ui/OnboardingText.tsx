@@ -57,7 +57,7 @@ const OnboardingText: React.FC<OnboardingTextProps> = ({
       )}
       {showReactions && (
         <Box mt={1}>
-          <Reactions />
+          <Reactions nftId="onboarding" reactionsByUser={[]} noop />
         </Box>
       )}
     </Box>

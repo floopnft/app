@@ -7,6 +7,7 @@ import {
 import { Keypair } from '@solana/web3.js';
 import base58 from 'bs58';
 import * as Device from 'expo-device';
+import * as Haptics from 'expo-haptics';
 import { nanoid } from 'nanoid';
 import { btoa, toByteArray } from 'react-native-quick-base64';
 
@@ -63,6 +64,8 @@ export const initWallet = async () => {
     const publicKey = generateWallet().publicKey.toBase58();
     $wallet.set({ publicKey });
   }
+
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
   AsyncStorage.setItem(STORAGE_WALLET_KEY, JSON.stringify($wallet.peek()));
 };

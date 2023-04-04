@@ -8,6 +8,7 @@ import { sharedStyles } from '@shared/ui/styles';
 import { TouchableOpacity } from '@shared/ui/touchables';
 import { scale, ucarecdnPreview } from '@shared/utils';
 import { MainRoutes } from '@src/route';
+import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { ActivityIndicator, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -38,8 +39,11 @@ const PublishScreen = () => {
     setIsLoading(true);
     try {
       await createNft(selectedTags, params.presetId, params.imgUcareId);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       updateUserProfile.fire();
       navigation.navigate('Profile');
+    } catch {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     } finally {
       setIsLoading(false);
     }

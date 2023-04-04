@@ -4,6 +4,7 @@ import { $user } from '@entities/user/model';
 import { Box } from '@shared/ui/primitives';
 import { EMPTY_ARR } from '@shared/utils';
 import React, { useMemo } from 'react';
+import * as Haptics from 'expo-haptics';
 import {
   ReactionCatalog,
   ReactionKind,
@@ -14,11 +15,13 @@ import {
 interface ReactionsProps {
   nftId: string;
   reactionsByUser: NftReactionsByUser[];
+  noop?: boolean;
 }
 
 const Reactions: React.FC<ReactionsProps> = ({
   nftId,
   reactionsByUser = EMPTY_ARR,
+  noop,
 }) => {
   const [selectedReaction, setSelectedReaction] =
     React.useState<ReactionKind | null>(null);
@@ -39,7 +42,9 @@ const Reactions: React.FC<ReactionsProps> = ({
   }, [reactionsByUser]);
 
   const selectReaction = (newReaction: ReactionKind) => {
+    Haptics.selectionAsync();
     setSelectedReaction(newReaction);
+    if (noop) return;
     saveReaction(nftId, newReaction);
   };
 

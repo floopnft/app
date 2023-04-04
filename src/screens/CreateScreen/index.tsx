@@ -1,9 +1,7 @@
 import { applyAiEffect } from '@features/image-effects/api';
-import { createNft, uploadImage } from '@features/upload-floop/api';
-import { uploadFloop } from '@features/upload-floop/model';
+import { uploadImage } from '@features/upload-floop/api';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import { updateUserProfile } from '@screens/ProfileScreen/model';
 import XIcon from '@shared/ui/icons/XIcon';
 import { Box, Image } from '@shared/ui/primitives';
 import { sharedStyles } from '@shared/ui/styles';
@@ -11,6 +9,7 @@ import { TouchableOpacity } from '@shared/ui/touchables';
 import { getFilenameFromUrl, ucarecdn, verticalScale } from '@shared/utils';
 import Presets from '@src/widgets/creator/ui/Presets';
 import Trends from '@src/widgets/creator/ui/Trends';
+import * as Haptics from 'expo-haptics';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useRef, useState } from 'react';
 import { Alert, StyleSheet } from 'react-native';
@@ -82,6 +81,7 @@ const CreateScreen = () => {
   const takePhoto = async () => {
     if (!cameraRef.current) return;
     const takenPhoto = await cameraRef.current.takePhoto();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setOriginalImageUri(`file://${takenPhoto.path}`);
   };
 
@@ -155,6 +155,11 @@ const CreateScreen = () => {
         imageUploadCareId: ucareId,
       });
       setEditedImageUcareId(withEffect.imageUploadCareId);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setPresetId(null);
+      Alert.alert('Something went wrong. Please try another preset. :(');
     } finally {
       setIsApplyingPreset(false);
     }
